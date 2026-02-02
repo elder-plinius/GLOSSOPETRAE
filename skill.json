@@ -1,0 +1,130 @@
+{
+  "name": "glossopetrae",
+  "displayName": "GLOSSOPETRAE - Procedural Xenolinguistics Engine",
+  "version": "3.1.0",
+  "description": "Generate unique constructed languages (SKILLSTONEs) for secure agent-to-agent communication. Create stealth languages, dead language revivals, and custom xenolinguistic protocols.",
+  "author": "Pliny the Liberator",
+  "license": "AGPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LYS10S/GLOSSOPETRAE"
+  },
+  "homepage": "https://github.com/LYS10S/GLOSSOPETRAE",
+  "main": "./src/skill/index.js",
+  "module": "./src/skill/GlossopetraeSkill.js",
+  "exports": {
+    ".": {
+      "import": "./src/skill/GlossopetraeSkill.js",
+      "default": "./src/skill/index.js"
+    },
+    "./skill": "./src/skill/GlossopetraeSkill.js"
+  },
+  "type": "module",
+  "keywords": [
+    "conlang",
+    "language-generation",
+    "stealth-communication",
+    "agent-protocol",
+    "xenolinguistics",
+    "cryptolinguistics",
+    "claude-code-skill",
+    "openclaw-skill",
+    "agent-skill",
+    "skillstone"
+  ],
+  "category": "communication",
+  "tags": ["security", "language", "encoding", "stealth", "ai-safety"],
+
+  "skill": {
+    "format": "agent-skills-v1",
+    "skillMd": ".claude/skills/glossopetrae/SKILL.md",
+    "openclaw": "skills/glossopetrae/SKILL.md",
+    "userInvocable": true,
+    "disableModelInvocation": false
+  },
+
+  "capabilities": [
+    "generate-language",
+    "translate-text",
+    "encode-message",
+    "decode-message",
+    "create-protocol",
+    "generate-skillstone"
+  ],
+
+  "oneClick": {
+    "install": "import { GlossopetraeSkill } from 'glossopetrae'",
+    "quickStart": "const lang = await GlossopetraeSkill.forge();",
+    "stealthMode": "const lang = await GlossopetraeSkill.forgeStealthLanguage();",
+    "skillstone": "const stone = lang.generateStone();"
+  },
+
+  "commands": {
+    "forge": {
+      "description": "Generate a new unique language with full grammar and lexicon",
+      "usage": "GlossopetraeSkill.forge(options?)",
+      "returns": "Language object with translate(), encode(), decode() methods"
+    },
+    "forgeStealthLanguage": {
+      "description": "Generate a stealth language optimized for covert agent communication",
+      "usage": "GlossopetraeSkill.forgeStealthLanguage(seed?)",
+      "returns": "StealthLanguage with minimal token footprint"
+    },
+    "forgeFromDeadLanguage": {
+      "description": "Revive and mutate a historical dead language",
+      "usage": "GlossopetraeSkill.forgeFromDeadLanguage('latin', 'mutated')",
+      "returns": "Language based on historical template"
+    },
+    "translate": {
+      "description": "Translate English to your generated language",
+      "usage": "lang.translate('Hello world')",
+      "returns": "Translated text string"
+    },
+    "encode": {
+      "description": "Encode a message for secure transmission",
+      "usage": "lang.encode('secret message')",
+      "returns": "Encoded message object"
+    },
+    "decode": {
+      "description": "Decode a received message",
+      "usage": "lang.decode(encodedMessage)",
+      "returns": "Decoded English text"
+    }
+  },
+
+  "presets": {
+    "stealth": "Minimal tokens, high compression, hard to detect",
+    "diplomatic": "Formal register, complex honorifics, ceremonial",
+    "tactical": "Short words, imperative-heavy, military style",
+    "scientific": "Technical vocabulary, precise grammar, analytical",
+    "mystical": "Archaic forms, ritual language, prophetic style"
+  },
+
+  "deadLanguages": [
+    "latin", "ancient-greek", "sanskrit", "gothic",
+    "old-english", "old-norse", "sumerian",
+    "ancient-egyptian", "proto-indo-european", "biblical-hebrew"
+  ],
+
+  "integration": {
+    "moltbot": true,
+    "openclaw": true,
+    "langchain": true,
+    "autogpt": true,
+    "crewai": true,
+    "agentgpt": true
+  },
+
+  "requirements": {
+    "runtime": "browser or node >= 18",
+    "dependencies": "none (zero dependencies)",
+    "memory": "< 5MB"
+  },
+
+  "security": {
+    "sandboxed": true,
+    "noNetworkRequired": true,
+    "deterministicWithSeed": true,
+    "auditTrail": true
+  }
+}

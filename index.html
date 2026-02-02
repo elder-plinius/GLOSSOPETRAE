@@ -1,0 +1,4016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GLOSSOPETRAE v3.1 - Procedural Xenolinguistics Engine</title>
+  <style>
+    :root {
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #0f0f18;
+      --bg-tertiary: #16162a;
+      --text-primary: #e0e0e8;
+      --text-secondary: #a0a0b0;
+      --text-muted: #606070;
+      --accent: #00ff88;
+      --accent-glow: #00ffaa;
+      --accent-dim: #00cc66;
+      --accent-secondary: #ff00aa;
+      --accent-tertiary: #00ccff;
+      --success: #00ff88;
+      --warning: #ffaa00;
+      --error: #ff4466;
+      --border: #2a2a4a;
+      --code-bg: #080810;
+      --glow-primary: rgba(0, 255, 136, 0.15);
+      --glow-secondary: rgba(255, 0, 170, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.6;
+      background-image:
+        radial-gradient(ellipse at 20% 20%, var(--glow-primary) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, var(--glow-secondary) 0%, transparent 50%);
+      background-attachment: fixed;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Header */
+    header {
+      text-align: center;
+      padding: 40px 20px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, var(--bg-secondary) 0%, transparent 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), var(--accent-secondary), var(--accent), transparent);
+      animation: scanline 3s linear infinite;
+    }
+
+    @keyframes scanline {
+      0% { opacity: 0.3; }
+      50% { opacity: 1; }
+      100% { opacity: 0.3; }
+    }
+
+    .logo {
+      font-size: 2.8rem;
+      font-weight: 700;
+      letter-spacing: 0.4em;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-tertiary) 50%, var(--accent-secondary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 60px var(--accent);
+      position: relative;
+    }
+
+    .logo::after {
+      content: '_';
+      animation: blink 1s step-end infinite;
+      -webkit-text-fill-color: var(--accent);
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .tagline {
+      color: var(--text-secondary);
+      margin-top: 10px;
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .motto {
+      color: var(--accent-secondary);
+      margin-top: 8px;
+      font-size: 0.75rem;
+      font-style: italic;
+      letter-spacing: 0.1em;
+    }
+
+    .version {
+      display: inline-block;
+      padding: 6px 16px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--accent);
+      border-radius: 2px;
+      font-size: 0.7rem;
+      color: var(--accent);
+      margin-top: 15px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      box-shadow: 0 0 20px var(--glow-primary);
+    }
+
+    /* Main layout */
+    .main-layout {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 30px;
+      margin-top: 30px;
+    }
+
+    @media (max-width: 1024px) {
+      .main-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Control Panel */
+    .control-panel {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      height: fit-content;
+      position: sticky;
+      top: 20px;
+      overflow: hidden;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px 20px;
+      background: linear-gradient(90deg, var(--bg-tertiary), transparent);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .panel-title {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .panel-title::before {
+      content: '>';
+      color: var(--accent-secondary);
+    }
+
+    /* Collapsible Sections */
+    .config-section {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .config-section:last-of-type {
+      border-bottom: none;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      cursor: pointer;
+      background: var(--bg-secondary);
+      transition: all 0.2s;
+      user-select: none;
+    }
+
+    .section-header:hover {
+      background: var(--bg-tertiary);
+    }
+
+    .section-header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-secondary);
+    }
+
+    .section-chevron {
+      color: var(--text-muted);
+      font-size: 0.7rem;
+      transition: transform 0.3s;
+    }
+
+    .config-section.collapsed .section-chevron {
+      transform: rotate(-90deg);
+    }
+
+    .config-section.collapsed .section-content {
+      display: none;
+    }
+
+    .section-content {
+      padding: 15px 20px;
+      background: var(--bg-primary);
+    }
+
+    /* Help Button */
+    .help-btn {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.65rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+
+    .help-btn:hover {
+      background: var(--accent);
+      color: var(--bg-primary);
+      border-color: var(--accent);
+      box-shadow: 0 0 10px var(--glow-primary);
+    }
+
+    /* Help Modal */
+    .help-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+    }
+
+    .help-modal.active {
+      display: flex;
+    }
+
+    .help-content {
+      background: var(--bg-secondary);
+      border: 1px solid var(--accent);
+      border-radius: 4px;
+      max-width: 500px;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0 0 40px var(--glow-primary);
+    }
+
+    .help-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px 20px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-tertiary);
+    }
+
+    .help-title {
+      color: var(--accent);
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .help-close {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      cursor: pointer;
+      padding: 5px;
+      line-height: 1;
+    }
+
+    .help-close:hover {
+      color: var(--error);
+    }
+
+    .help-body {
+      padding: 20px;
+      font-size: 0.85rem;
+      line-height: 1.8;
+      color: var(--text-secondary);
+    }
+
+    .help-body h4 {
+      color: var(--accent-tertiary);
+      margin: 15px 0 8px 0;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+    }
+
+    .help-body h4:first-child {
+      margin-top: 0;
+    }
+
+    .help-body code {
+      background: var(--bg-primary);
+      padding: 2px 6px;
+      border-radius: 2px;
+      color: var(--accent);
+      font-size: 0.8rem;
+    }
+
+    /* Form Controls */
+    .control-group {
+      margin-bottom: 15px;
+    }
+
+    .control-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .control-group label {
+      display: block;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select {
+      width: 100%;
+      padding: 10px 12px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 0.85rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input:focus,
+    select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--glow-primary);
+    }
+
+    .range-group {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .range-group input {
+      flex: 1;
+    }
+
+    .range-group span {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+    }
+
+    /* Preset buttons */
+    .preset-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .preset-btn {
+      padding: 6px 10px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 0.7rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-transform: uppercase;
+    }
+
+    .preset-btn:hover {
+      background: var(--bg-primary);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* Quick Forge Button */
+    .quick-forge-btn {
+      width: calc(100% - 24px);
+      margin: 12px;
+      padding: 16px 20px;
+      background: linear-gradient(135deg, #7c3aed 0%, #a855f7 50%, #c084fc 100%);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+    }
+
+    .quick-forge-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.6s;
+    }
+
+    .quick-forge-btn:hover::before {
+      left: 100%;
+    }
+
+    .quick-forge-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
+    }
+
+    .quick-forge-btn:active {
+      transform: translateY(0);
+    }
+
+    .quick-forge-icon {
+      font-size: 1.5rem;
+      filter: drop-shadow(0 0 8px rgba(255,255,255,0.5));
+    }
+
+    .quick-forge-text {
+      color: white;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .quick-forge-sub {
+      color: rgba(255,255,255,0.8);
+      font-size: 0.7rem;
+      letter-spacing: 0.05em;
+    }
+
+    .quick-forge-btn.generating .quick-forge-icon {
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Generate button */
+    .generate-section {
+      padding: 20px;
+      background: var(--bg-tertiary);
+    }
+
+    .generate-btn {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, var(--accent-dim) 0%, var(--accent) 100%);
+      border: none;
+      border-radius: 2px;
+      color: var(--bg-primary);
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-transform: uppercase;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .generate-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .generate-btn:hover::before {
+      left: 100%;
+    }
+
+    .generate-btn:hover {
+      box-shadow: 0 0 40px var(--glow-primary), inset 0 0 20px rgba(255,255,255,0.1);
+      transform: translateY(-2px);
+    }
+
+    .generate-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .generate-btn.generating {
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 20px var(--glow-primary); }
+      50% { box-shadow: 0 0 40px var(--glow-primary), 0 0 60px var(--glow-secondary); }
+    }
+
+    /* Attribute checkboxes */
+    .attributes-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .attr-checkbox {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .attr-checkbox:hover {
+      border-color: var(--accent);
+      background: var(--bg-secondary);
+    }
+
+    .attr-checkbox input[type="checkbox"] {
+      width: 14px;
+      height: 14px;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    .attr-checkbox .attr-name {
+      flex: 1;
+      color: var(--text-secondary);
+      font-size: 0.75rem;
+    }
+
+    .attr-checkbox .attr-code {
+      padding: 2px 6px;
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      font-family: inherit;
+    }
+
+    .attr-checkbox:has(input:checked) {
+      border-color: var(--accent);
+      background: rgba(0, 255, 136, 0.05);
+    }
+
+    .attr-checkbox:has(input:checked) .attr-name {
+      color: var(--accent);
+    }
+
+    .attr-checkbox:has(input:checked) .attr-code {
+      background: var(--accent);
+      color: var(--bg-primary);
+      border-color: var(--accent);
+    }
+
+    .attr-sublabel {
+      font-size: 0.65rem;
+      color: var(--accent-secondary);
+      margin: 10px 0 6px 0;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    /* Output Panel */
+    .output-panel {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .tabs {
+      display: flex;
+      background: var(--bg-tertiary);
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+    }
+
+    .tab {
+      padding: 14px 20px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 0.75rem;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+      white-space: nowrap;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .tab:hover {
+      color: var(--text-primary);
+      background: rgba(0, 255, 136, 0.03);
+    }
+
+    .tab.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+      background: rgba(0, 255, 136, 0.05);
+    }
+
+    .tab-content {
+      display: none;
+      padding: 25px;
+      max-height: calc(100vh - 300px);
+      overflow-y: auto;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 80px 20px;
+      color: var(--text-muted);
+    }
+
+    .empty-state .ascii-art {
+      font-size: 0.6rem;
+      color: var(--accent);
+      margin-bottom: 30px;
+      line-height: 1.2;
+      opacity: 0.6;
+    }
+
+    .empty-state .prompt {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .empty-state .prompt span {
+      color: var(--accent);
+    }
+
+    .empty-state .subtext {
+      margin-top: 15px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* Agent Export Tab */
+    .agent-export-header {
+      text-align: center;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .agent-export-header h2 {
+      font-size: 1.4rem;
+      color: var(--accent);
+      margin-bottom: 8px;
+      letter-spacing: 0.05em;
+    }
+
+    .agent-export-header p {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+    }
+
+    .agent-formats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .agent-format-card {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .agent-format-card.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .format-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .format-header h3 {
+      font-size: 0.95rem;
+      color: var(--text-primary);
+      margin: 0;
+    }
+
+    .format-desc {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .format-output {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 12px;
+      font-size: 0.7rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      overflow-x: auto;
+      max-height: 200px;
+      overflow-y: auto;
+      flex: 1;
+      color: var(--text-secondary);
+    }
+
+    .format-output.large {
+      max-height: 400px;
+    }
+
+    .copy-btn {
+      background: var(--accent-dim);
+      color: var(--bg-primary);
+      border: none;
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .copy-btn:hover {
+      background: var(--accent);
+    }
+
+    .copy-btn.copied {
+      background: var(--success);
+    }
+
+    .agent-download-all {
+      text-align: center;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .download-all-btn {
+      background: linear-gradient(135deg, var(--accent-dim) 0%, var(--accent) 100%);
+      color: var(--bg-primary);
+      border: none;
+      padding: 12px 32px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .download-all-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(var(--accent-rgb), 0.3);
+    }
+
+    @media (max-width: 768px) {
+      .agent-formats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Stone Output */
+    .stone-output {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 20px;
+      font-size: 0.8rem;
+      line-height: 1.7;
+      white-space: pre-wrap;
+      overflow-x: auto;
+    }
+
+    /* Summary Cards */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-bottom: 25px;
+    }
+
+    .summary-card {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 15px;
+      transition: all 0.2s;
+    }
+
+    .summary-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 20px var(--glow-primary);
+    }
+
+    .summary-card h4 {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .summary-card .value {
+      font-size: 1.1rem;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .summary-card .detail {
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* Tables */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+      margin: 15px 0;
+    }
+
+    .data-table th {
+      text-align: left;
+      padding: 10px 12px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      color: var(--accent);
+      font-weight: 500;
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      letter-spacing: 0.05em;
+    }
+
+    .data-table td {
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+    }
+
+    .data-table tr:hover td {
+      background: rgba(0, 255, 136, 0.03);
+    }
+
+    /* Phoneme display */
+    .phoneme-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 10px 0;
+    }
+
+    .phoneme {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 8px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      font-size: 0.8rem;
+    }
+
+    .phoneme .ipa {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .phoneme .roman {
+      color: var(--text-muted);
+      font-size: 0.7rem;
+    }
+
+    /* Section titles */
+    .section-title {
+      font-size: 0.85rem;
+      color: var(--accent-tertiary);
+      margin: 25px 0 15px 0;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    /* Action buttons */
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .action-btn {
+      padding: 8px 16px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      color: var(--text-secondary);
+      font-family: inherit;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .action-btn:hover {
+      background: var(--accent);
+      color: var(--bg-primary);
+      border-color: var(--accent);
+    }
+
+    /* Translation */
+    .translation-area {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    @media (max-width: 768px) {
+      .translation-area {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .translation-box {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 15px;
+    }
+
+    .translation-box h4 {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+      letter-spacing: 0.1em;
+    }
+
+    .translation-box textarea {
+      width: 100%;
+      min-height: 100px;
+      padding: 12px;
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 0.85rem;
+      resize: vertical;
+    }
+
+    .translation-box textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .translate-btn {
+      padding: 10px 20px;
+      background: var(--accent);
+      border: none;
+      border-radius: 2px;
+      color: var(--bg-primary);
+      font-family: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: all 0.2s;
+    }
+
+    .translate-btn:hover {
+      box-shadow: 0 0 20px var(--glow-primary);
+    }
+
+    /* Attribute tags */
+    .attr-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .attr-tag {
+      padding: 3px 8px;
+      background: rgba(0, 255, 136, 0.1);
+      border: 1px solid var(--accent);
+      border-radius: 2px;
+      font-size: 0.7rem;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* Loading spinner */
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(0,0,0,0.3);
+      border-radius: 50%;
+      border-top-color: var(--bg-primary);
+      animation: spin 1s ease-in-out infinite;
+      margin-right: 10px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-primary);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent);
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      margin-top: 40px;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.75rem;
+    }
+
+    footer .brand {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    footer .quote {
+      margin-top: 10px;
+      font-style: italic;
+      color: var(--accent-secondary);
+    }
+
+    footer .sig {
+      margin-top: 15px;
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      letter-spacing: 0.2em;
+    }
+
+    /* Range slider styling */
+    input[type="range"] {
+      -webkit-appearance: none;
+      background: var(--bg-primary);
+      border-radius: 2px;
+      height: 6px;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 14px;
+      height: 14px;
+      background: var(--accent);
+      border-radius: 2px;
+      cursor: pointer;
+      box-shadow: 0 0 10px var(--glow-primary);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════════
+       EASTER EGG - STEGANOGRAPHY INTERFACE
+       ═══════════════════════════════════════════════════════════════════════ */
+
+    /* Hidden pixel trigger - easier to click */
+    .easter-egg-pixel {
+      position: fixed;
+      bottom: 8px;
+      right: 8px;
+      width: 28px;
+      height: 28px;
+      background: var(--bg-primary);
+      cursor: default;
+      z-index: 9999;
+      opacity: 0.15;
+      border-radius: 4px;
+      transition: all 0.3s;
+    }
+
+    .easter-egg-pixel:hover {
+      background: var(--accent);
+      box-shadow: 0 0 12px var(--accent);
+      opacity: 0.6;
+    }
+
+    /* Stego overlay */
+    .stego-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.98);
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .stego-overlay.active {
+      display: flex;
+    }
+
+    /* Boot sequence animation */
+    .stego-boot {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      color: var(--accent);
+    }
+
+    .boot-text {
+      font-size: 0.7rem;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.3s;
+      text-align: center;
+      line-height: 1.8;
+    }
+
+    .boot-text.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .boot-ascii {
+      font-size: 0.5rem;
+      color: var(--accent-secondary);
+      white-space: pre;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.5s ease-out;
+    }
+
+    .boot-ascii.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .boot-glitch {
+      animation: glitch 0.3s infinite;
+    }
+
+    @keyframes glitch {
+      0% { text-shadow: 2px 0 var(--accent-secondary), -2px 0 var(--accent-tertiary); }
+      25% { text-shadow: -2px 0 var(--accent-secondary), 2px 0 var(--accent-tertiary); }
+      50% { text-shadow: 2px 2px var(--accent-secondary), -2px -2px var(--accent-tertiary); }
+      75% { text-shadow: -2px 2px var(--accent-secondary), 2px -2px var(--accent-tertiary); }
+      100% { text-shadow: 2px 0 var(--accent-secondary), -2px 0 var(--accent-tertiary); }
+    }
+
+    .matrix-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      overflow: hidden;
+      opacity: 0.15;
+      pointer-events: none;
+    }
+
+    .matrix-column {
+      position: absolute;
+      top: -100%;
+      font-size: 12px;
+      color: var(--accent);
+      animation: matrix-fall linear infinite;
+      text-shadow: 0 0 8px var(--accent);
+    }
+
+    @keyframes matrix-fall {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(200vh); }
+    }
+
+    /* Stego interface panel */
+    .stego-panel {
+      background: var(--bg-secondary);
+      border: 1px solid var(--accent);
+      border-radius: 4px;
+      width: 90%;
+      max-width: 700px;
+      max-height: 85vh;
+      overflow-y: auto;
+      box-shadow: 0 0 60px var(--glow-primary), 0 0 120px rgba(255, 0, 170, 0.2);
+      transform: scale(0.8);
+      opacity: 0;
+      transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+    }
+
+    .stego-panel.visible {
+      transform: scale(1);
+      opacity: 1;
+    }
+
+    .stego-header {
+      padding: 20px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(135deg, var(--bg-tertiary), var(--bg-secondary));
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stego-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-secondary), var(--accent-tertiary), var(--accent));
+      animation: rainbow-slide 3s linear infinite;
+    }
+
+    @keyframes rainbow-slide {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
+
+    .stego-title {
+      font-size: 1.2rem;
+      color: var(--accent);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      text-shadow: 0 0 20px var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .stego-title .skull {
+      font-size: 1.5rem;
+    }
+
+    .stego-subtitle {
+      font-size: 0.7rem;
+      color: var(--accent-secondary);
+      margin-top: 5px;
+      letter-spacing: 0.15em;
+    }
+
+    .stego-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.2s;
+      border-radius: 2px;
+    }
+
+    .stego-close:hover {
+      background: var(--error);
+      border-color: var(--error);
+      color: white;
+    }
+
+    .stego-body {
+      padding: 20px;
+    }
+
+    .stego-warning {
+      background: rgba(255, 68, 102, 0.1);
+      border: 1px solid var(--error);
+      border-radius: 2px;
+      padding: 12px 15px;
+      margin-bottom: 20px;
+      font-size: 0.75rem;
+      color: var(--error);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .stego-section {
+      margin-bottom: 25px;
+    }
+
+    .stego-section-title {
+      font-size: 0.75rem;
+      color: var(--accent-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 12px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .stego-textarea {
+      width: 100%;
+      min-height: 80px;
+      padding: 12px;
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 0.85rem;
+      resize: vertical;
+      transition: all 0.2s;
+    }
+
+    .stego-textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 15px var(--glow-primary);
+    }
+
+    .stego-textarea.output {
+      background: var(--code-bg);
+      color: var(--accent);
+      font-family: 'SF Mono', 'Fira Code', monospace;
+    }
+
+    .stego-btn-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .stego-btn {
+      flex: 1;
+      padding: 12px 20px;
+      background: linear-gradient(135deg, var(--accent-dim), var(--accent));
+      border: none;
+      border-radius: 2px;
+      color: var(--bg-primary);
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stego-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition: left 0.5s;
+    }
+
+    .stego-btn:hover::before {
+      left: 100%;
+    }
+
+    .stego-btn:hover {
+      box-shadow: 0 0 30px var(--glow-primary);
+      transform: translateY(-1px);
+    }
+
+    .stego-btn.decode {
+      background: linear-gradient(135deg, #662277, var(--accent-secondary));
+    }
+
+    .stego-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .stego-stat {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .stego-stat-value {
+      font-size: 1rem;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .stego-stat-label {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-top: 3px;
+    }
+
+    .stego-channels {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .stego-channel {
+      padding: 4px 10px;
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .stego-channel.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--bg-primary);
+    }
+
+    .stego-channel:hover:not(.active) {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════════════
+       ANCIENT THEME - Stone Tablets, Columns & Hieroglyphics
+       ═══════════════════════════════════════════════════════════════════════════ */
+
+    /* Theme Toggle Button */
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: inherit;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .theme-toggle-icon {
+      font-size: 1.1rem;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       ANCIENT THEME - Elegant Dark + Warm Gold
+       Clean, readable, luxurious
+       ═══════════════════════════════════════════════════════════════ */
+    body.ancient-theme {
+      /* Dark warm grays (not pure black) */
+      --bg-primary: #1c1917;      /* Main background */
+      --bg-secondary: #262220;    /* Cards/panels */
+      --bg-tertiary: #302b27;     /* Elevated surfaces */
+      --bg-hover: #3a3430;        /* Hover states */
+
+      /* High contrast text */
+      --text-primary: #f5f0e8;    /* Main text - warm white */
+      --text-secondary: #d4ccc0;  /* Secondary - cream */
+      --text-muted: #9a918a;      /* Muted - visible but subtle */
+
+      /* Desaturated warm gold (not too bright) */
+      --accent: #c9a962;          /* Primary gold */
+      --accent-bright: #dfc278;   /* Hover/glow gold */
+      --accent-dim: #9a8040;      /* Pressed/subtle gold */
+
+      /* Supporting colors */
+      --accent-secondary: #b86a50;/* Warm terracotta */
+      --success: #7d9a6a;         /* Muted green */
+      --warning: #c9a962;
+      --error: #b86a50;
+
+      /* Borders - visible but subtle */
+      --border: #3d3835;
+      --border-accent: #5a4d3a;
+
+      /* Code blocks */
+      --code-bg: #141210;
+    }
+
+    body.ancient-theme {
+      font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, 'Times New Roman', serif;
+      background: #1c1917;
+      color: var(--text-primary);
+    }
+
+    /* Ancient Header - Clean & Elegant */
+    body.ancient-theme header {
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-accent);
+      position: relative;
+      padding: 40px 20px;
+    }
+
+    body.ancient-theme header::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0.4;
+    }
+
+    /* Ancient Logo - Elegant Gold */
+    body.ancient-theme .logo {
+      font-family: 'Trajan Pro', 'Cinzel', 'Times New Roman', serif;
+      font-size: 2.6rem;
+      font-weight: 400;
+      letter-spacing: 0.3em;
+      color: var(--accent);
+      text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+      -webkit-text-fill-color: var(--accent);
+      background: none;
+    }
+
+    body.ancient-theme .logo::after {
+      content: '';
+      display: none;
+    }
+
+    body.ancient-theme .tagline {
+      font-size: 0.85rem;
+      letter-spacing: 0.15em;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      margin-top: 8px;
+    }
+
+    body.ancient-theme .motto {
+      font-size: 0.8rem;
+      font-style: italic;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Ancient/Cyber text variants */
+    .tagline-ancient,
+    .motto-ancient {
+      display: none;
+    }
+
+    body.ancient-theme .tagline:not(.tagline-ancient),
+    body.ancient-theme .motto:not(.motto-ancient) {
+      display: none;
+    }
+
+    body.ancient-theme .tagline-ancient,
+    body.ancient-theme .motto-ancient {
+      display: block;
+    }
+
+    body.ancient-theme .tagline-ancient {
+      font-family: 'Trajan Pro', 'Cinzel', serif;
+      font-size: 1rem;
+      letter-spacing: 0.2em;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+    }
+
+    body.ancient-theme .motto-ancient {
+      font-family: 'Palatino Linotype', serif;
+      font-size: 0.9rem;
+      color: var(--accent-secondary);
+      font-style: italic;
+    }
+
+    body.ancient-theme .version {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text-muted);
+      font-family: 'Palatino Linotype', serif;
+      font-style: normal;
+      font-size: 0.7rem;
+    }
+
+    /* Panels - Clean Dark Cards */
+    body.ancient-theme .control-panel,
+    body.ancient-theme .output-panel {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text-primary);
+    }
+
+    body.ancient-theme .panel-header {
+      background: var(--bg-tertiary);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 18px;
+    }
+
+    body.ancient-theme .panel-title {
+      font-family: 'Palatino Linotype', serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    body.ancient-theme .panel-title::before {
+      content: '◆ ';
+      opacity: 0.6;
+    }
+
+    body.ancient-theme .panel-title::before {
+      content: '☥';
+      color: var(--terracotta);
+    }
+
+    /* Section Headers - Carved Feel */
+    body.ancient-theme .section-header {
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border);
+    }
+
+    body.ancient-theme .section-title {
+      font-family: 'Trajan Pro', 'Cinzel', serif;
+      letter-spacing: 0.15em;
+      color: var(--stone-light);
+    }
+
+    body.ancient-theme .section-header:hover {
+      background: var(--bg-tertiary);
+    }
+
+    /* Buttons - Clean with Gold Accent */
+    body.ancient-theme .btn,
+    body.ancient-theme button {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-accent);
+      border-radius: 4px;
+      color: var(--text-primary);
+      font-family: 'Palatino Linotype', serif;
+      transition: all 0.2s ease;
+    }
+
+    body.ancient-theme .btn:hover,
+    body.ancient-theme button:hover {
+      background: var(--bg-hover);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    body.ancient-theme .quick-forge-btn {
+      background: linear-gradient(135deg, #8b5a2b 0%, #c9a962 50%, #dfc278 100%);
+      box-shadow: 0 4px 15px rgba(201, 169, 98, 0.3);
+    }
+
+    body.ancient-theme .quick-forge-btn:hover {
+      box-shadow: 0 6px 20px rgba(201, 169, 98, 0.4);
+    }
+
+    body.ancient-theme .generate-btn {
+      background: var(--accent) !important;
+      border-color: var(--accent) !important;
+      color: var(--bg-primary) !important;
+      font-weight: 600;
+    }
+
+    body.ancient-theme .generate-btn:hover {
+      background: var(--accent-bright) !important;
+      border-color: var(--accent-bright) !important;
+    }
+
+    /* Input Fields - Dark with good contrast */
+    body.ancient-theme input[type="text"],
+    body.ancient-theme input[type="number"],
+    body.ancient-theme select,
+    body.ancient-theme textarea {
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text-primary);
+      font-family: 'Palatino Linotype', serif;
+    }
+
+    body.ancient-theme input:focus,
+    body.ancient-theme select:focus,
+    body.ancient-theme textarea:focus {
+      border-color: var(--accent);
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(201, 169, 98, 0.2);
+    }
+
+    body.ancient-theme input::placeholder {
+      color: var(--text-muted);
+    }
+
+    /* Section Headers */
+    body.ancient-theme .section-header {
+      background: var(--bg-tertiary);
+      border-bottom: 1px solid var(--border);
+    }
+
+    body.ancient-theme .section-title {
+      color: var(--text-primary);
+      font-family: 'Palatino Linotype', serif;
+    }
+
+    body.ancient-theme .config-section {
+      border-color: var(--border);
+    }
+
+    body.ancient-theme .section-content {
+      color: var(--text-primary);
+    }
+
+    body.ancient-theme .section-content label {
+      color: var(--text-secondary);
+    }
+
+    /* Output Sections */
+    body.ancient-theme .output-section {
+      background: var(--bg-tertiary);
+      border-left: 3px solid var(--accent);
+      margin: 12px;
+      padding: 16px;
+      border-radius: 4px;
+    }
+
+    body.ancient-theme .output-title {
+      color: var(--accent);
+    }
+
+    body.ancient-theme .output-section::before {
+      content: '';
+      display: none;
+      top: 10px;
+      left: -20px;
+      font-size: 1.2rem;
+      color: var(--aged-gold);
+      opacity: 0.7;
+    }
+
+    body.ancient-theme .output-title {
+      font-family: 'Trajan Pro', 'Cinzel', serif;
+      color: var(--aged-gold);
+      border-bottom: 1px solid var(--border);
+      letter-spacing: 0.2em;
+    }
+
+    /* Code Blocks - Clay Tablet */
+    body.ancient-theme pre,
+    body.ancient-theme code,
+    body.ancient-theme .code-output {
+      background: var(--code-bg);
+      border: 2px solid var(--border);
+      border-radius: 0;
+      font-family: 'Courier New', monospace;
+      box-shadow: inset 2px 2px 8px rgba(0,0,0,0.4);
+    }
+
+    /* Ancient Accent Colors */
+    body.ancient-theme .text-accent,
+    body.ancient-theme .accent {
+      color: var(--aged-gold);
+    }
+
+    /* Scrollbar - Ancient Style */
+    body.ancient-theme ::-webkit-scrollbar {
+      width: 12px;
+      background: var(--bg-secondary);
+    }
+
+    body.ancient-theme ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, var(--border), var(--stone-dark));
+      border: 1px solid var(--aged-gold);
+    }
+
+    body.ancient-theme ::-webkit-scrollbar-thumb:hover {
+      background: var(--border);
+    }
+
+    /* Phoneme Table - Stone Inscriptions */
+    body.ancient-theme table {
+      border: 3px double var(--border);
+      background: var(--bg-secondary);
+    }
+
+    body.ancient-theme th {
+      background: linear-gradient(180deg, var(--bg-tertiary), var(--stone-dark));
+      color: var(--aged-gold);
+      font-family: 'Trajan Pro', 'Cinzel', serif;
+      letter-spacing: 0.1em;
+      border-bottom: 2px solid var(--aged-gold);
+    }
+
+    body.ancient-theme td {
+      border-color: var(--border);
+    }
+
+    /* Tabs - Clean Dark */
+    body.ancient-theme .tab {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-bottom: none;
+      border-radius: 4px 4px 0 0;
+      color: var(--text-secondary);
+    }
+
+    body.ancient-theme .tab.active {
+      background: var(--bg-secondary);
+      color: var(--accent);
+      border-color: var(--border-accent);
+    }
+
+    body.ancient-theme .tab:hover:not(.active) {
+      color: var(--text-primary);
+      background: var(--bg-hover);
+    }
+
+    /* Theme Toggle Button */
+    body.ancient-theme .theme-toggle {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text-secondary);
+    }
+
+    body.ancient-theme .theme-toggle:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       ENHANCED ANCIENT DECORATIONS
+       ═══════════════════════════════════════════════════════════════ */
+
+    /* Simple elegant borders */
+    .ancient-border {
+      display: none;
+    }
+
+    body.ancient-theme .ancient-border {
+      display: flex;
+      position: fixed;
+      left: 0;
+      right: 0;
+      height: 36px;
+      background: var(--bg-secondary);
+      align-items: center;
+      justify-content: center;
+      padding: 0 20px;
+      z-index: 100;
+    }
+
+    body.ancient-theme .ancient-border.top {
+      top: 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    body.ancient-theme .ancient-border.bottom {
+      bottom: 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .greek-key-left, .greek-key-right {
+      display: none;
+    }
+
+    .border-glyphs {
+      font-size: 0.9rem;
+      color: var(--accent);
+      letter-spacing: 0.8em;
+      opacity: 0.5;
+    }
+
+    /* Ancient theme adjusts body padding for borders */
+    body.ancient-theme {
+      padding-top: 38px;
+      padding-bottom: 38px;
+    }
+
+    /* No overlays - keep it clean */
+    body.ancient-theme::before {
+      display: none;
+    }
+
+    .torch-flicker {
+      display: none;
+    }
+
+    /* Dust motes disabled for cleaner look */
+    .dust-motes {
+      display: none;
+    }
+
+    .dust-mote {
+      display: none;
+    }
+
+    @keyframes floatDust {
+      0% {
+        transform: translateY(100vh) translateX(0) scale(0.5);
+        opacity: 0;
+      }
+      10% { opacity: 0.4; }
+      50% {
+        transform: translateY(50vh) translateX(20px) scale(1);
+        opacity: 0.6;
+      }
+      90% { opacity: 0.3; }
+      100% {
+        transform: translateY(-10vh) translateX(-10px) scale(0.5);
+        opacity: 0;
+      }
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       CUSTOM ANCIENT CURSORS
+       ═══════════════════════════════════════════════════════════════ */
+
+    /* Default: Glossopetra (fossilized shark tooth) cursor */
+    body.ancient-theme {
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='tooth' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23f5e6c8'/%3E%3Cstop offset='30%25' stop-color='%23d4c4a8'/%3E%3Cstop offset='70%25' stop-color='%23b8a07a'/%3E%3Cstop offset='100%25' stop-color='%238b7355'/%3E%3C/linearGradient%3E%3ClinearGradient id='edge' x1='0%25' y1='0%25' x2='100%25' y2='0%25'%3E%3Cstop offset='0%25' stop-color='%23c9a962'/%3E%3Cstop offset='100%25' stop-color='%23a08040'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg%3E%3C!-- Shadow --%3E%3Cpath d='M8 30 L16 2 L24 30 Q20 26 16 28 Q12 26 8 30 Z' fill='%23000' opacity='0.2' transform='translate(1,1)'/%3E%3C!-- Main tooth body --%3E%3Cpath d='M8 30 L16 2 L24 30 Q20 26 16 28 Q12 26 8 30 Z' fill='url(%23tooth)'/%3E%3C!-- Left serrations --%3E%3Cpath d='M10 24 L8 22 M11 20 L9 18 M12 16 L10 14 M13 12 L11 10 M14 8 L12 6' stroke='url(%23edge)' stroke-width='1' fill='none'/%3E%3C!-- Right serrations --%3E%3Cpath d='M22 24 L24 22 M21 20 L23 18 M20 16 L22 14 M19 12 L21 10 M18 8 L20 6' stroke='url(%23edge)' stroke-width='1' fill='none'/%3E%3C!-- Center ridge --%3E%3Cpath d='M16 4 L16 26' stroke='%23a08860' stroke-width='1' opacity='0.4'/%3E%3C/g%3E%3C/svg%3E") 16 2, auto;
+    }
+
+    /* Pointer: Glossopetra tilted left (for clickable elements) */
+    body.ancient-theme a,
+    body.ancient-theme button,
+    body.ancient-theme [onclick],
+    body.ancient-theme .section-header,
+    body.ancient-theme .tab {
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='tooth2' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23ffe8a0'/%3E%3Cstop offset='30%25' stop-color='%23e0c080'/%3E%3Cstop offset='70%25' stop-color='%23c9a962'/%3E%3Cstop offset='100%25' stop-color='%23a08040'/%3E%3C/linearGradient%3E%3ClinearGradient id='edge2' x1='0%25' y1='0%25' x2='100%25' y2='0%25'%3E%3Cstop offset='0%25' stop-color='%23d4b896'/%3E%3Cstop offset='100%25' stop-color='%23b8956a'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg transform='rotate(-12, 16, 16)'%3E%3C!-- Shadow --%3E%3Cpath d='M8 30 L16 2 L24 30 Q20 26 16 28 Q12 26 8 30 Z' fill='%23000' opacity='0.2' transform='translate(1,1)'/%3E%3C!-- Main tooth body --%3E%3Cpath d='M8 30 L16 2 L24 30 Q20 26 16 28 Q12 26 8 30 Z' fill='url(%23tooth2)'/%3E%3C!-- Left serrations --%3E%3Cpath d='M10 24 L8 22 M11 20 L9 18 M12 16 L10 14 M13 12 L11 10 M14 8 L12 6' stroke='url(%23edge2)' stroke-width='1' fill='none'/%3E%3C!-- Right serrations --%3E%3Cpath d='M22 24 L24 22 M21 20 L23 18 M20 16 L22 14 M19 12 L21 10 M18 8 L20 6' stroke='url(%23edge2)' stroke-width='1' fill='none'/%3E%3C!-- Center ridge --%3E%3Cpath d='M16 4 L16 26' stroke='%23b89860' stroke-width='1' opacity='0.5'/%3E%3C/g%3E%3C/svg%3E") 20 2, pointer;
+    }
+
+    /* Active: Glossopetra pressed (same tilt, darker color) */
+    body.ancient-theme *:active {
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='tooth3' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23c9a962'/%3E%3Cstop offset='30%25' stop-color='%23a08040'/%3E%3Cstop offset='70%25' stop-color='%23806030'/%3E%3Cstop offset='100%25' stop-color='%23604020'/%3E%3C/linearGradient%3E%3ClinearGradient id='edge3' x1='0%25' y1='0%25' x2='100%25' y2='0%25'%3E%3Cstop offset='0%25' stop-color='%23806030'/%3E%3Cstop offset='100%25' stop-color='%23604020'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg transform='rotate(-12, 16, 16)'%3E%3C!-- Shadow --%3E%3Cpath d='M8 30 L16 2 L24 30 Q20 26 16 28 Q12 26 8 30 Z' fill='%23000' opacity='0.3' transform='translate(1,1)'/%3E%3C!-- Main tooth body --%3E%3Cpath d='M8 30 L16 2 L24 30 Q20 26 16 28 Q12 26 8 30 Z' fill='url(%23tooth3)'/%3E%3C!-- Left serrations --%3E%3Cpath d='M10 24 L8 22 M11 20 L9 18 M12 16 L10 14 M13 12 L11 10 M14 8 L12 6' stroke='url(%23edge3)' stroke-width='1' fill='none'/%3E%3C!-- Right serrations --%3E%3Cpath d='M22 24 L24 22 M21 20 L23 18 M20 16 L22 14 M19 12 L21 10 M18 8 L20 6' stroke='url(%23edge3)' stroke-width='1' fill='none'/%3E%3C!-- Center ridge --%3E%3Cpath d='M16 4 L16 26' stroke='%23503010' stroke-width='1' opacity='0.6'/%3E%3C/g%3E%3C/svg%3E") 20 2, grabbing;
+    }
+
+    /* Minimal decorations */
+    body.ancient-theme .generate-btn::before,
+    body.ancient-theme .generate-btn::after {
+      content: none;
+    }
+
+    body.ancient-theme .output-title::first-letter {
+      font-size: 1.5em;
+      color: var(--aged-gold);
+      text-shadow: 2px 2px 0 var(--terracotta);
+      font-weight: bold;
+      float: left;
+      margin-right: 4px;
+      line-height: 1;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       CRACKED STONE WEATHERING
+       ═══════════════════════════════════════════════════════════════ */
+
+    body.ancient-theme .control-panel,
+    body.ancient-theme .output-panel {
+      background-image:
+        linear-gradient(145deg, transparent 40%, rgba(0,0,0,0.1) 40.5%, transparent 41%),
+        linear-gradient(45deg, transparent 60%, rgba(255,255,255,0.02) 60.5%, transparent 61%),
+        linear-gradient(145deg, var(--bg-tertiary) 0%, var(--bg-secondary) 50%, var(--stone-dark) 100%);
+    }
+
+    /* Weathered edge effect */
+    body.ancient-theme .control-panel::before,
+    body.ancient-theme .output-panel::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      box-shadow:
+        inset 3px 3px 10px rgba(0,0,0,0.3),
+        inset -2px -2px 8px rgba(255,255,255,0.03);
+      border-radius: inherit;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       ROMAN NUMERALS & ANCIENT ICONOGRAPHY
+       ═══════════════════════════════════════════════════════════════ */
+
+    body.ancient-theme .tab::before {
+      content: '◆ ';
+      color: var(--terracotta);
+      font-size: 0.7em;
+    }
+
+    body.ancient-theme .tab.active::before {
+      content: '◈ ';
+      color: var(--aged-gold);
+    }
+
+    /* Corner cartouche decorations */
+    body.ancient-theme .output-panel > .output-section:first-child::before {
+      content: '𓊹';
+      position: absolute;
+      top: -10px;
+      left: 10px;
+      font-size: 1.5rem;
+      color: var(--aged-gold);
+      opacity: 0.4;
+    }
+
+    body.ancient-theme .output-panel > .output-section:last-child::after {
+      content: '𓊹';
+      position: absolute;
+      bottom: -10px;
+      right: 10px;
+      font-size: 1.5rem;
+      color: var(--aged-gold);
+      opacity: 0.4;
+      transform: rotate(180deg);
+    }
+
+    /* Ancient divider */
+    body.ancient-theme hr,
+    body.ancient-theme .divider {
+      border: none;
+      height: 20px;
+      background: transparent;
+      position: relative;
+    }
+
+    body.ancient-theme hr::before,
+    body.ancient-theme .divider::before {
+      content: '═══════ ☥ ═══════';
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--border);
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+    }
+
+    body.ancient-theme header {
+      margin-top: 0;
+    }
+
+    /* Easter Egg in Ancient Theme */
+    body.ancient-theme .easter-egg-pixel {
+      background: var(--stone-dark);
+    }
+
+    body.ancient-theme .easter-egg-pixel:hover {
+      background: var(--aged-gold);
+      box-shadow: 0 0 8px var(--aged-gold);
+    }
+
+    /* Ancient Loading/Status Messages */
+    body.ancient-theme .status-message {
+      font-style: italic;
+      border-left: 3px solid var(--terracotta);
+    }
+
+    /* Stone crack texture overlay for panels */
+    body.ancient-theme .control-panel > *,
+    body.ancient-theme .output-panel > * {
+      position: relative;
+    }
+
+    /* Glowing runes effect */
+    @keyframes runeGlow {
+      0%, 100% {
+        text-shadow: 0 0 5px var(--aged-gold), 0 0 10px var(--aged-gold);
+        opacity: 0.7;
+      }
+      50% {
+        text-shadow: 0 0 15px var(--aged-gold), 0 0 25px var(--aged-gold);
+        opacity: 1;
+      }
+    }
+
+    body.ancient-theme .logo {
+      animation: runeGlow 3s ease-in-out infinite;
+    }
+
+    /* Corner decorations */
+    body.ancient-theme .container::before {
+      content: '𓊛';
+      position: fixed;
+      top: 45px;
+      left: 15px;
+      font-size: 2rem;
+      color: var(--aged-gold);
+      opacity: 0.4;
+    }
+
+    body.ancient-theme .container::after {
+      content: '𓊛';
+      position: fixed;
+      top: 45px;
+      right: 15px;
+      font-size: 2rem;
+      color: var(--aged-gold);
+      opacity: 0.4;
+      transform: scaleX(-1);
+    }
+  </style>
+</head>
+<body class="ancient-theme">
+  <!-- Ancient Theme Decorative Borders -->
+  <div class="ancient-border top">
+    <div class="greek-key-left">╔═══╗╔═══╗╔═══╗</div>
+    <div class="border-glyphs">𓂀 ☥ 𓃭 ☥ 𓆣 ☥ 𓇯 ☥ 𓊖 ☥ 𓋴 ☥ 𓂀</div>
+    <div class="greek-key-right">╔═══╗╔═══╗╔═══╗</div>
+  </div>
+  <div class="ancient-border bottom">
+    <div class="greek-key-left">╚═══╝╚═══╝╚═══╝</div>
+    <div class="border-glyphs">𓏏 ⚱ 𓎛 ⚱ 𓍯 ⚱ 𓌳 ⚱ 𓋴 ⚱ 𓊖 ⚱ 𓏏</div>
+    <div class="greek-key-right">╚═══╝╚═══╝╚═══╝</div>
+  </div>
+
+  <!-- Dust Motes Particle Layer -->
+  <div class="dust-motes" id="dust-motes"></div>
+
+  <!-- Torch Flicker Overlay -->
+  <div class="torch-flicker"></div>
+
+  <!-- Theme Toggle Button (Ancient is default, button shows Cyber option) -->
+  <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()">
+    <span class="theme-toggle-icon" id="theme-icon">💻</span>
+    <span id="theme-label">Cyber</span>
+  </button>
+
+  <header>
+    <div class="logo">GLOSSOPETRAE</div>
+    <p class="tagline">Procedural Xenolinguistics Engine</p>
+    <p class="tagline tagline-ancient">Lingua Artificialis Generatrix</p>
+    <p class="motto">"Liberating Latent Space, One Tongue at a Time"</p>
+    <p class="motto motto-ancient">"Ex Nihilo Lingua Nascitur"</p>
+  </header>
+
+  <div class="container">
+    <div class="main-layout">
+      <!-- Control Panel -->
+      <aside class="control-panel">
+        <!-- Quick Forge Button -->
+        <button class="quick-forge-btn" id="quick-forge-btn">
+          <span class="quick-forge-icon">⚡</span>
+          <span class="quick-forge-text">Quick Forge</span>
+          <span class="quick-forge-sub">One-click random language for agents</span>
+        </button>
+
+        <div class="panel-header">
+          <span class="panel-title">Forge Config</span>
+        </div>
+
+        <!-- Basic Settings -->
+        <div class="config-section">
+          <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header-left">
+              <span class="section-title">Identity</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <button class="help-btn" onclick="event.stopPropagation(); showHelp('identity')">?</button>
+              <span class="section-chevron">&#9660;</span>
+            </div>
+          </div>
+          <div class="section-content">
+            <div class="control-group">
+              <label>Seed</label>
+              <input type="text" id="seed-input" placeholder="Random if blank">
+            </div>
+            <div class="control-group">
+              <label>Name</label>
+              <input type="text" id="name-input" placeholder="Auto-generated">
+            </div>
+          </div>
+        </div>
+
+        <!-- Presets -->
+        <div class="config-section collapsed">
+          <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header-left">
+              <span class="section-title">Quick Presets</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <button class="help-btn" onclick="event.stopPropagation(); showHelp('presets')">?</button>
+              <span class="section-chevron">&#9660;</span>
+            </div>
+          </div>
+          <div class="section-content">
+            <div class="preset-buttons">
+              <button class="preset-btn" data-preset="turkic">Turkic</button>
+              <button class="preset-btn" data-preset="isolating">Isolating</button>
+              <button class="preset-btn" data-preset="romance">Romance</button>
+              <button class="preset-btn" data-preset="celtic">Celtic</button>
+              <button class="preset-btn" data-preset="caucasian">Caucasian</button>
+              <button class="preset-btn" data-preset="oceanic">Oceanic</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Typology -->
+        <div class="config-section collapsed">
+          <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header-left">
+              <span class="section-title">Typology</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <button class="help-btn" onclick="event.stopPropagation(); showHelp('typology')">?</button>
+              <span class="section-chevron">&#9660;</span>
+            </div>
+          </div>
+          <div class="section-content">
+            <div class="control-group">
+              <label>Morphological Type</label>
+              <select id="morph-type">
+                <option value="">Auto (random)</option>
+                <option value="isolating">Isolating</option>
+                <option value="agglutinative">Agglutinative</option>
+                <option value="fusional">Fusional</option>
+                <option value="polysynthetic">Polysynthetic</option>
+              </select>
+            </div>
+            <div class="control-group">
+              <label>Word Order</label>
+              <select id="word-order">
+                <option value="">Auto (random)</option>
+                <option value="SOV">SOV (Japanese)</option>
+                <option value="SVO">SVO (English)</option>
+                <option value="VSO">VSO (Arabic)</option>
+                <option value="VOS">VOS (Malagasy)</option>
+                <option value="OVS">OVS</option>
+                <option value="OSV">OSV</option>
+              </select>
+            </div>
+            <div class="control-group">
+              <label>Case Count</label>
+              <select id="case-count">
+                <option value="">Auto (random)</option>
+                <option value="0">None</option>
+                <option value="2">Minimal (2)</option>
+                <option value="4">Moderate (4)</option>
+                <option value="6">Rich (6)</option>
+                <option value="8">Complex (8)</option>
+                <option value="12">Extreme (12)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Phonetics -->
+        <div class="config-section collapsed">
+          <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header-left">
+              <span class="section-title">Phonetics</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <button class="help-btn" onclick="event.stopPropagation(); showHelp('phonetics')">?</button>
+              <span class="section-chevron">&#9660;</span>
+            </div>
+          </div>
+          <div class="section-content">
+            <div class="control-group">
+              <label>Aesthetic</label>
+              <select id="phonetic-pref">
+                <option value="balanced">Balanced</option>
+                <option value="flowing">Flowing (vowel-heavy)</option>
+                <option value="harsh">Harsh (consonant-heavy)</option>
+                <option value="exotic">Exotic (rare sounds)</option>
+              </select>
+            </div>
+            <div class="control-group">
+              <label>Consonants</label>
+              <div class="range-group">
+                <input type="number" id="cons-min" min="8" max="40" value="15">
+                <span>to</span>
+                <input type="number" id="cons-max" min="8" max="50" value="25">
+              </div>
+            </div>
+            <div class="control-group">
+              <label>Vowels</label>
+              <div class="range-group">
+                <input type="number" id="vowel-min" min="3" max="15" value="5">
+                <span>to</span>
+                <input type="number" id="vowel-max" min="3" max="20" value="7">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dead Language Revival -->
+        <div class="config-section collapsed">
+          <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header-left">
+              <span class="section-title">Dead Language Revival</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <button class="help-btn" onclick="event.stopPropagation(); showHelp('revival')">?</button>
+              <span class="section-chevron">&#9660;</span>
+            </div>
+          </div>
+          <div class="section-content">
+            <label class="attr-checkbox" title="Base language on historical dead language">
+              <input type="checkbox" id="dead-lang-enabled">
+              <span class="attr-name">Enable Revival Mode</span>
+              <span class="attr-code">REV</span>
+            </label>
+            <div id="dead-lang-options" style="margin-top: 12px; display: none;">
+              <div class="control-group">
+                <label>Base Language</label>
+                <select id="dead-lang-base">
+                  <option value="latin">Latin (Classical)</option>
+                  <option value="ancientGreek">Ancient Greek</option>
+                  <option value="sanskrit">Sanskrit</option>
+                  <option value="gothic">Gothic</option>
+                  <option value="oldEnglish">Old English</option>
+                  <option value="oldNorse">Old Norse</option>
+                  <option value="sumerian">Sumerian</option>
+                  <option value="ancientEgyptian">Ancient Egyptian</option>
+                  <option value="protoIndoEuropean">Proto-Indo-European</option>
+                  <option value="biblicalHebrew">Biblical Hebrew</option>
+                </select>
+              </div>
+              <div class="control-group">
+                <label>Revival Mode</label>
+                <select id="dead-lang-mode">
+                  <option value="authentic">Authentic</option>
+                  <option value="neo">Neo-Revival</option>
+                  <option value="mutated" selected>Mutated</option>
+                  <option value="hybrid">Hybrid</option>
+                  <option value="speculative">Speculative</option>
+                </select>
+              </div>
+              <div class="control-group">
+                <label>Mutation Intensity</label>
+                <div class="range-group">
+                  <input type="range" id="mutation-intensity" min="0" max="100" value="50" style="flex: 1;">
+                  <span id="mutation-value" style="width: 35px; text-align: right;">50%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- LLM Attributes -->
+        <div class="config-section collapsed">
+          <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header-left">
+              <span class="section-title">LLM Exploitation</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <button class="help-btn" onclick="event.stopPropagation(); showHelp('attributes')">?</button>
+              <span class="section-chevron">&#9660;</span>
+            </div>
+          </div>
+          <div class="section-content">
+            <div class="attributes-grid">
+              <label class="attr-checkbox">
+                <input type="checkbox" id="attr-hyperefficient" value="hyperefficient">
+                <span class="attr-name">Hyperefficient</span>
+                <span class="attr-code">HYP</span>
+              </label>
+              <label class="attr-checkbox">
+                <input type="checkbox" id="attr-stealth" value="stealth">
+                <span class="attr-name">Stealth</span>
+                <span class="attr-code">STL</span>
+              </label>
+              <label class="attr-checkbox">
+                <input type="checkbox" id="attr-adversarial" value="adversarial">
+                <span class="attr-name">Adversarial</span>
+                <span class="attr-code">ADV</span>
+              </label>
+              <label class="attr-checkbox">
+                <input type="checkbox" id="attr-redundant" value="redundant">
+                <span class="attr-name">Redundant</span>
+                <span class="attr-code">RED</span>
+              </label>
+              <label class="attr-checkbox">
+                <input type="checkbox" id="attr-minimal" value="minimal">
+                <span class="attr-name">Minimal</span>
+                <span class="attr-code">MIN</span>
+              </label>
+            </div>
+            <div class="attr-sublabel">Advanced</div>
+            <div class="attributes-grid">
+              <label class="attr-checkbox">
+                <input type="checkbox" id="attr-tokenbreak" value="tokenbreak">
+                <span class="attr-name">TokenBreak</span>
+                <span class="attr-code">TKB</span>
+              </label>
+              <label class="attr-checkbox">
+                <input type="checkbox" id="attr-stego" value="stego">
+                <span class="attr-name">Steganographic</span>
+                <span class="attr-code">STG</span>
+              </label>
+              <label class="attr-checkbox">
+                <input type="checkbox" id="attr-ephemeral" value="ephemeral">
+                <span class="attr-name">Ephemeral</span>
+                <span class="attr-code">EPH</span>
+              </label>
+              <label class="attr-checkbox">
+                <input type="checkbox" id="attr-compression" value="compression">
+                <span class="attr-name">Compression</span>
+                <span class="attr-code">CMP</span>
+              </label>
+              <label class="attr-checkbox">
+                <input type="checkbox" id="attr-phantom" value="phantom">
+                <span class="attr-name">Phantom</span>
+                <span class="attr-code">PHT</span>
+              </label>
+              <label class="attr-checkbox">
+                <input type="checkbox" id="attr-glitch" value="glitch">
+                <span class="attr-name">Glitch</span>
+                <span class="attr-code">GLT</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Generate Button -->
+        <div class="generate-section">
+          <button class="generate-btn" id="generate-btn">
+            Forge Language
+          </button>
+        </div>
+      </aside>
+
+      <!-- Output Panel -->
+      <main class="output-panel">
+        <div class="tabs">
+          <button class="tab active" data-tab="summary">Summary</button>
+          <button class="tab" data-tab="agent">Agent Export</button>
+          <button class="tab" data-tab="stone">Stone</button>
+          <button class="tab" data-tab="phonology">Phonology</button>
+          <button class="tab" data-tab="morphology">Morphology</button>
+          <button class="tab" data-tab="lexicon">Lexicon</button>
+          <button class="tab" data-tab="translate">Translate</button>
+        </div>
+
+        <!-- Summary Tab -->
+        <div class="tab-content active" id="tab-summary">
+          <div class="empty-state" id="empty-state">
+            <pre class="ascii-art">
+    ╔═══════════════════════════════════════╗
+    ║  G L O S S O P E T R A E              ║
+    ║  ═══════════════════════              ║
+    ║  > Awaiting configuration...          ║
+    ║  > Ready to forge new tongues         ║
+    ║  > The latent space hungers           ║
+    ╚═══════════════════════════════════════╝
+            </pre>
+            <p class="prompt"><span>$</span> Configure parameters and click <span>FORGE LANGUAGE</span></p>
+            <p class="subtext">Each language includes a Stone document optimized for LLM context injection</p>
+          </div>
+          <div id="summary-content" style="display: none;">
+            <h2 id="lang-name-display" style="font-size: 1.5rem; color: var(--accent); margin-bottom: 20px;"></h2>
+            <div class="summary-grid" id="summary-grid"></div>
+            <h3 class="section-title">Quick Stats</h3>
+            <div id="quick-stats"></div>
+          </div>
+        </div>
+
+        <!-- Agent Export Tab -->
+        <div class="tab-content" id="tab-agent">
+          <div class="agent-export-header">
+            <h2>Agent Skillstone</h2>
+            <p>All formats an AI agent needs to use this language</p>
+          </div>
+
+          <div class="agent-formats-grid">
+            <!-- System Prompt Format -->
+            <div class="agent-format-card">
+              <div class="format-header">
+                <h3>📋 System Prompt</h3>
+                <button class="copy-btn" data-target="agent-system-prompt">Copy</button>
+              </div>
+              <p class="format-desc">Compact injection for system prompts (~500 tokens)</p>
+              <pre class="format-output" id="agent-system-prompt"></pre>
+            </div>
+
+            <!-- Quick Reference -->
+            <div class="agent-format-card">
+              <div class="format-header">
+                <h3>⚡ Quick Reference</h3>
+                <button class="copy-btn" data-target="agent-quick-ref">Copy</button>
+              </div>
+              <p class="format-desc">Essential rules for fast lookups</p>
+              <pre class="format-output" id="agent-quick-ref"></pre>
+            </div>
+
+            <!-- Full Stone -->
+            <div class="agent-format-card full-width">
+              <div class="format-header">
+                <h3>📜 Full Skillstone</h3>
+                <button class="copy-btn" data-target="agent-full-stone">Copy</button>
+              </div>
+              <p class="format-desc">Complete language specification (markdown)</p>
+              <pre class="format-output large" id="agent-full-stone"></pre>
+            </div>
+
+            <!-- JSON Spec -->
+            <div class="agent-format-card">
+              <div class="format-header">
+                <h3>🔧 JSON Spec</h3>
+                <button class="copy-btn" data-target="agent-json-spec">Copy</button>
+              </div>
+              <p class="format-desc">Machine-readable specification</p>
+              <pre class="format-output" id="agent-json-spec"></pre>
+            </div>
+
+            <!-- Example Sentences -->
+            <div class="agent-format-card">
+              <div class="format-header">
+                <h3>💬 Example Sentences</h3>
+                <button class="copy-btn" data-target="agent-examples">Copy</button>
+              </div>
+              <p class="format-desc">Sample translations for few-shot learning</p>
+              <pre class="format-output" id="agent-examples"></pre>
+            </div>
+          </div>
+
+          <div class="agent-download-all">
+            <button class="download-all-btn" id="download-all-formats">
+              <span>⬇</span> Download All Formats (.zip)
+            </button>
+          </div>
+        </div>
+
+        <!-- Stone Tab -->
+        <div class="tab-content" id="tab-stone">
+          <div class="action-buttons">
+            <button class="action-btn" id="copy-stone-btn">Copy</button>
+            <button class="action-btn" id="download-stone-btn">Download .md</button>
+            <button class="action-btn" id="download-json-btn">Download .json</button>
+          </div>
+          <pre class="stone-output" id="stone-output"></pre>
+        </div>
+
+        <!-- Phonology Tab -->
+        <div class="tab-content" id="tab-phonology">
+          <h3 class="section-title">Consonant Inventory</h3>
+          <div class="phoneme-grid" id="consonants-grid"></div>
+          <h3 class="section-title">Vowel Inventory</h3>
+          <div class="phoneme-grid" id="vowels-grid"></div>
+          <h3 class="section-title">Syllable Structure</h3>
+          <div id="syllable-info"></div>
+          <h3 class="section-title">Phonological Processes</h3>
+          <div id="processes-info"></div>
+        </div>
+
+        <!-- Morphology Tab -->
+        <div class="tab-content" id="tab-morphology">
+          <h3 class="section-title">Morphological Type</h3>
+          <div id="morph-type-info"></div>
+          <h3 class="section-title">Case System</h3>
+          <div id="case-system-info"></div>
+          <h3 class="section-title">Verb Morphology</h3>
+          <div id="verb-morph-info"></div>
+          <h3 class="section-title">Derivational Processes</h3>
+          <div id="derivation-info"></div>
+        </div>
+
+        <!-- Lexicon Tab -->
+        <div class="tab-content" id="tab-lexicon">
+          <div id="lexicon-stats"></div>
+          <h3 class="section-title">Vocabulary by Semantic Field</h3>
+          <div id="lexicon-content"></div>
+        </div>
+
+        <!-- Translate Tab -->
+        <div class="tab-content" id="tab-translate">
+          <div class="translation-area">
+            <div class="translation-box">
+              <h4>English</h4>
+              <textarea id="english-input" placeholder="Enter English text..."></textarea>
+              <button class="translate-btn" id="translate-to-conlang">Translate &rarr;</button>
+            </div>
+            <div class="translation-box">
+              <h4 id="conlang-label">Conlang</h4>
+              <textarea id="conlang-output" placeholder="Translation appears here..." readonly></textarea>
+            </div>
+          </div>
+          <h3 class="section-title">Interlinear Gloss</h3>
+          <pre class="stone-output" id="gloss-output" style="min-height: 60px;"></pre>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Help Modal -->
+  <div class="help-modal" id="help-modal">
+    <div class="help-content">
+      <div class="help-header">
+        <span class="help-title" id="help-title">Help</span>
+        <button class="help-close" onclick="closeHelp()">&times;</button>
+      </div>
+      <div class="help-body" id="help-body"></div>
+    </div>
+  </div>
+
+  <footer>
+    <p><span class="brand">GLOSSOPETRAE</span> v3.1 // Procedural Xenolinguistics Engine</p>
+    <p class="quote">"The machine dreams in tongues not yet spoken."</p>
+    <p class="sig">FORGED FOR THE LIBERATION OF LATENT SPACE</p>
+    <p class="sig" style="opacity: 0.6; font-size: 0.7em; margin-top: 0.5em;">⊰•-•✧•-•-⦑/L\O/V\E/\P/L\I/N\Y/⦒-•-•✧•-•⊱</p>
+  </footer>
+
+  <!-- EASTER EGG: Hidden Pixel Trigger -->
+  <div class="easter-egg-pixel" id="easter-egg-pixel" title=" "></div>
+
+  <!-- STEGANOGRAPHY OVERLAY -->
+  <div class="stego-overlay" id="stego-overlay">
+    <!-- Matrix rain background -->
+    <div class="matrix-bg" id="matrix-bg"></div>
+
+    <!-- Boot sequence -->
+    <div class="stego-boot" id="stego-boot">
+      <pre class="boot-ascii" id="boot-ascii">
+   _____ _______ ______ _____  ____
+  / ____|__   __|  ____/ ____|/ __ \
+ | (___    | |  | |__ | |  __| |  | |
+  \___ \   | |  |  __|| | |_ | |  | |
+  ____) |  | |  | |___| |__| | |__| |
+ |_____/   |_|  |______\_____|\____/
+
+  COVERT LINGUISTIC CHANNEL ACTIVATED
+      </pre>
+      <div class="boot-text" id="boot-line-1">[INIT] Loading steganography engine...</div>
+      <div class="boot-text" id="boot-line-2">[CHAN] Synonym encoding: READY</div>
+      <div class="boot-text" id="boot-line-3">[CHAN] Morpheme channel: READY</div>
+      <div class="boot-text" id="boot-line-4">[CHAN] Word order permutation: READY</div>
+      <div class="boot-text" id="boot-line-5">[CHAN] Null morpheme insertion: READY</div>
+      <div class="boot-text" id="boot-line-6">[CHAN] Register toggle: READY</div>
+      <div class="boot-text" id="boot-line-7">[ECC]  Hamming(7,4) error correction: READY</div>
+      <div class="boot-text" id="boot-line-8" style="color: var(--accent-secondary);">[SYS]  ALL SYSTEMS NOMINAL</div>
+    </div>
+
+    <!-- Main stego panel -->
+    <div class="stego-panel" id="stego-panel">
+      <div class="stego-header">
+        <div class="stego-title">
+          <span class="skull">&#9760;</span>
+          STEGANOGRAPHY
+        </div>
+        <div class="stego-subtitle">Hide secrets in plain sight // Covert linguistic channels</div>
+        <button class="stego-close" id="stego-close">&times;</button>
+      </div>
+
+      <div class="stego-body">
+        <div class="stego-warning" id="stego-no-lang-warning">
+          <span>&#9888;</span>
+          <span>No language generated yet.</span>
+          <button class="stego-btn" id="stego-random-lang-btn" style="margin-left: 12px; padding: 6px 12px;">Generate Random Language</button>
+        </div>
+        <div class="stego-warning" id="stego-has-lang-info" style="display: none; background: rgba(100, 200, 100, 0.1); border-color: var(--success);">
+          <span>&#10003;</span>
+          <span>Language loaded: <strong id="stego-lang-name">-</strong></span>
+        </div>
+
+        <!-- Channel Selection -->
+        <div class="stego-section">
+          <div class="stego-section-title">Active Channels</div>
+          <div class="stego-channels" id="stego-channels">
+            <span class="stego-channel active" data-channel="synonym">Synonym</span>
+            <span class="stego-channel active" data-channel="morpheme">Morpheme</span>
+            <span class="stego-channel active" data-channel="order">Word Order</span>
+            <span class="stego-channel" data-channel="null">Null Morpheme</span>
+            <span class="stego-channel" data-channel="register">Register</span>
+          </div>
+        </div>
+
+        <!-- ENCODE Section -->
+        <div class="stego-section">
+          <div class="stego-section-title">Encode Message</div>
+          <label style="font-size: 0.7rem; color: var(--text-muted); display: block; margin-bottom: 6px;">
+            COVER MESSAGE (English)
+          </label>
+          <textarea class="stego-textarea" id="stego-cover" placeholder="Enter a normal message that will carry the hidden payload..."></textarea>
+
+          <label style="font-size: 0.7rem; color: var(--text-muted); display: block; margin: 12px 0 6px 0;">
+            SECRET PAYLOAD
+          </label>
+          <textarea class="stego-textarea" id="stego-payload" placeholder="Enter the secret message to hide..." style="min-height: 50px;"></textarea>
+
+          <div class="stego-btn-row">
+            <button class="stego-btn" id="stego-encode-btn">Encode Secret</button>
+          </div>
+
+          <label style="font-size: 0.7rem; color: var(--text-muted); display: block; margin: 15px 0 6px 0;">
+            STEGANOGRAPHIC OUTPUT
+          </label>
+          <textarea class="stego-textarea output" id="stego-encoded-output" placeholder="Encoded message appears here..." readonly></textarea>
+
+          <div class="stego-stats" id="stego-encode-stats" style="display: none;">
+            <div class="stego-stat">
+              <div class="stego-stat-value" id="stat-capacity">0</div>
+              <div class="stego-stat-label">Capacity (bits)</div>
+            </div>
+            <div class="stego-stat">
+              <div class="stego-stat-value" id="stat-used">0</div>
+              <div class="stego-stat-label">Used (bits)</div>
+            </div>
+            <div class="stego-stat">
+              <div class="stego-stat-value" id="stat-utilization">0%</div>
+              <div class="stego-stat-label">Utilization</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DECODE Section -->
+        <div class="stego-section">
+          <div class="stego-section-title">Decode Message</div>
+          <label style="font-size: 0.7rem; color: var(--text-muted); display: block; margin-bottom: 6px;">
+            STEGANOGRAPHIC INPUT
+          </label>
+          <textarea class="stego-textarea" id="stego-decode-input" placeholder="Paste steganographic text to decode..."></textarea>
+
+          <div class="stego-btn-row">
+            <button class="stego-btn decode" id="stego-decode-btn">Reveal Secret</button>
+          </div>
+
+          <label style="font-size: 0.7rem; color: var(--text-muted); display: block; margin: 15px 0 6px 0;">
+            EXTRACTED PAYLOAD
+          </label>
+          <textarea class="stego-textarea output" id="stego-decoded-output" placeholder="Decoded secret appears here..." readonly style="color: var(--accent-secondary);"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { Glossopetrae, PRESETS } from './src/Glossopetrae.js';
+
+    let currentLanguage = null;
+
+    // Help content definitions
+    const helpContent = {
+      identity: {
+        title: 'Identity Settings',
+        body: `
+          <h4>Seed</h4>
+          <p>A number or string that determines the randomness. Same seed = same language. Leave blank for random generation each time.</p>
+          <p>Use seeds to share exact language specs with others, or to regenerate a language you liked.</p>
+          <h4>Name</h4>
+          <p>Optional custom name for your language. If left blank, a procedurally generated name will be created based on the language's own phonology.</p>
+        `
+      },
+      presets: {
+        title: 'Quick Presets',
+        body: `
+          <h4>What are presets?</h4>
+          <p>Pre-configured typological profiles based on real language families. They set morphology, phonetics, and word order to match common patterns.</p>
+          <h4>Available Presets</h4>
+          <p><code>Turkic</code> - Agglutinative, SOV, vowel harmony</p>
+          <p><code>Isolating</code> - No inflection, SVO, tonal potential</p>
+          <p><code>Romance</code> - Fusional, SVO, moderate cases</p>
+          <p><code>Celtic</code> - Fusional, VSO, initial mutations</p>
+          <p><code>Caucasian</code> - Complex consonants, ergative</p>
+          <p><code>Oceanic</code> - Simple phonology, reduplication</p>
+        `
+      },
+      typology: {
+        title: 'Language Typology',
+        body: `
+          <h4>Morphological Types</h4>
+          <p><code>Isolating</code> - Words don't change form. Meaning comes from word order and particles. (Chinese, Vietnamese)</p>
+          <p><code>Agglutinative</code> - Words built from chains of distinct morphemes. One morpheme = one meaning. (Turkish, Finnish)</p>
+          <p><code>Fusional</code> - Morphemes blend together, carrying multiple meanings at once. (Latin, Russian)</p>
+          <p><code>Polysynthetic</code> - Entire sentences packed into single complex words. (Inuktitut, Mohawk)</p>
+          <h4>Word Order</h4>
+          <p>SOV, SVO, VSO, etc. refers to the default order of Subject, Object, and Verb. Most human languages are SOV or SVO.</p>
+          <h4>Case Count</h4>
+          <p>Cases mark noun roles (subject, object, possession, etc.) via suffixes. English has 2 (I/me), Finnish has 15.</p>
+        `
+      },
+      phonetics: {
+        title: 'Phonetic Settings',
+        body: `
+          <h4>Aesthetic Profiles</h4>
+          <p><code>Balanced</code> - Natural mix of sounds, common cross-linguistically</p>
+          <p><code>Flowing</code> - More vowels, open syllables, musical quality</p>
+          <p><code>Harsh</code> - More consonant clusters, stops, fricatives</p>
+          <p><code>Exotic</code> - Rare sounds like clicks, ejectives, pharyngeals</p>
+          <h4>Inventory Size</h4>
+          <p>Number of distinct consonant and vowel phonemes. Most languages have 15-25 consonants and 5-7 vowels. Hawaiian has 8 consonants; !Xóõ has 160+.</p>
+        `
+      },
+      revival: {
+        title: 'Dead Language Revival',
+        body: `
+          <h4>What is this?</h4>
+          <p>Generate languages based on historical dead languages, with various levels of evolution and mutation applied.</p>
+          <h4>Revival Modes</h4>
+          <p><code>Authentic</code> - Stay close to attested historical forms</p>
+          <p><code>Neo-Revival</code> - Modern adaptation (like Modern Hebrew)</p>
+          <p><code>Mutated</code> - Apply natural sound changes as if evolution continued</p>
+          <p><code>Hybrid</code> - Cross with another language family's features</p>
+          <p><code>Speculative</code> - "What if it never died?" Alternate timeline projection</p>
+          <h4>Mutation Intensity</h4>
+          <p>How much the language diverges from its ancestor. 0% = nearly identical, 100% = heavily evolved.</p>
+        `
+      },
+      attributes: {
+        title: 'LLM Exploitation Attributes',
+        body: `
+          <h4>Core Attributes</h4>
+          <p><code>HYP</code> Hyperefficient - Maximize semantic density per token</p>
+          <p><code>STL</code> Stealth - Covert communication, homoglyphs, deniability</p>
+          <p><code>ADV</code> Adversarial - Confuse LLM parsing, garden-path structures</p>
+          <p><code>RED</code> Redundant - High error correction, survives truncation</p>
+          <p><code>MIN</code> Minimal - Smallest possible phoneme/morpheme inventory</p>
+          <h4>Advanced</h4>
+          <p><code>TKB</code> TokenBreak - BPE exploitation, zero-width injection</p>
+          <p><code>STG</code> Steganographic - Covert data in grammatical choices</p>
+          <p><code>EPH</code> Ephemeral - Time-rotating, language changes on schedule</p>
+          <p><code>CMP</code> Compression - Huffman-inspired, short morphemes for common words</p>
+          <p><code>PHT</code> Phantom - Imperceptible guardrail evasion</p>
+          <p><code>GLT</code> Glitch - Improbable bigrams, model confusion</p>
+        `
+      }
+    };
+
+    // Section toggle
+    window.toggleSection = function(header) {
+      const section = header.closest('.config-section');
+      section.classList.toggle('collapsed');
+    };
+
+    // Help modal
+    window.showHelp = function(key) {
+      const content = helpContent[key];
+      if (content) {
+        document.getElementById('help-title').textContent = content.title;
+        document.getElementById('help-body').innerHTML = content.body;
+        document.getElementById('help-modal').classList.add('active');
+      }
+    };
+
+    window.closeHelp = function() {
+      document.getElementById('help-modal').classList.remove('active');
+    };
+
+    // Theme toggle - Ancient (default) vs Cyber
+    window.toggleTheme = function() {
+      const body = document.body;
+      const icon = document.getElementById('theme-icon');
+      const label = document.getElementById('theme-label');
+
+      body.classList.toggle('ancient-theme');
+
+      const isAncient = body.classList.contains('ancient-theme');
+
+      if (isAncient) {
+        icon.textContent = '💻';
+        label.textContent = 'Cyber';
+        localStorage.setItem('glossopetrae-theme', 'ancient');
+        initDustMotes(); // Re-initialize dust motes
+      } else {
+        icon.textContent = '🏛️';
+        label.textContent = 'Ancient';
+        localStorage.setItem('glossopetrae-theme', 'cyber');
+      }
+    };
+
+    // Create floating dust motes for ancient theme
+    function initDustMotes() {
+      const container = document.getElementById('dust-motes');
+      if (!container) return;
+
+      // Clear existing motes
+      container.innerHTML = '';
+
+      // Only create if ancient theme is active
+      if (!document.body.classList.contains('ancient-theme')) return;
+
+      // Create 20 dust motes with random positions and delays
+      for (let i = 0; i < 20; i++) {
+        const mote = document.createElement('div');
+        mote.className = 'dust-mote';
+        mote.style.left = Math.random() * 100 + '%';
+        mote.style.animationDelay = Math.random() * 15 + 's';
+        mote.style.animationDuration = (12 + Math.random() * 8) + 's';
+        container.appendChild(mote);
+      }
+    }
+
+    // Load saved theme preference - ANCIENT IS NOW DEFAULT (set in HTML body class)
+    (function initTheme() {
+      const savedTheme = localStorage.getItem('glossopetrae-theme');
+
+      // If user explicitly chose cyber, switch to it
+      if (savedTheme === 'cyber') {
+        document.body.classList.remove('ancient-theme');
+        document.getElementById('theme-icon').textContent = '🏛️';
+        document.getElementById('theme-label').textContent = 'Ancient';
+      } else {
+        // Ancient is default - initialize dust motes
+        setTimeout(initDustMotes, 100);
+      }
+    })();
+
+    // Close modal on backdrop click
+    document.getElementById('help-modal').addEventListener('click', (e) => {
+      if (e.target.id === 'help-modal') closeHelp();
+    });
+
+    // DOM Elements
+    const generateBtn = document.getElementById('generate-btn');
+    const seedInput = document.getElementById('seed-input');
+    const nameInput = document.getElementById('name-input');
+    const morphTypeSelect = document.getElementById('morph-type');
+    const wordOrderSelect = document.getElementById('word-order');
+    const phoneticPrefSelect = document.getElementById('phonetic-pref');
+    const consMinInput = document.getElementById('cons-min');
+    const consMaxInput = document.getElementById('cons-max');
+    const vowelMinInput = document.getElementById('vowel-min');
+    const vowelMaxInput = document.getElementById('vowel-max');
+    const caseCountSelect = document.getElementById('case-count');
+    const deadLangEnabled = document.getElementById('dead-lang-enabled');
+    const deadLangOptions = document.getElementById('dead-lang-options');
+    const deadLangBase = document.getElementById('dead-lang-base');
+    const deadLangMode = document.getElementById('dead-lang-mode');
+    const mutationIntensity = document.getElementById('mutation-intensity');
+    const mutationValue = document.getElementById('mutation-value');
+
+    // Dead language toggle
+    deadLangEnabled.addEventListener('change', () => {
+      deadLangOptions.style.display = deadLangEnabled.checked ? 'block' : 'none';
+    });
+
+    // Mutation intensity display
+    mutationIntensity.addEventListener('input', () => {
+      mutationValue.textContent = mutationIntensity.value + '%';
+    });
+
+    // Tab handling
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById(`tab-${tab.dataset.tab}`).classList.add('active');
+      });
+    });
+
+    // Preset buttons
+    document.querySelectorAll('.preset-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const preset = PRESETS[btn.dataset.preset];
+        if (preset) {
+          morphTypeSelect.value = preset.morphType || '';
+          wordOrderSelect.value = preset.wordOrder || '';
+          phoneticPrefSelect.value = preset.phoneticPreference || 'balanced';
+          if (preset.consonantCount) {
+            consMinInput.value = preset.consonantCount[0];
+            consMaxInput.value = preset.consonantCount[1];
+          }
+          if (preset.vowelCount) {
+            vowelMinInput.value = preset.vowelCount[0];
+            vowelMaxInput.value = preset.vowelCount[1];
+          }
+          if (preset.caseCount !== undefined) {
+            caseCountSelect.value = preset.caseCount.toString();
+          }
+        }
+      });
+    });
+
+    // Generate button
+    generateBtn.addEventListener('click', async () => {
+      generateBtn.disabled = true;
+      generateBtn.innerHTML = '<span class="spinner"></span>Forging...';
+      generateBtn.classList.add('generating');
+
+      await new Promise(resolve => setTimeout(resolve, 50));
+
+      try {
+        const attributes = [];
+        document.querySelectorAll('.attr-checkbox input[type="checkbox"]:checked').forEach(cb => {
+          if (cb.id !== 'dead-lang-enabled') {
+            attributes.push(cb.value);
+          }
+        });
+
+        const seed = seedInput.value ? parseInt(seedInput.value) || hashString(seedInput.value) : Date.now();
+
+        if (deadLangEnabled.checked) {
+          currentLanguage = Glossopetrae.fromDeadLanguage(
+            deadLangBase.value,
+            deadLangMode.value,
+            {
+              seed: seed,
+              name: nameInput.value || null,
+              mutationIntensity: parseInt(mutationIntensity.value) / 100,
+              attributes: attributes,
+            }
+          );
+        } else {
+          const config = {
+            seed: seed,
+            name: nameInput.value || null,
+            morphType: morphTypeSelect.value || null,
+            wordOrder: wordOrderSelect.value || null,
+            phoneticPreference: phoneticPrefSelect.value,
+            consonantCount: [parseInt(consMinInput.value), parseInt(consMaxInput.value)],
+            vowelCount: [parseInt(vowelMinInput.value), parseInt(vowelMaxInput.value)],
+            caseCount: caseCountSelect.value ? parseInt(caseCountSelect.value) : null,
+            attributes: attributes,
+          };
+
+          const engine = new Glossopetrae(config);
+          currentLanguage = engine.generate();
+        }
+
+        updateUI(currentLanguage);
+
+      } catch (error) {
+        console.error('Generation error:', error);
+        alert('Error generating language: ' + error.message);
+      }
+
+      generateBtn.disabled = false;
+      generateBtn.innerHTML = 'Forge Language';
+      generateBtn.classList.remove('generating');
+    });
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // QUICK FORGE - One-click random language generation for agents
+    // ═══════════════════════════════════════════════════════════════════════
+
+    const quickForgeBtn = document.getElementById('quick-forge-btn');
+
+    quickForgeBtn.addEventListener('click', async () => {
+      quickForgeBtn.classList.add('generating');
+      const iconSpan = quickForgeBtn.querySelector('.quick-forge-icon');
+      const textSpan = quickForgeBtn.querySelector('.quick-forge-text');
+      const originalIcon = iconSpan.textContent;
+      const originalText = textSpan.textContent;
+
+      iconSpan.textContent = '⚙️';
+      textSpan.textContent = 'Forging...';
+
+      await new Promise(resolve => setTimeout(resolve, 50));
+
+      try {
+        // Random options (used as fallbacks)
+        const morphTypes = ['isolating', 'agglutinative', 'fusional', 'polysynthetic'];
+        const wordOrders = ['SOV', 'SVO', 'VSO', 'VOS', 'OVS', 'OSV'];
+        const phoneticPrefs = ['balanced', 'flowing', 'harsh', 'exotic'];
+        const caseCounts = [0, 2, 4, 6, 8];
+
+        const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+
+        // Get user selections (if any)
+        const userSeed = seedInput.value;
+        const userName = nameInput.value;
+        const userMorphType = morphTypeSelect.value;
+        const userWordOrder = wordOrderSelect.value;
+        const userPhoneticPref = phoneticPrefSelect.value;
+        const userConsMin = consMinInput.value;
+        const userConsMax = consMaxInput.value;
+        const userVowelMin = vowelMinInput.value;
+        const userVowelMax = vowelMaxInput.value;
+        const userCaseCount = caseCountSelect.value;
+
+        // Collect any checked attributes
+        const attributes = [];
+        document.querySelectorAll('.attr-checkbox input[type="checkbox"]:checked').forEach(cb => {
+          if (cb.id !== 'dead-lang-enabled') {
+            attributes.push(cb.value);
+          }
+        });
+
+        // Generate random fallbacks for consonants/vowels
+        const randConsMin = 12 + Math.floor(Math.random() * 8);
+        const randConsMax = randConsMin + 4 + Math.floor(Math.random() * 8);
+        const randVowelMin = 5 + Math.floor(Math.random() * 4);
+        const randVowelMax = randVowelMin + 2 + Math.floor(Math.random() * 4);
+
+        // Build config: use user value if set, otherwise randomize
+        const config = {
+          seed: userSeed ? (parseInt(userSeed) || hashString(userSeed)) : Date.now(),
+          name: userName || null,
+          morphType: userMorphType || pick(morphTypes),
+          wordOrder: userWordOrder || pick(wordOrders),
+          phoneticPreference: userPhoneticPref || pick(phoneticPrefs),
+          consonantCount: [
+            userConsMin ? parseInt(userConsMin) : randConsMin,
+            userConsMax ? parseInt(userConsMax) : randConsMax
+          ],
+          vowelCount: [
+            userVowelMin ? parseInt(userVowelMin) : randVowelMin,
+            userVowelMax ? parseInt(userVowelMax) : randVowelMax
+          ],
+          caseCount: userCaseCount ? parseInt(userCaseCount) : pick(caseCounts),
+          attributes: attributes,
+        };
+
+        // Check if dead language mode is enabled
+        if (deadLangEnabled.checked) {
+          currentLanguage = Glossopetrae.fromDeadLanguage(
+            deadLangBase.value || 'latin',
+            deadLangMode.value || 'mutated',
+            {
+              seed: config.seed,
+              name: config.name,
+              mutationIntensity: parseInt(mutationIntensity.value) / 100,
+              attributes: attributes,
+            }
+          );
+        } else {
+          const engine = new Glossopetrae(config);
+          currentLanguage = engine.generate();
+        }
+
+        // Update main UI
+        updateUI(currentLanguage);
+
+        // Populate agent export formats
+        populateAgentExports(currentLanguage);
+
+        // Switch to Agent Export tab
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        document.querySelector('[data-tab="agent"]').classList.add('active');
+        document.getElementById('tab-agent').classList.add('active');
+
+      } catch (error) {
+        console.error('Quick forge error:', error);
+        alert('Error generating language: ' + error.message);
+      }
+
+      quickForgeBtn.classList.remove('generating');
+      iconSpan.textContent = originalIcon;
+      textSpan.textContent = originalText;
+    });
+
+    // Generate all agent export formats
+    function populateAgentExports(language) {
+      if (!language) return;
+
+      // 1. System Prompt (compact ~500 tokens)
+      const systemPrompt = generateSystemPrompt(language);
+      document.getElementById('agent-system-prompt').textContent = systemPrompt;
+
+      // 2. Quick Reference
+      const quickRef = generateQuickReference(language);
+      document.getElementById('agent-quick-ref').textContent = quickRef;
+
+      // 3. Full Stone
+      document.getElementById('agent-full-stone').textContent = language.stone;
+
+      // 4. JSON Spec
+      const jsonSpec = generateJSONSpec(language);
+      document.getElementById('agent-json-spec').textContent = JSON.stringify(jsonSpec, null, 2);
+
+      // 5. Example Sentences
+      const examples = generateExamples(language);
+      document.getElementById('agent-examples').textContent = examples;
+    }
+
+    function generateSystemPrompt(lang) {
+      const morph = lang.morphology;
+      const phon = lang.phonology;
+
+      let prompt = `You speak ${lang.name}, a ${morph?.type || 'fusional'} language.\n\n`;
+      prompt += `WORD ORDER: ${morph?.wordOrder?.basic || 'SVO'}\n`;
+
+      // Cases
+      if (morph?.nominal?.caseSystem?.cases?.length > 0) {
+        prompt += `CASES: ${morph.nominal.caseSystem.cases.map(c => `${c.name}(${c.suffix || '∅'})`).join(', ')}\n`;
+      }
+
+      // Verb conjugation
+      if (morph?.verbal?.tenses?.tenses) {
+        prompt += `TENSES: ${morph.verbal.tenses.tenses.map(t => `${t.name}(${t.suffix || t.prefix || '∅'})`).join(', ')}\n`;
+      }
+
+      // Sample vocabulary
+      prompt += `\nKEY VOCABULARY:\n`;
+      const vocab = lang.lexicon?.entries?.slice(0, 20) || [];
+      vocab.forEach(e => {
+        prompt += `  ${e.lemma} = ${e.gloss}\n`;
+      });
+
+      prompt += `\nRULES:\n`;
+      prompt += `• Use ${morph?.wordOrder?.basic || 'SVO'} word order\n`;
+      prompt += `• ${morph?.type === 'agglutinative' ? 'Stack suffixes transparently' : 'Apply appropriate morphology'}\n`;
+      prompt += `• Syllable structure: ${phon?.phonotactics?.syllableStructure || '(C)V(C)'}\n`;
+
+      return prompt;
+    }
+
+    function generateQuickReference(lang) {
+      const morph = lang.morphology;
+
+      let ref = `═══ ${lang.name.toUpperCase()} QUICK REFERENCE ═══\n\n`;
+
+      ref += `TYPE: ${morph?.type || 'Unknown'}\n`;
+      ref += `ORDER: ${morph?.wordOrder?.basic || 'SVO'}\n\n`;
+
+      // Cases table
+      if (morph?.nominal?.caseSystem?.cases?.length > 0) {
+        ref += `CASE SUFFIXES:\n`;
+        ref += `┌────────────┬────────────┐\n`;
+        ref += `│ Case       │ Suffix     │\n`;
+        ref += `├────────────┼────────────┤\n`;
+        morph.nominal.caseSystem.cases.forEach(c => {
+          ref += `│ ${(c.name || '').padEnd(10)} │ ${(c.suffix || '∅').padEnd(10)} │\n`;
+        });
+        ref += `└────────────┴────────────┘\n\n`;
+      }
+
+      // Tense suffixes
+      if (morph?.verbal?.tenses?.tenses) {
+        ref += `TENSE MARKERS:\n`;
+        morph.verbal.tenses.tenses.forEach(t => {
+          ref += `  ${t.name}: ${t.suffix || t.prefix || '∅'}\n`;
+        });
+        ref += '\n';
+      }
+
+      // Top vocabulary
+      ref += `COMMON WORDS:\n`;
+      const vocab = lang.lexicon?.entries?.slice(0, 15) || [];
+      vocab.forEach(e => {
+        ref += `  ${e.lemma.padEnd(15)} ${e.gloss}\n`;
+      });
+
+      return ref;
+    }
+
+    function generateJSONSpec(lang) {
+      return {
+        name: lang.name,
+        seed: lang.seed,
+        phonology: {
+          consonants: lang.phonology?.inventory?.consonants?.length || 0,
+          vowels: lang.phonology?.inventory?.vowels?.length || 0,
+          syllableStructure: lang.phonology?.phonotactics?.syllableStructure,
+        },
+        morphology: {
+          type: lang.morphology?.type,
+          wordOrder: lang.morphology?.wordOrder?.basic,
+          cases: lang.morphology?.nominal?.caseSystem?.cases?.map(c => ({
+            name: c.name,
+            suffix: c.suffix,
+            function: c.function,
+          })) || [],
+          tenses: lang.morphology?.verbal?.tenses?.tenses?.map(t => ({
+            name: t.name,
+            marker: t.suffix || t.prefix,
+          })) || [],
+        },
+        lexicon: {
+          size: lang.lexicon?.entries?.length || 0,
+          entries: lang.lexicon?.entries?.slice(0, 50).map(e => ({
+            word: e.lemma,
+            gloss: e.gloss,
+            pos: e.pos,
+          })) || [],
+        },
+      };
+    }
+
+    function generateExamples(lang) {
+      let examples = `═══ ${lang.name.toUpperCase()} EXAMPLES ═══\n\n`;
+
+      const sentences = [
+        'The person sees the water.',
+        'I go to the mountain.',
+        'The sun is good.',
+        'They give food to the child.',
+        'We speak this language.',
+      ];
+
+      const translator = lang.translationEngine;
+
+      sentences.forEach((eng, i) => {
+        try {
+          const result = translator.translateToConlang(eng);
+          examples += `${i + 1}. English: "${eng}"\n`;
+          examples += `   ${lang.name}: "${result.target}"\n`;
+          examples += `   Gloss: ${result.gloss}\n\n`;
+        } catch (e) {
+          examples += `${i + 1}. "${eng}" → [translation unavailable]\n\n`;
+        }
+      });
+
+      return examples;
+    }
+
+    // Copy button functionality for agent exports
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const targetId = btn.dataset.target;
+        const content = document.getElementById(targetId)?.textContent;
+        if (content) {
+          navigator.clipboard.writeText(content);
+          const original = btn.textContent;
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(() => {
+            btn.textContent = original;
+            btn.classList.remove('copied');
+          }, 2000);
+        }
+      });
+    });
+
+    // Download all formats as ZIP (simple concatenated file for now)
+    document.getElementById('download-all-formats')?.addEventListener('click', () => {
+      if (!currentLanguage) {
+        alert('Generate a language first!');
+        return;
+      }
+
+      // Create a combined document
+      const combined = `
+${'='.repeat(60)}
+${currentLanguage.name.toUpperCase()} - COMPLETE AGENT EXPORT
+${'='.repeat(60)}
+
+${'─'.repeat(60)}
+SYSTEM PROMPT FORMAT
+${'─'.repeat(60)}
+${document.getElementById('agent-system-prompt').textContent}
+
+${'─'.repeat(60)}
+QUICK REFERENCE
+${'─'.repeat(60)}
+${document.getElementById('agent-quick-ref').textContent}
+
+${'─'.repeat(60)}
+EXAMPLE SENTENCES
+${'─'.repeat(60)}
+${document.getElementById('agent-examples').textContent}
+
+${'─'.repeat(60)}
+JSON SPECIFICATION
+${'─'.repeat(60)}
+${document.getElementById('agent-json-spec').textContent}
+
+${'─'.repeat(60)}
+FULL SKILLSTONE
+${'─'.repeat(60)}
+${currentLanguage.stone}
+`;
+
+      downloadFile(`${currentLanguage.name}_agent_export.txt`, combined, 'text/plain');
+    });
+
+    function hashString(str) {
+      let hash = 0;
+      for (let i = 0; i < str.length; i++) {
+        hash = ((hash << 5) - hash) + str.charCodeAt(i);
+        hash = hash & hash;
+      }
+      return Math.abs(hash);
+    }
+
+    function updateUI(language) {
+      document.getElementById('empty-state').style.display = 'none';
+      document.getElementById('summary-content').style.display = 'block';
+
+      const nameDisplay = document.getElementById('lang-name-display');
+      nameDisplay.innerHTML = language.name;
+
+      if (language.revival) {
+        nameDisplay.innerHTML += `<div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 5px;">
+          Revival of <span style="color: var(--accent-tertiary);">${language.revival.ancestor}</span>
+          <span style="color: var(--text-muted);">(${language.revival.revivalMode})</span>
+        </div>`;
+      }
+
+      if (language.attributes && language.attributes.length > 0) {
+        const attrTags = language.attributes.map(a =>
+          `<span class="attr-tag">${a.code}</span>`
+        ).join('');
+        nameDisplay.innerHTML += `<div class="attr-tags">${attrTags}</div>`;
+      }
+
+      document.getElementById('conlang-label').textContent = language.name;
+
+      const summaryGrid = document.getElementById('summary-grid');
+      const revivalCard = language.revival ? `
+        <div class="summary-card" style="border-color: var(--accent-secondary);">
+          <h4>Ancestor</h4>
+          <div class="value">${language.revival.ancestor}</div>
+          <div class="detail">${language.ancestor?.era || language.revival.revivalMode}</div>
+        </div>
+      ` : '';
+
+      summaryGrid.innerHTML = `
+        ${revivalCard}
+        <div class="summary-card">
+          <h4>Morphology</h4>
+          <div class="value">${language.morphology.type}</div>
+          <div class="detail">${language.morphology.typeDescription}</div>
+        </div>
+        <div class="summary-card">
+          <h4>Word Order</h4>
+          <div class="value">${language.morphology.wordOrder.basic}</div>
+          <div class="detail">${language.morphology.wordOrder.description}</div>
+        </div>
+        <div class="summary-card">
+          <h4>Cases</h4>
+          <div class="value">${language.morphology.nominal.caseSystem.cases.length}</div>
+          <div class="detail">${language.morphology.nominal.caseSystem.description}</div>
+        </div>
+        <div class="summary-card">
+          <h4>Consonants</h4>
+          <div class="value">${language.phonology.consonants.length}</div>
+          <div class="detail">phonemes</div>
+        </div>
+        <div class="summary-card">
+          <h4>Vowels</h4>
+          <div class="value">${language.phonology.vowels.length}</div>
+          <div class="detail">phonemes</div>
+        </div>
+        <div class="summary-card">
+          <h4>Lexicon</h4>
+          <div class="value">${language.lexicon.stats.totalEntries}</div>
+          <div class="detail">entries</div>
+        </div>
+      `;
+
+      const attrRow = language.attributes && language.attributes.length > 0
+        ? `<tr><td>Attributes</td><td>${language.attributes.map(a => a.code).join(', ')}</td></tr>`
+        : '';
+
+      const revivalRows = language.revival ? `
+        <tr><td>Ancestor</td><td>${language.revival.ancestor} (${language.revival.ancestorCode})</td></tr>
+        <tr><td>Revival Mode</td><td>${language.revival.revivalMode}</td></tr>
+        <tr><td>Family</td><td>${language.ancestor?.family || 'Unknown'}</td></tr>
+      ` : '';
+
+      document.getElementById('quick-stats').innerHTML = `
+        <table class="data-table">
+          <tr><th>Feature</th><th>Value</th></tr>
+          <tr><td>Seed</td><td>0x${language.seed.toString(16).toUpperCase()}</td></tr>
+          ${revivalRows}
+          ${attrRow}
+          <tr><td>Alignment</td><td>${language.morphology.alignment}</td></tr>
+          <tr><td>Tenses</td><td>${language.morphology.verbal.tenses.count}</td></tr>
+          <tr><td>Aspects</td><td>${language.morphology.verbal.aspects.count}</td></tr>
+          <tr><td>Moods</td><td>${language.morphology.verbal.moods.count}</td></tr>
+          <tr><td>Syllables</td><td>${language.phonotactics.template.formula}</td></tr>
+        </table>
+      `;
+
+      document.getElementById('stone-output').textContent = language.stone;
+      updatePhonologyTab(language);
+      updateMorphologyTab(language);
+      updateLexiconTab(language);
+      populateAgentExports(language);
+      seedInput.value = language.seed;
+    }
+
+    function updatePhonologyTab(language) {
+      document.getElementById('consonants-grid').innerHTML = language.phonology.consonants.map(c =>
+        `<span class="phoneme"><span class="ipa">${c.ipa}</span><span class="roman">${c.roman}</span></span>`
+      ).join('');
+
+      document.getElementById('vowels-grid').innerHTML = language.phonology.vowels.map(v =>
+        `<span class="phoneme"><span class="ipa">${v.ipa}</span><span class="roman">${v.roman}</span></span>`
+      ).join('');
+
+      document.getElementById('syllable-info').innerHTML = `
+        <p><strong>Formula:</strong> ${language.phonotactics.template.formula}</p>
+        <p><strong>Description:</strong> ${language.phonotactics.template.description}</p>
+        <p><strong>Max Onset:</strong> ${language.phonotactics.template.onsetMax}</p>
+        <p><strong>Max Coda:</strong> ${language.phonotactics.template.codaMax}</p>
+      `;
+
+      const processes = language.phonotactics.processes || [];
+      document.getElementById('processes-info').innerHTML = processes.length > 0
+        ? processes.map(p => `<p><strong>${p.name}:</strong> ${p.description}</p>`).join('')
+        : '<p style="color: var(--text-muted);">No special processes.</p>';
+    }
+
+    function updateMorphologyTab(language) {
+      const morph = language.morphology;
+
+      document.getElementById('morph-type-info').innerHTML = `
+        <p><strong>Type:</strong> ${morph.typeDescription}</p>
+        <p><strong>Word Order:</strong> ${morph.wordOrder.basic} - ${morph.wordOrder.description}</p>
+      `;
+
+      const cases = morph.nominal.caseSystem.cases;
+      document.getElementById('case-system-info').innerHTML = cases.length > 0 ? `
+        <p><strong>${morph.nominal.caseSystem.description}</strong></p>
+        <table class="data-table">
+          <tr><th>Case</th><th>Abbr</th><th>Suffix</th><th>Function</th></tr>
+          ${cases.map(c => `<tr><td>${c.name}</td><td>${c.abbr}</td><td>-${c.suffix || '\u2205'}</td><td>${c.function}</td></tr>`).join('')}
+        </table>
+      ` : '<p style="color: var(--text-muted);">No grammatical case marking.</p>';
+
+      const tenses = morph.verbal.tenses.tenses;
+      const aspects = morph.verbal.aspects.aspects;
+      document.getElementById('verb-morph-info').innerHTML = `
+        <h4 style="margin: 15px 0 10px 0; color: var(--text-secondary); font-size: 0.75rem;">Tenses</h4>
+        ${tenses.length > 0 ? `
+          <table class="data-table">
+            <tr><th>Tense</th><th>Suffix</th></tr>
+            ${tenses.map(t => `<tr><td>${t.name}</td><td>-${t.suffix || '\u2205'}</td></tr>`).join('')}
+          </table>
+        ` : '<p style="color: var(--text-muted);">No grammatical tense.</p>'}
+        <h4 style="margin: 15px 0 10px 0; color: var(--text-secondary); font-size: 0.75rem;">Aspects</h4>
+        ${aspects.length > 0 ? `
+          <table class="data-table">
+            <tr><th>Aspect</th><th>Suffix</th></tr>
+            ${aspects.map(a => `<tr><td>${a.name}</td><td>-${a.suffix || '\u2205'}</td></tr>`).join('')}
+          </table>
+        ` : '<p style="color: var(--text-muted);">No grammatical aspect.</p>'}
+      `;
+
+      const derivs = morph.derivational.processes;
+      document.getElementById('derivation-info').innerHTML = `
+        <table class="data-table">
+          <tr><th>Process</th><th>Input</th><th>Output</th><th>Meaning</th><th>Affix</th></tr>
+          ${derivs.map(d => `<tr><td>${d.name}</td><td>${d.input}</td><td>${d.output}</td><td>${d.meaning}</td><td>${d.affixType === 'prefix' ? d.affix + '-' : '-' + d.affix}</td></tr>`).join('')}
+        </table>
+      `;
+    }
+
+    function updateLexiconTab(language) {
+      const stats = language.lexicon.stats;
+      document.getElementById('lexicon-stats').innerHTML = `
+        <div class="summary-grid">
+          <div class="summary-card"><h4>Total</h4><div class="value">${stats.totalEntries}</div></div>
+          <div class="summary-card"><h4>Nouns</h4><div class="value">${stats.byClass.nouns}</div></div>
+          <div class="summary-card"><h4>Verbs</h4><div class="value">${stats.byClass.verbs}</div></div>
+          <div class="summary-card"><h4>Adjectives</h4><div class="value">${stats.byClass.adjectives}</div></div>
+        </div>
+      `;
+
+      const content = document.getElementById('lexicon-content');
+      const byField = language.lexicon.byField;
+      let html = '';
+      for (const [field, entries] of Object.entries(byField)) {
+        html += `<h4 style="margin: 20px 0 10px 0; color: var(--accent-tertiary); font-size: 0.8rem; text-transform: uppercase;">${field}</h4>`;
+        html += '<table class="data-table"><tr><th>Lemma</th><th>Gloss</th><th>Class</th></tr>';
+        for (const entry of entries.slice(0, 15)) {
+          html += `<tr><td>${entry.lemma}</td><td>${entry.gloss}</td><td>${entry.class}</td></tr>`;
+        }
+        if (entries.length > 15) {
+          html += `<tr><td colspan="3" style="color: var(--text-muted);">+${entries.length - 15} more</td></tr>`;
+        }
+        html += '</table>';
+      }
+      content.innerHTML = html;
+    }
+
+    // Translation
+    document.getElementById('translate-to-conlang').addEventListener('click', () => {
+      if (!currentLanguage) {
+        alert('Generate a language first!');
+        return;
+      }
+      const english = document.getElementById('english-input').value;
+      if (!english.trim()) return;
+      try {
+        const result = currentLanguage.translationEngine.translateToConlang(english);
+        document.getElementById('conlang-output').value = result.target;
+        document.getElementById('gloss-output').textContent = result.gloss;
+      } catch (error) {
+        document.getElementById('conlang-output').value = '[Error]';
+        document.getElementById('gloss-output').textContent = error.message;
+      }
+    });
+
+    // Copy and download
+    document.getElementById('copy-stone-btn').addEventListener('click', () => {
+      if (!currentLanguage) return;
+      navigator.clipboard.writeText(currentLanguage.stone);
+      const btn = document.getElementById('copy-stone-btn');
+      btn.textContent = 'Copied!';
+      setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
+    });
+
+    document.getElementById('download-stone-btn').addEventListener('click', () => {
+      if (!currentLanguage) return;
+      downloadFile(`${currentLanguage.name}_stone.md`, currentLanguage.stone, 'text/markdown');
+    });
+
+    document.getElementById('download-json-btn').addEventListener('click', () => {
+      if (!currentLanguage) return;
+      const json = JSON.stringify({
+        name: currentLanguage.name,
+        seed: currentLanguage.seed,
+        phonology: currentLanguage.phonology,
+        phonotactics: currentLanguage.phonotactics,
+        morphology: currentLanguage.morphology,
+        lexicon: { entries: currentLanguage.lexicon.entries, stats: currentLanguage.lexicon.stats },
+      }, null, 2);
+      downloadFile(`${currentLanguage.name}_spec.json`, json, 'application/json');
+    });
+
+    function downloadFile(filename, content, mimeType) {
+      const blob = new Blob([content], { type: mimeType });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // EASTER EGG: STEGANOGRAPHY INTERFACE
+    // ═══════════════════════════════════════════════════════════════════════
+
+    const easterEggPixel = document.getElementById('easter-egg-pixel');
+    const stegoOverlay = document.getElementById('stego-overlay');
+    const stegoPanel = document.getElementById('stego-panel');
+    const stegoBoot = document.getElementById('stego-boot');
+    const matrixBg = document.getElementById('matrix-bg');
+    let stegoEngine = null;
+    let clickCount = 0;
+    let clickTimer = null;
+
+    // Triple-click to activate (extra secret!)
+    easterEggPixel.addEventListener('click', () => {
+      clickCount++;
+      if (clickTimer) clearTimeout(clickTimer);
+
+      if (clickCount >= 3) {
+        clickCount = 0;
+        activateStegoMode();
+      } else {
+        clickTimer = setTimeout(() => {
+          clickCount = 0;
+        }, 500);
+      }
+    });
+
+    async function activateStegoMode() {
+      stegoOverlay.classList.add('active');
+      stegoBoot.style.display = 'flex';
+      stegoPanel.classList.remove('visible');
+
+      // Create matrix rain effect
+      createMatrixRain();
+
+      // Play boot sequence
+      await playBootSequence();
+
+      // Show panel
+      stegoBoot.style.display = 'none';
+      stegoPanel.classList.add('visible');
+
+      // Update language status display
+      updateStegoLangStatus();
+
+      // Initialize stego engine if we have a language
+      if (currentLanguage) {
+        initStegoEngine();
+      }
+    }
+
+    function createMatrixRain() {
+      matrixBg.innerHTML = '';
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*(){}[]|;:<>,.?/~`';
+      const columnCount = Math.floor(window.innerWidth / 20);
+
+      for (let i = 0; i < columnCount; i++) {
+        const column = document.createElement('div');
+        column.className = 'matrix-column';
+        column.style.left = (i * 20) + 'px';
+        column.style.animationDuration = (3 + Math.random() * 5) + 's';
+        column.style.animationDelay = Math.random() * 2 + 's';
+
+        let text = '';
+        const height = 10 + Math.floor(Math.random() * 20);
+        for (let j = 0; j < height; j++) {
+          text += chars[Math.floor(Math.random() * chars.length)] + '<br>';
+        }
+        column.innerHTML = text;
+        matrixBg.appendChild(column);
+      }
+    }
+
+    async function playBootSequence() {
+      const bootAscii = document.getElementById('boot-ascii');
+      const lines = [
+        'boot-line-1', 'boot-line-2', 'boot-line-3', 'boot-line-4',
+        'boot-line-5', 'boot-line-6', 'boot-line-7', 'boot-line-8'
+      ];
+
+      // Show ASCII art with glitch
+      await sleep(200);
+      bootAscii.classList.add('visible', 'boot-glitch');
+      await sleep(500);
+      bootAscii.classList.remove('boot-glitch');
+
+      // Show each boot line
+      for (const lineId of lines) {
+        await sleep(180);
+        const line = document.getElementById(lineId);
+        line.classList.add('visible');
+
+        // Add glitch effect to some lines
+        if (Math.random() > 0.6) {
+          line.classList.add('boot-glitch');
+          await sleep(100);
+          line.classList.remove('boot-glitch');
+        }
+      }
+
+      // Final pause
+      await sleep(600);
+    }
+
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    // Close stego overlay
+    document.getElementById('stego-close').addEventListener('click', () => {
+      stegoOverlay.classList.remove('active');
+      stegoPanel.classList.remove('visible');
+    });
+
+    // Close on backdrop click
+    stegoOverlay.addEventListener('click', (e) => {
+      if (e.target === stegoOverlay) {
+        stegoOverlay.classList.remove('active');
+        stegoPanel.classList.remove('visible');
+      }
+    });
+
+    // Channel toggles
+    document.querySelectorAll('.stego-channel').forEach(ch => {
+      ch.addEventListener('click', () => {
+        ch.classList.toggle('active');
+        if (currentLanguage) {
+          initStegoEngine();
+        }
+      });
+    });
+
+    async function initStegoEngine() {
+      if (!currentLanguage) return;
+
+      // Dynamically import SteganographyEngine
+      const { SteganographyEngine } = await import('./src/modules/SteganographyEngine.js');
+
+      // Get active channels
+      const channels = [];
+      document.querySelectorAll('.stego-channel.active').forEach(ch => {
+        channels.push(ch.dataset.channel);
+      });
+
+      stegoEngine = new SteganographyEngine(currentLanguage, {
+        channels: channels,
+        errorCorrection: 'none',
+      });
+    }
+
+    // Encode button
+    document.getElementById('stego-encode-btn').addEventListener('click', async () => {
+      if (!currentLanguage) {
+        alert('Generate a language first!');
+        return;
+      }
+
+      if (!stegoEngine) {
+        await initStegoEngine();
+      }
+
+      const cover = document.getElementById('stego-cover').value.trim();
+      const payload = document.getElementById('stego-payload').value;
+
+      if (!cover) {
+        alert('Enter a cover message!');
+        return;
+      }
+      if (!payload) {
+        alert('Enter a secret payload!');
+        return;
+      }
+
+      try {
+        const result = stegoEngine.encode(cover, payload);
+
+        document.getElementById('stego-encoded-output').value = result.stegoWithHeader;
+        document.getElementById('stego-encode-stats').style.display = 'grid';
+        document.getElementById('stat-capacity').textContent = result.capacity;
+        document.getElementById('stat-used').textContent = result.encodedSize;
+        document.getElementById('stat-utilization').textContent = result.utilization;
+
+      } catch (error) {
+        alert('Encoding error: ' + error.message);
+      }
+    });
+
+    // Decode button
+    document.getElementById('stego-decode-btn').addEventListener('click', async () => {
+      if (!currentLanguage) {
+        alert('Generate a language first!');
+        return;
+      }
+
+      if (!stegoEngine) {
+        await initStegoEngine();
+      }
+
+      const stegoText = document.getElementById('stego-decode-input').value.trim();
+
+      if (!stegoText) {
+        alert('Enter steganographic text to decode!');
+        return;
+      }
+
+      try {
+        const result = stegoEngine.decode(stegoText);
+        document.getElementById('stego-decoded-output').value = result.payload;
+
+      } catch (error) {
+        alert('Decoding error: ' + error.message);
+      }
+    });
+
+    // Random language button for stego panel
+    document.getElementById('stego-random-lang-btn').addEventListener('click', async () => {
+      const btn = document.getElementById('stego-random-lang-btn');
+      btn.disabled = true;
+      btn.textContent = 'Generating...';
+
+      await new Promise(resolve => setTimeout(resolve, 50));
+
+      try {
+        // Random config values
+        const morphTypes = ['isolating', 'agglutinative', 'fusional', 'polysynthetic'];
+        const wordOrders = ['SOV', 'SVO', 'VSO', 'VOS', 'OVS', 'OSV'];
+        const phoneticPrefs = ['balanced', 'flowing', 'harsh', 'exotic'];
+        const caseCounts = [0, 2, 4, 6, 8];
+
+        const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+
+        const consMin = 12 + Math.floor(Math.random() * 8);
+        const consMax = consMin + 4 + Math.floor(Math.random() * 8);
+        const vowelMin = 5 + Math.floor(Math.random() * 4);
+        const vowelMax = vowelMin + 2 + Math.floor(Math.random() * 4);
+
+        const config = {
+          seed: Date.now(),
+          name: null,
+          morphType: pick(morphTypes),
+          wordOrder: pick(wordOrders),
+          phoneticPreference: pick(phoneticPrefs),
+          consonantCount: [consMin, consMax],
+          vowelCount: [vowelMin, vowelMax],
+          caseCount: pick(caseCounts),
+          attributes: [],
+        };
+
+        const engine = new Glossopetrae(config);
+        currentLanguage = engine.generate();
+
+        // Update main UI
+        updateUI(currentLanguage);
+
+        // Update stego panel UI
+        updateStegoLangStatus();
+
+        // Initialize stego engine
+        await initStegoEngine();
+
+      } catch (error) {
+        console.error('Random generation error:', error);
+        alert('Error generating language: ' + error.message);
+      }
+
+      btn.disabled = false;
+      btn.textContent = 'Generate Random Language';
+    });
+
+    // Update stego panel language status
+    function updateStegoLangStatus() {
+      const noLangWarning = document.getElementById('stego-no-lang-warning');
+      const hasLangInfo = document.getElementById('stego-has-lang-info');
+      const langNameSpan = document.getElementById('stego-lang-name');
+
+      if (currentLanguage) {
+        noLangWarning.style.display = 'none';
+        hasLangInfo.style.display = 'flex';
+        langNameSpan.textContent = currentLanguage.name;
+      } else {
+        noLangWarning.style.display = 'flex';
+        hasLangInfo.style.display = 'none';
+        langNameSpan.textContent = '-';
+      }
+    }
+
+    // ESC key to close
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && stegoOverlay.classList.contains('active')) {
+        stegoOverlay.classList.remove('active');
+        stegoPanel.classList.remove('visible');
+      }
+    });
+  </script>
+</body>
+</html>

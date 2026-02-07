@@ -24,6 +24,7 @@ import { DeadLanguageReviver, DEAD_LANGUAGES, REVIVAL_MODES } from './modules/De
 import { ProsodyEngine } from './modules/ProsodyEngine.js';
 import { ScriptGenerator } from './modules/ScriptGenerator.js';
 import { QualityEngine } from './modules/QualityEngine.js';
+import { LanguageEvolutionEngine } from './modules/LanguageEvolutionEngine.js';
 
 export class Glossopetrae {
   constructor(config = {}) {
@@ -853,6 +854,65 @@ export class Glossopetrae {
     };
     const engine = new Glossopetrae(config);
     return engine.generate();
+  }
+
+  // ─── Language Evolution (Diachronic) ──────────────────────────────────
+
+  /**
+   * Generate a language family: proto-language + N daughter languages.
+   * Each daughter diverges through realistic sound changes, grammatical
+   * drift, and lexical replacement. Deterministic from seed.
+   *
+   * @param {number|null} seed - Seed for deterministic generation
+   * @param {Object} options - Evolution options
+   * @param {number} options.branchCount - Number of daughter languages (default 3)
+   * @param {number} options.generations - Evolutionary generations to simulate (default 10)
+   * @param {number} options.soundChangeIntensity - 0-1 intensity of phonological change
+   * @param {number} options.grammaticalDriftRate - 0-1 rate of morphosyntactic change
+   * @returns {Object} { protoLanguage, descendants, soundLaws, cognateDatabase, phylogeny, ... }
+   */
+  static evolveFamily(seed = null, options = {}) {
+    const config = { seed: seed ?? Date.now() };
+    const engine = new Glossopetrae(config);
+    const protoLang = engine.generate();
+    protoLang.name = protoLang.name ? `Proto-${protoLang.name}` : 'Proto-Language';
+
+    const evoEngine = new LanguageEvolutionEngine(engine.random, protoLang, {
+      branchCount: options.branchCount ?? 3,
+      generations: options.generations ?? 10,
+      soundChangeIntensity: options.soundChangeIntensity ?? 0.5,
+      grammaticalDriftRate: options.grammaticalDriftRate ?? 0.3,
+      ...options
+    });
+
+    return evoEngine.generate();
+  }
+
+  /**
+   * Generate a deeply diverged language family with high evolutionary depth.
+   * Simulates ~2000 years of language change with 4 daughter languages.
+   */
+  static diachronic(seed = null) {
+    return Glossopetrae.evolveFamily(seed, {
+      branchCount: 4,
+      generations: 20,
+      soundChangeIntensity: 0.7,
+      grammaticalDriftRate: 0.4
+    });
+  }
+
+  /**
+   * Generate a conservative language family with minimal divergence.
+   * Simulates closely related dialects/languages.
+   */
+  static dialectCluster(seed = null) {
+    return Glossopetrae.evolveFamily(seed, {
+      branchCount: 5,
+      generations: 5,
+      soundChangeIntensity: 0.25,
+      grammaticalDriftRate: 0.15,
+      isolationFactor: 0.3
+    });
   }
 }
 

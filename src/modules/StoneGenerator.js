@@ -84,7 +84,8 @@ export class StoneGenerator {
 | **Generated** | ${date} |
 | **Type** | ${lang.morphology?.type || 'Synthetic'} |
 | **Word Order** | ${lang.morphology?.wordOrder?.basic || 'SVO'} |
-| **Lexicon Size** | ${lang.lexicon?.stats?.totalEntries || '~700'} words |
+| **Lexicon Size** | ${lang.lexicon?.stats?.totalEntries || '~700'} words |${lang.divergence ? `
+| **Linguistic Drift** | ${Math.round(lang.divergence.target * 100)}% — ${lang.divergence.description} |` : ''}
 
 ---
 

@@ -24,6 +24,7 @@ import { DeadLanguageReviver, DEAD_LANGUAGES, REVIVAL_MODES } from './modules/De
 import { ProsodyEngine } from './modules/ProsodyEngine.js';
 import { ScriptGenerator } from './modules/ScriptGenerator.js';
 import { QualityEngine } from './modules/QualityEngine.js';
+import { DivergenceEngine } from './modules/DivergenceEngine.js';
 
 export class Glossopetrae {
   constructor(config = {}) {
@@ -42,6 +43,8 @@ export class Glossopetrae {
       coreOnly: config.coreOnly ?? false,
       // Special attributes for LLM optimization
       attributes: config.attributes || [],
+      // Divergence from English (0.0 = English-like, 1.0 = maximally alien)
+      divergenceFromEnglish: config.divergenceFromEnglish ?? null,
       ...config,
     };
 
@@ -75,13 +78,32 @@ export class Glossopetrae {
       console.log(`[GLOSSOPETRAE] Active attributes: ${activeAttrs.map(a => a.code).join(', ')}`);
     }
 
+    // Initialize Divergence Engine if divergence from English is specified
+    let divergenceTargets = null;
+    if (this.config.divergenceFromEnglish !== null) {
+      const divergence = this.config.divergenceFromEnglish;
+      console.log(`[GLOSSOPETRAE] Divergence from English: ${Math.round(divergence * 100)}% (${DivergenceEngine.describeDivergence(divergence)})`);
+      const divergenceEngine = new DivergenceEngine(divergence, () => this.random.next());
+      divergenceTargets = divergenceEngine.generateTargets();
+    }
+
     // Phase 1: Phonology
     console.log('[GLOSSOPETRAE] Phase 1: Generating phonology...');
-    const phonemeSelector = new PhonemeSelector(this.random, {
+    const phonologyOptions = {
       consonantCount: this.config.consonantCount,
       vowelCount: this.config.vowelCount,
       preference: this.config.phoneticPreference,
-    });
+    };
+
+    // Apply divergence targets to phonology if set
+    if (divergenceTargets) {
+      const phonTargets = divergenceTargets.phonology;
+      phonologyOptions.consonantCount = phonTargets.consonants.targetCount;
+      phonologyOptions.vowelCount = phonTargets.vowels.targetCount;
+      phonologyOptions.divergenceTargets = phonTargets;
+    }
+
+    const phonemeSelector = new PhonemeSelector(this.random, phonologyOptions);
     let phonology = phonemeSelector.generate();
 
     // Apply attribute modifications to phonology
@@ -89,24 +111,72 @@ export class Glossopetrae {
 
     // Phase 2: Phonotactics
     console.log('[GLOSSOPETRAE] Phase 2: Generating phonotactics...');
-    const syllableForge = new SyllableForge(this.random, phonology, {});
+    const syllableOptions = {};
+    if (divergenceTargets) {
+      const syllTargets = divergenceTargets.phonology.syllableStructure;
+      syllableOptions.maxOnset = syllTargets.maxOnset;
+      syllableOptions.maxCoda = syllTargets.maxCoda;
+      syllableOptions.forceSimple = syllTargets.forceSimple;
+    }
+    const syllableForge = new SyllableForge(this.random, phonology, syllableOptions);
     const phonotactics = syllableForge.generate();
 
     // Phase 3: Prosody (NEW in v3.1)
     console.log('[GLOSSOPETRAE] Phase 3: Generating prosody...');
-    const prosodyEngine = new ProsodyEngine(this.random, {
+    const prosodyOptions = {
       hasTone: this.config.hasTone ?? null,
       hasStress: this.config.hasStress ?? true,
       complexityLevel: this.config.prosodyComplexity || 'moderate',
-    });
+    };
+    // Apply divergence targets to prosody
+    if (divergenceTargets) {
+      const toneTargets = divergenceTargets.phonology.tones;
+      if (toneTargets.enabled) {
+        prosodyOptions.hasTone = true;
+        prosodyOptions.toneCount = toneTargets.count;
+      }
+      if (divergenceTargets.phonology.vowelHarmony.enabled) {
+        prosodyOptions.vowelHarmony = divergenceTargets.phonology.vowelHarmony;
+      }
+    }
+    const prosodyEngine = new ProsodyEngine(this.random, prosodyOptions);
     const prosody = prosodyEngine.generate();
 
     // Phase 4: Morphology
     console.log('[GLOSSOPETRAE] Phase 4: Generating morphology...');
-    const morphologyWeaver = new MorphologyWeaver(this.random, syllableForge, {
+    const morphologyOptions = {
       morphType: this.attributes.getEffect('morphologyType') || this.config.morphType,
       caseCount: this.config.caseCount,
-    });
+    };
+    // Apply divergence targets to morphology
+    if (divergenceTargets) {
+      const morphTargets = divergenceTargets.morphology;
+      const syntaxTargets = divergenceTargets.syntax;
+      const featureTargets = divergenceTargets.features;
+
+      // Override morphological type if not explicitly set
+      if (!morphologyOptions.morphType) {
+        morphologyOptions.morphType = morphTargets.type;
+      }
+      // Override case count if not explicitly set
+      if (morphologyOptions.caseCount === null) {
+        const [minCase, maxCase] = morphTargets.cases.count;
+        morphologyOptions.caseCount = minCase + Math.floor(this.random.next() * (maxCase - minCase + 1));
+      }
+      // Pass word order target
+      if (!this.config.wordOrder) {
+        morphologyOptions.wordOrder = syntaxTargets.wordOrder;
+      }
+      // Pass alignment target
+      morphologyOptions.alignment = featureTargets.alignment;
+      // Pass full divergence targets for detailed control
+      morphologyOptions.divergenceTargets = {
+        morphology: morphTargets,
+        syntax: syntaxTargets,
+        features: featureTargets,
+      };
+    }
+    const morphologyWeaver = new MorphologyWeaver(this.random, syllableForge, morphologyOptions);
     let morphology = morphologyWeaver.generate();
 
     // Apply attribute modifications to morphology
@@ -142,6 +212,15 @@ export class Glossopetrae {
       attributes: activeAttrs,
       random: this.random,
     };
+
+    // Calculate and store divergence score if requested
+    if (this.config.divergenceFromEnglish !== null) {
+      language.divergence = {
+        target: this.config.divergenceFromEnglish,
+        actual: DivergenceEngine.scoreLanguage(language),
+        description: DivergenceEngine.describeDivergence(this.config.divergenceFromEnglish),
+      };
+    }
 
     // Phase 7: Translation Engine
     console.log('[GLOSSOPETRAE] Phase 7: Initializing translation engine...');

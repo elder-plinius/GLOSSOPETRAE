@@ -11,10 +11,35 @@ export class SyllableForge {
   constructor(random, phonology, config = {}) {
     this.random = random;
     this.phonology = phonology;
+
+    // Handle forceSimple for high divergence (CV-only syllables)
+    let maxOnset, maxCoda, allowClusters;
+    if (config.forceSimple) {
+      // Force simple CV or (C)V structure - common in many non-European languages
+      maxOnset = 1;
+      maxCoda = 0;
+      allowClusters = false;
+    } else {
+      // Handle array format [min, max] from divergence targets
+      if (Array.isArray(config.maxOnset)) {
+        maxOnset = random.int(config.maxOnset[0], config.maxOnset[1]);
+      } else {
+        maxOnset = config.maxOnset ?? this.random.weightedPick([[0, 0.1], [1, 0.3], [2, 0.4], [3, 0.2]]);
+      }
+
+      if (Array.isArray(config.maxCoda)) {
+        maxCoda = random.int(config.maxCoda[0], config.maxCoda[1]);
+      } else {
+        maxCoda = config.maxCoda ?? this.random.weightedPick([[0, 0.25], [1, 0.4], [2, 0.25], [3, 0.1]]);
+      }
+
+      allowClusters = config.allowClusters ?? true;
+    }
+
     this.config = {
-      maxOnset: config.maxOnset ?? this.random.weightedPick([[0, 0.1], [1, 0.3], [2, 0.4], [3, 0.2]]),
-      maxCoda: config.maxCoda ?? this.random.weightedPick([[0, 0.25], [1, 0.4], [2, 0.25], [3, 0.1]]),
-      allowClusters: config.allowClusters ?? true,
+      maxOnset,
+      maxCoda,
+      allowClusters,
       vowelHarmony: config.vowelHarmony ?? this.random.bool(0.3),
       harmonyType: config.harmonyType || null,
     };

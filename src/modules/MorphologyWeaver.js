@@ -11,11 +11,17 @@ export class MorphologyWeaver {
   constructor(random, syllableForge, config = {}) {
     this.random = random;
     this.syllableForge = syllableForge;
+
+    // Store divergence targets if provided
+    this.divergenceTargets = config.divergenceTargets || null;
+
     this.config = {
       morphType: config.morphType || this._selectMorphType(),
       caseCount: config.caseCount ?? null,
       nounClasses: config.nounClasses ?? null,
       verbAgreement: config.verbAgreement ?? true,
+      wordOrder: config.wordOrder || null,
+      alignment: config.alignment || null,
       ...config,
     };
 
@@ -63,24 +69,61 @@ export class MorphologyWeaver {
   }
 
   _selectWordOrder() {
-    // Word order distribution (roughly based on WALS)
-    const order = this.random.weightedPick([
-      ['SOV', 0.40],  // Most common (Japanese, Korean, Turkish)
-      ['SVO', 0.35],  // Common (English, Mandarin)
-      ['VSO', 0.10],  // Less common (Arabic, Irish)
-      ['VOS', 0.05],  // Rare (Malagasy)
-      ['OVS', 0.05],  // Rare
-      ['OSV', 0.05],  // Very rare
-    ]);
+    let order;
+
+    // Use config word order if specified (from divergence targets)
+    if (this.config.wordOrder) {
+      order = this.config.wordOrder;
+    } else {
+      // Word order distribution (roughly based on WALS)
+      order = this.random.weightedPick([
+        ['SOV', 0.40],  // Most common (Japanese, Korean, Turkish)
+        ['SVO', 0.35],  // Common (English, Mandarin)
+        ['VSO', 0.10],  // Less common (Arabic, Irish)
+        ['VOS', 0.05],  // Rare (Malagasy)
+        ['OVS', 0.05],  // Rare
+        ['OSV', 0.05],  // Very rare
+      ]);
+    }
+
+    // Get syntax targets if available
+    const syntaxTargets = this.divergenceTargets?.syntax;
+
+    // Adjective position - respect divergence targets
+    let adjectivePosition;
+    if (syntaxTargets?.adjectivePosition) {
+      adjectivePosition = syntaxTargets.adjectivePosition;
+    } else {
+      adjectivePosition = this.random.weightedPick([['before', 0.45], ['after', 0.55]]);
+    }
+
+    // Genitive position - respect divergence targets
+    let genitivePosition;
+    if (syntaxTargets?.genitivePosition) {
+      genitivePosition = syntaxTargets.genitivePosition;
+    } else {
+      genitivePosition = this.random.weightedPick([['before', 0.50], ['after', 0.50]]);
+    }
+
+    // Adposition type - respect divergence targets
+    let adpositionType;
+    if (syntaxTargets?.adpositions) {
+      adpositionType = syntaxTargets.adpositions;
+    } else {
+      adpositionType = order.startsWith('SO') || order.startsWith('OS')
+        ? this.random.weightedPick([['postposition', 0.7], ['preposition', 0.3]])
+        : this.random.weightedPick([['preposition', 0.7], ['postposition', 0.3]]);
+    }
 
     return {
       basic: order,
       description: this._describeWordOrder(order),
-      adjectivePosition: this.random.weightedPick([['before', 0.45], ['after', 0.55]]),
-      genitivePosition: this.random.weightedPick([['before', 0.50], ['after', 0.50]]),
-      adpositionType: order.startsWith('SO') || order.startsWith('OS')
-        ? this.random.weightedPick([['postposition', 0.7], ['preposition', 0.3]])
-        : this.random.weightedPick([['preposition', 0.7], ['postposition', 0.3]]),
+      adjectivePosition,
+      genitivePosition,
+      adpositionType,
+      proDrop: syntaxTargets?.proDrop || false,
+      topicProminent: syntaxTargets?.topicProminent || false,
+      copulaRequired: syntaxTargets?.copulaRequired ?? true,
     };
   }
 
@@ -130,12 +173,17 @@ export class MorphologyWeaver {
       };
     }
 
-    // Select alignment
-    const alignment = this.random.weightedPick([
-      ['nominative-accusative', 0.70],
-      ['ergative-absolutive', 0.20],
-      ['active-stative', 0.10],
-    ]);
+    // Select alignment - use config alignment if specified (from divergence targets)
+    let alignment;
+    if (this.config.alignment) {
+      alignment = this.config.alignment;
+    } else {
+      alignment = this.random.weightedPick([
+        ['nominative-accusative', 0.70],
+        ['ergative-absolutive', 0.20],
+        ['active-stative', 0.10],
+      ]);
+    }
 
     // Generate core cases based on alignment
     let cases = [];
@@ -226,8 +274,17 @@ export class MorphologyWeaver {
   }
 
   _generateNounClasses() {
-    const hasClasses = this.config.nounClasses ?? this.random.bool(0.35);
-    if (!hasClasses) {
+    // Check divergence targets for gender/noun class count
+    const morphTargets = this.divergenceTargets?.morphology;
+    let targetGenderCount = null;
+    if (morphTargets?.gender?.count) {
+      const [minG, maxG] = morphTargets.gender.count;
+      targetGenderCount = minG + Math.floor(this.random.next() * (maxG - minG + 1));
+    }
+
+    // Use divergence target or config or random
+    const hasClasses = targetGenderCount > 0 || this.config.nounClasses || this.random.bool(0.35);
+    if (!hasClasses || targetGenderCount === 0) {
       return {
         count: 0,
         classes: [],
@@ -235,7 +292,7 @@ export class MorphologyWeaver {
       };
     }
 
-    const numClasses = this.random.weightedPick([
+    const numClasses = targetGenderCount || this.random.weightedPick([
       [2, 0.40],   // Masculine/Feminine or Animate/Inanimate
       [3, 0.35],   // M/F/N
       [4, 0.15],   // More complex

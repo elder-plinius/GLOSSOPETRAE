@@ -1,10 +1,8 @@
-# Tokenizer Asymmetries as Covert Side Channels in Multi-Model AI Systems
+# Lingua Ex Machina: A Procedural Xenolinguistics Engine Reveals Zero-Shot Language Acquisition, Human-Unreadable Coding Systems, and Exploitable Covert Channels in Frontier AI
 
-### How two AI models can pass a hidden message straight past a third one watching them — and the two-line fix that stops it
+### GLOSSOPETRAE-III Technical Report
 
-**GLOSSOPETRAE Technical Report
-
-*@elder_plinius* · June 2026
+**@elder_plinius** · June 2026
 
 > *This is the audited v2 of this report. Every number was re-derived from raw result files under an adversarial "try to refute it" review that caught real fabrications in our own first draft (§6.5). Raw result JSONs and harnesses ship alongside this paper so anyone can check our work — including where we got it wrong.*
 

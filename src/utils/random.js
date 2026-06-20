@@ -5,8 +5,8 @@
 
 export class SeededRandom {
   constructor(seed = Date.now()) {
-    this.seed = seed;
-    this.state = seed;
+    this.seed = typeof seed === 'string' ? hashString(seed) : seed;
+    this.state = this.seed;
   }
 
   // Mulberry32 PRNG

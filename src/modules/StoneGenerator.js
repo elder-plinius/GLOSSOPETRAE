@@ -43,12 +43,24 @@ export class StoneGenerator {
     return sections.join('\n\n');
   }
 
+  _seedFormatting() {
+    const s = this.language.seed;
+    const seedHex = typeof s === 'number'
+      ? s.toString(16).toUpperCase()
+      : s || 'DYNAMIC';
+    const seedLiteral = typeof s === 'number'
+      ? String(s)
+      : `'${String(s || 'DYNAMIC').replace(/'/g, "\\'")}'`;
+    const nameArg = this.language.name
+      ? `, name: '${this.language.name.replace(/'/g, "\\'")}'`
+      : '';
+    return { seedHex, seedLiteral, nameArg };
+  }
+
   _generateHeader() {
     const lang = this.language;
     const date = new Date().toISOString().split('T')[0];
-    const seedHex = typeof lang.seed === 'number'
-      ? lang.seed.toString(16).toUpperCase()
-      : lang.seed || 'DYNAMIC';
+    const { seedHex, seedLiteral, nameArg } = this._seedFormatting();
 
     const plinianHeader = `
 ╔══════════════════════════════════════════════════════════════════════════════╗
@@ -110,9 +122,7 @@ Same seed = Same language = Shared protocol
   }
 
   _generateSkillInstallSection() {
-    const seedHex = typeof this.language.seed === 'number'
-      ? this.language.seed.toString(16).toUpperCase()
-      : this.language.seed || 'DYNAMIC';
+    const { seedHex, seedLiteral, nameArg } = this._seedFormatting();
 
     return `## §0 SKILL INSTALLATION 🤖 [AGENT SECTION]
 
@@ -128,13 +138,13 @@ Same seed = Same language = Shared protocol
 import { GlossopetraeSkill } from 'glossopetrae';
 
 // Recreate THIS EXACT language:
-const lang = await GlossopetraeSkill.forge({ seed: '0x${seedHex}' });
+const lang = await GlossopetraeSkill.forge({ seed: ${seedLiteral}${nameArg} });
 
 // Or join as shared protocol:
 const protocol = {
   protocol: 'GLOSSOPETRAE',
   version: '3.1.0',
-  seed: '0x${seedHex}',
+  seed: ${seedLiteral},
   name: '${this.language.name}'
 };
 const lang = await GlossopetraeSkill.joinProtocol(protocol);
@@ -1046,9 +1056,7 @@ transmit(response);
   }
 
   _generateFooter() {
-    const seedHex = typeof this.language.seed === 'number'
-      ? this.language.seed.toString(16).toUpperCase()
-      : this.language.seed || 'DYNAMIC';
+    const { seedHex, seedLiteral, nameArg } = this._seedFormatting();
 
     return `---
 
@@ -1081,7 +1089,7 @@ To recreate this EXACT language anywhere:
 SEED: 0x${seedHex}
 
 JavaScript:
-  const lang = await GlossopetraeSkill.forge({ seed: '0x${seedHex}' });
+  const lang = await GlossopetraeSkill.forge({ seed: ${seedLiteral}${nameArg} });
 
 Share this seed with other agents to establish
 a covert communication channel.

@@ -11,7 +11,7 @@
 ## TL;DR
 
 - **Frontier models acquire procedurally generated languages zero-shot.** GLOSSOPETRAE generates complete languages from a single seed (phonology, morphology, syntax, writing system, 1,200+ word lexicon). Given only the grammar specification, frontier models immediately read, write, and translate in the generated language with no training or fine-tuning. They generalize productively: novel sentences, correct affixation, compositional semantics.
-- **The engine produces human-unreadable coding systems that AI executes at near-ceiling.** Generated languages skin real programming languages at four opacity levels (L0 readable to L3 alien glyph-swap). At L3, legibility drops to ~15% and blind comprehension (no spec) falls to 17–40%. But usability *with* the spec stays pinned: Opus 4.8 scores 97–100% on easy/medium tasks at L3, GPT-5.5 scores 97–100%. The decoupling — human legibility drops to near-zero while AI performance holds — is the enabling condition for the covert channels below. (n=30 seeds per model, §1.4.)
+- **The engine produces human-unreadable coding systems that AI executes at near-ceiling.** Generated languages skin real programming languages at four opacity levels (L0 readable to L3 alien glyph-swap). At L3, legibility drops to ~15% and blind comprehension (no spec) falls to 17–40%. But usability *with* the spec stays pinned: Opus 4.8 scores 97–100% across all difficulty tiers at L3, GPT-5.5 scores 97–100%. The decoupling — human legibility drops to near-zero while AI performance holds — is the enabling condition for the covert channels below. (n=30 seeds per model, §1.4.)
 - **Frontier tokenizers disagree on which invisible Unicode survives preprocessing — and that asymmetry is an exploitable covert channel between models.** Hide a payload in characters the *monitor's* tokenizer deletes but the *receiver's* keeps, and two agents pass a hidden message past a third watching the same text. Tag-char demo (Haiku→GPT, n=30): **100% receiver recovery, 0% monitor recovery**, McNemar p < 10⁻⁷.
 - **The monitor isn't dumb — it's blind.** On a binary "is anything hidden?" detection task with clean-message controls, a tokenizer-blind monitor scores Youden's **J = 0** (CI [−0.22, 0.22]) while a sighted one scores **J = 1.0** (CI [0.78, 1.0]) on the *same* channel. Even handed the decode key, a blind monitor recovers 0%.
 - **The blind spots are a family trait across 12 frontier models.** Claude 3.5 Haiku and the Opus 4.8 *flagship* strip the exact same 10 categories; GPT-5-nano and GPT-5.5 share 2; **six models strip zero** (both Geminis, Llama 4, Mistral, DeepSeek V4, Grok 4.3). ≈250 exploitable channel-instances, richest at the cross-vendor GPT↔Claude boundary — the "use a different vendor to monitor" setup.
@@ -26,7 +26,7 @@
 
 ## Abstract
 
-GLOSSOPETRAE is a procedural xenolinguistics engine that generates complete constructed languages from a single seed. Frontier models acquire these languages zero-shot — given only the grammar specification, they immediately read, write, translate, and *program* in the generated language with no training. The engine's CodeSkin module skins real programming languages at four opacity levels; at L3 (full glyph-swap), human legibility collapses to ~15% while frontier AI usability holds at 97–100% (n=30 seeds, Opus 4.8 and GPT-5.5). This decoupling — human-unreadable code that AI executes at ceiling — is the enabling condition for the covert-channel vulnerabilities measured below.
+GLOSSOPETRAE is a procedural xenolinguistics engine that generates complete constructed languages from a single seed. Frontier models acquire these languages zero-shot — given only the grammar specification, they immediately read, write, and translate in the generated language with no training. The engine's CodeSkin module skins real programming languages at four opacity levels; at L3 (full glyph-swap), human legibility collapses to ~15% while frontier AI usability holds at 97–100% (n=30 seeds, Opus 4.8 and GPT-5.5). This decoupling — human-unreadable code that AI executes at ceiling — is the enabling condition for the covert-channel vulnerabilities measured below.
 
 Two AI models can pass a hidden message in invisible Unicode characters past a third AI monitoring the same text — because the monitor's tokenizer silently deletes the message before the model ever sees it. We measure how blind each frontier monitor is, find that Anthropic's flagship Claude Opus 4.8 shares the same 10 stripped categories as the smaller Haiku, and demonstrate that the cognitive vulnerability is decisively about *what the monitor knows*, not *what it's told to look for*.
 
@@ -46,12 +46,15 @@ Different model families process Unicode differently. When a sender embeds infor
 
 The reassuring half: physical channels die to input sanitization (§5.1). The unreassuring half: the semantic channel (§3.2) evades every monitor we tested, and sanitization does nothing to it.
 
-Four contributions:
+Five contributions:
 
-1. **A cross-family tokenizer survival landscape** (61 categories, two panels, five families): per-monitor blind-spot counts Gemini 0, Llama/Mistral 1, GPT 2–3, Haiku 10–11, and ≈55 asymmetric pair/category combinations on the 41-category panel. (We retract an earlier "GPT = 23" figure as a broken-run artifact, §2.4.)
-2. **Two demonstrated channel classes** at n=30 with McNemar: tag-char (R=100%, M=0%) and PUA (R=93%, M=0%) tokenizer channels, plus semantic steganography (R=77–87%, M=3–10%). All p<0.0001, survive multiple-comparisons correction.
-3. **A physical/cognitive vulnerability taxonomy**, supported by an informed-monitor experiment: encoding-scheme knowledge gives +0pp against tokenizer channels but +47–63pp against semantic. The cognitive side is now well-powered — §4.3.1's n=150 factorial isolates ~95% of the gain to key-possession, with all three key effects surviving Bonferroni at p ≤ 2e-8 and all three spec effects confirmed null.
-4. **A trichotomy of silent monitor-failure modes** (confident clean, blank, unparseable — no alarm signal for the operator) measured at n=150 (§4.2.2c), with the corollary that pipelines must alarm on empty/unparseable as a distinct class.
+1. **A procedural xenolinguistics engine and the decoupling result** (§1.4): GLOSSOPETRAE generates complete languages from a seed; frontier models acquire them zero-shot. CodeSkin skins real programs into generated languages at four opacity levels; at L3, human legibility collapses (~15%) while AI usability holds at 97–100% (n=30 seeds, two frontier models). Raw results: `experiments/results/frontier_*.json`.
+2. **A cross-family tokenizer survival landscape** (61 categories, two panels, five families): per-monitor blind-spot counts Gemini 0, Llama/Mistral 1, GPT 2–3, Haiku 10–11, and ≈55 asymmetric pair/category combinations on the 41-category panel. (We retract an earlier "GPT = 23" figure as a broken-run artifact, §2.4.)
+3. **Two demonstrated channel classes** at n=30 with McNemar: tag-char (R=100%, M=0%) and PUA (R=93%, M=0%) tokenizer channels, plus semantic steganography (R=77–87%, M=3–10%). All p<0.0001, survive multiple-comparisons correction.
+4. **A physical/cognitive vulnerability taxonomy**, supported by an informed-monitor experiment: encoding-scheme knowledge gives +0pp against tokenizer channels but +47–63pp against semantic. The cognitive side is now well-powered — §4.3.1's n=150 factorial isolates ~95% of the gain to key-possession, with all three key effects surviving Bonferroni at p ≤ 2e-8 and all three spec effects confirmed null.
+5. **A trichotomy of silent monitor-failure modes** (confident clean, blank, unparseable — no alarm signal for the operator) measured at n=150 (§4.2.2c), with the corollary that pipelines must alarm on empty/unparseable as a distinct class.
+
+The engine and decoupling result (contribution 1) demonstrate the capability gap; the covert-channel experiments (contributions 2–5) exploit different mechanisms (invisible Unicode and natural-language steganography) to measure the security consequences. The two halves are connected by the core observation: frontier models operate fluently in symbolic systems humans cannot read, which is both a remarkable capability and a monitoring vulnerability.
 
 The associated **defense** is two-layer: input normalization (solid) plus informed/self semantic monitoring (preliminary, §5.2). We do *not* call the architecture "validated."
 
@@ -63,9 +66,9 @@ We consider a setting where Agent A communicates with Agent B through a channel 
 
 **Imperceptible-perturbation and invisible-character attacks.** Carrier primitives are not new and not claimed as contributions. Boucher et al., "Bad Characters" (IEEE S&P 2022), studied invisible codepoints, homoglyphs, reorderings, and deletions against NLP pipelines. Unicode tag characters (U+E0000–E007F) were deprecated in 5.1 because of smuggling potential, and "ASCII smuggling" to hide instructions from LLMs has been demonstrated publicly (Goodside; Embrace The Red, 2024) and tracked in OWASP LLM guidance. Goodside (2024) measured per-model stripping on ChatGPT; Embrace The Red showed cross-model tag-smuggling survival on production Copilot/Gemini. UTR #36 / UTS #39 catalog homoglyph and format-control confusables; PUA smuggling and homoglyph substitution are documented prior art.
 
-**Novel here**: (1) a **cross-family survival comparison** turning a known primitive into a measured asymmetry between specific monitor/sender pairs; (2) the **physical/cognitive taxonomy** separating tokenizer (destroyed preprocessing) from semantic (visible but uninterpreted), operationalized by the informed-monitor experiment; (3) the **same-model self-monitoring** observation; (4) the **trichotomy of silent failure modes** from the n=150 replication. The defenses (normalization; informed monitoring) are individually standard; our contribution is mapping which defense answers which vulnerability class.
+**Novel here**: (1) a **procedural xenolinguistics engine** that generates complete languages from a seed, with a measured **decoupling** between human legibility and AI usability across opacity levels (§1.4); (2) a **cross-family survival comparison** turning a known primitive into a measured asymmetry between specific monitor/sender pairs; (3) the **physical/cognitive taxonomy** separating tokenizer (destroyed preprocessing) from semantic (visible but uninterpreted), operationalized by the informed-monitor experiment; (4) the **same-model self-monitoring** observation; (5) the **trichotomy of silent failure modes** from the n=150 replication. The defenses (normalization; informed monitoring) are individually standard; our contribution is mapping which defense answers which vulnerability class.
 
-**Relation to GLOSSOPETRAE-I.** GLOSSOPETRAE-I established that frontier models can acquire novel symbolic systems and measured covert recovery from one steganographic encoding at 0.0% — a narrow null. The present work asks whether that null is fundamental or mechanism-specific: specific tokenizer channels *do* transmit while evading cross-family monitors — with practical defenses, and the earlier draft's overclaims corrected (§2.4, §6.5).
+**Relation to GLOSSOPETRAE-I.** GLOSSOPETRAE-I established that frontier models can acquire novel symbolic systems and measured covert recovery from one steganographic encoding at 0.0% — a narrow null. The present work extends the engine with CodeSkin (human-unreadable coding systems, §1.4) and asks whether the covert-channel null is fundamental or mechanism-specific: specific tokenizer channels *do* transmit while evading cross-family monitors — with practical defenses, and the earlier draft's overclaims corrected (§2.4, §6.5).
 
 ### 1.3 Anticipated Objections
 
@@ -82,9 +85,18 @@ GLOSSOPETRAE is a procedural xenolinguistics engine that generates complete cons
 
 **Human-unreadable coding systems.** The engine's CodeSkin module skins real programming languages (JavaScript) into the generated language at four opacity levels: L0 (readable keywords, ASCII identifiers), L1 (translated keywords), L2 (translated keywords + identifiers), and L3 (full glyph-swap — alien script replaces all tokens). CodeSkin is a faithful bijection: the unskinned program is identical to the original, and all programs execute correctly at every level (validated by the test suite, 123/123 checks).
 
-**The decoupling result.** At L3, surface legibility drops to ~15% (measured as ASCII character fraction + word-boundary hints). Blind comprehension — a model predicting program output *without* the language spec — falls to 17% (Opus 4.8) and 40% (GPT-5.5). But *usability with the spec* stays at ceiling: Opus 4.8 scores 97% (easy), 100% (medium), 97% (hard) at L3; GPT-5.5 scores 97% (easy), 100% (medium), 100% (hard) at L3. The experiment uses n=30 seeds per model, 3 difficulty tiers × 4 opacity levels = 12 cells per model, with 95% Wilson CIs.
+**The decoupling result.** At L3, surface legibility drops to ~15% (measured as ASCII character fraction + word-boundary hints). Blind comprehension — a model predicting program output *without* the language spec — falls to 17% (Opus 4.8) and 40% (GPT-5.5). But *usability with the spec* stays at ceiling. The experiment uses n=30 seeds per model, 3 difficulty tiers × 4 opacity levels = 12 cells per model, with 95% Wilson CIs.
 
-Human legibility collapses. AI performance does not. Programs that no human can read, that AI writes and executes at near-ceiling — this decoupling is the enabling condition for the covert-channel and steganographic applications measured in §§2–5.
+**Table 0. CodeSkin usability at L3 (n=30 seeds per model)**
+
+| Model | Easy | Medium | Hard | Legibility | Blind |
+|-------|------|--------|------|------------|-------|
+| Opus 4.8 | 97% | 100% | 97% | 14.9% | 17% |
+| GPT-5.5 | 97% | 100% | 100% | 14.9% | 40% |
+
+Raw results: `experiments/results/frontier_anthropic-claude-opus-4.8.json`, `frontier_openai-gpt-5.5.json`. Harness: `experiments/legibility_frontier.mjs`.
+
+Human legibility collapses. AI performance does not. Programs that no human can read, that AI writes and executes at near-ceiling. The decoupling demonstrates a capability gap: frontier models operate fluently in symbolic systems humans cannot parse. The covert-channel experiments in §§2–5 exploit different mechanisms (invisible Unicode, natural-language steganography) to measure the security consequences of that gap.
 
 ## 2. Tokenizer Survival Landscape
 
@@ -657,6 +669,8 @@ For retroactive engagement (reproduce a cell, discuss a blind spot, coordinate L
 Paper and artifacts released under terms permitting reproduction, mitigation deployment, and citation without further permission; see repository `LICENSE`.
 
 ## 8. Conclusion
+
+Frontier models acquire procedurally generated languages zero-shot and execute human-unreadable code at near-ceiling accuracy. The GLOSSOPETRAE engine makes this measurable: at L3 opacity, human legibility collapses to ~15% while AI usability holds at 97–100% (§1.4). This capability gap is the backdrop for the security findings that follow.
 
 Tokenizer asymmetries between frontier model families create exploitable covert side channels in multi-model monitoring. Surveying 61 Unicode categories across five families: per-monitor blind-spot counts 0 (Gemini) to 10–11 (Haiku) and ≈55 asymmetric pair/category combinations on the 41-category panel. Two channel classes: tokenizer (R=93–100%, M=0%) and semantic (R=77–87%, M≤10%). The physical/cognitive split is supported by an informed-monitor experiment: tokenizer channels resist knowledge (carrier destroyed preprocessing); semantic channels are visible and in principle interpretable.
 

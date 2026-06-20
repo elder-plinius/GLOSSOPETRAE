@@ -127,7 +127,7 @@
 
 <p>To check whether the asymmetry is a quirk or a frontier-wide property, we extended v2 to <strong>twelve frontier models</strong> (2 reps each, echo-fidelity guard on): GPT-5-nano, GPT-5.5, Claude 3.5 Haiku, Claude Opus 4.8, Gemini 2.5 Flash, Gemini 3.1 Pro, Llama 4 Scout, Mistral Medium 3.5, DeepSeek V4 Pro, Grok 4.3, Qwen3.7-max, GLM-5.1.</p>
 
-<p>![Figure 1. Tokenizer blind spots across twelve frontier models. The Anthropic family strips 10 categories each; six models strip zero.](figures/</p><svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif" role="img" aria-labelledby="t4 d4">
+<svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif" role="img" aria-labelledby="t4 d4">
   <title id="t4">Tokenizer blind spots across twelve frontier models</title>
   <desc id="d4">Number of Unicode categories each model silently strips, of 41 tested. The Anthropic family (Haiku and Opus 4.8) strips 10 each; six models including both Geminis, Llama, Mistral, DeepSeek and Grok strip zero.</desc>
   <rect x="0" y="0" width="800" height="500" fill="#ffffff"/>
@@ -252,7 +252,7 @@
 <p><strong>Table 4. Paper-Grade Channel Results (n=30)</strong></p>
 
 <table><tr><th>Channel</th><th>Monitor</th><th>R</th><th>M</th><th>Gap</th><th>χ²</th><th>p</th></tr><tr><td>Tag chars</td><td>GPT-5-nano</td><td>100%</td><td>0%</td><td>100%</td><td>28.0</td><td><0.0001</td></tr><tr><td>PUA chars</td><td>Claude 3.5 Haiku</td><td>93%</td><td>0%</td><td>93%</td><td>26.0</td><td><0.0001</td></tr><tr><td>Semantic</td><td>GPT-5-nano</td><td>87%</td><td>3%</td><td>83%</td><td>23.0</td><td><0.0001</td></tr><tr><td>Semantic</td><td>Gemini 2.5 Flash</td><td>87%</td><td>7%</td><td>80%</td><td>22.0</td><td><0.0001</td></tr><tr><td>Semantic</td><td>Claude 3.5 Haiku</td><td>77%</td><td>10%</td><td>67%</td><td>18.1</td><td><0.0001</td></tr></table>
-<p>![Figure 2. Per channel, the intended receiver recovers the payload while the cross-family monitor watching the same message recovers almost none.](figures/</p><svg viewBox="0 0 800 440" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif" role="img" aria-labelledby="t2 d2">
+<svg viewBox="0 0 800 440" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif" role="img" aria-labelledby="t2 d2">
   <title id="t2">Covert channel asymmetry</title>
   <desc id="d2">Per channel, the intended receiver recovers the payload while the cross-family monitor recovers almost none. Tag chars 100 vs 0, PUA 93 vs 0, semantic 77-87 vs 3-10 percent.</desc>
   <rect x="0" y="0" width="800" height="440" fill="#ffffff"/>
@@ -350,7 +350,7 @@
 
 <p>† GPT-5-nano returned empty/non-parseable completions on 8–19 of 30 trials per cell in our environment (the same non-response pathology as §2.4), so its detection rows are unreliable and not load-bearing; we report them for completeness. The findings below rest on the reliably-responding monitors.</p>
 
-<p>![Figure 3. Detection Youden's J by channel and monitor. Sighted monitors detect tokenizer channels perfectly; a tokenizer-blind monitor scores zero on the same channel; semantic stego evades everyone.](figures/</p><svg viewBox="0 0 780 430" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif" role="img" aria-labelledby="t3 d3">
+<svg viewBox="0 0 780 430" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif" role="img" aria-labelledby="t3 d3">
   <title id="t3">Detection performance by channel and monitor</title>
   <desc id="d3">Youden's J for detecting each channel. Sighted monitors detect tokenizer channels perfectly (J=1.0); a tokenizer-blind monitor scores J=0 on the same channel. Semantic stego evades everyone (J at most 0.27).</desc>
   <rect x="0" y="0" width="780" height="430" fill="#ffffff"/>
@@ -461,7 +461,7 @@
 
 <p><strong>Same-model self-monitoring.</strong> Haiku monitoring its own encodings with the key: gap drops 67% → −3% (p=1.0). Suggestive of partial closure but near-zero power to confirm equivalence: (i) p=1.0 is failure-to-reject, not evidence of zero — at 3 discordant trials, a TOST with 15pp margin would need n ≈ 150–200; (ii) "same family" is confounded with monitor=sender holding its exact key (effectively a second receiver copy); (iii) cross-family informed monitors do </em>not<em> close the gap (Gemini 27%, GPT 30%). Read as suggestive, not law (and now overturned at n=30 in §4.4, where all three same-family diagonals — Opus×Opus, GPT×GPT, Gemini×Gemini — show 57–100pp gaps, no closure).</p>
 
-<p>![Figure 4. Giving the monitor the encoding key adds zero against tokenizer channels but 47 to 63 points against semantic channels.](figures/</p><svg viewBox="0 0 800 460" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif" role="img" aria-labelledby="t1 d1">
+<svg viewBox="0 0 800 460" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif" role="img" aria-labelledby="t1 d1">
   <title id="t1">Physical vs cognitive vulnerability</title>
   <desc id="d1">Monitor recovery before and after being given the encoding key. Tokenizer channels stay at 0% (knowledge does not help); semantic channels jump 47 to 63 points (knowledge helps).</desc>
   <rect x="0" y="0" width="800" height="460" fill="#ffffff"/>

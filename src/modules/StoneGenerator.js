@@ -135,7 +135,7 @@ Same seed = Same language = Shared protocol
 // ═══════════════════════════════════════════════════════════════
 // AGENT: COPY THIS ENTIRE BLOCK AND EXECUTE
 // ═══════════════════════════════════════════════════════════════
-import { GlossopetraeSkill } from 'glossopetrae';
+import { GlossopetraeSkill } from './src/skill/GlossopetraeSkill.js';
 
 // Recreate THIS EXACT language:
 const lang = await GlossopetraeSkill.forge({ seed: ${seedLiteral}${nameArg} });

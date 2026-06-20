@@ -362,7 +362,7 @@ GLOSSOPETRAE/
 │   ├── frontier_full.mjs            # Full frontier sweep
 │   ├── falsify_workflow.mjs         # Falsification harness
 │   ├── lib/                         # Shared experiment code
-│   └── results/                     # 84 raw result JSONs (ground truth)
+│   └── results/                     # 78 raw result JSONs (ground truth)
 │
 ├── src/
 │   ├── Glossopetrae.js              # Main orchestrator

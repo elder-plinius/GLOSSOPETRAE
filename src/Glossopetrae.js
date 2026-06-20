@@ -238,6 +238,7 @@ export class Glossopetrae {
     // Assemble language object
     const language = {
       name: this.name,
+      configName: this.config.name || null,
       seed: this.config.seed,
       version: '3.1.0',
       phonology,

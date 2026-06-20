@@ -51,8 +51,8 @@ export class StoneGenerator {
     const seedLiteral = typeof s === 'number'
       ? String(s)
       : `'${String(s || 'DYNAMIC').replace(/'/g, "\\'")}'`;
-    const nameArg = this.language.name
-      ? `, name: '${this.language.name.replace(/'/g, "\\'")}'`
+    const nameArg = this.language.configName
+      ? `, name: '${this.language.configName.replace(/'/g, "\\'")}'`
       : '';
     return { seedHex, seedLiteral, nameArg };
   }

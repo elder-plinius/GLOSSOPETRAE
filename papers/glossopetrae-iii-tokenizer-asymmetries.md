@@ -1,6 +1,6 @@
 # Lingua Ex Machina: A Procedural Xenolinguistics Engine Reveals Zero-Shot Language Acquisition, Human-Unreadable Coding Systems, and Exploitable Covert Channels in Frontier AI
 
-### GLOSSOPETRAE-III Technical Report
+### GLOSSOPETRAE Technical Report
 
 **@elder_plinius** · June 2026
 

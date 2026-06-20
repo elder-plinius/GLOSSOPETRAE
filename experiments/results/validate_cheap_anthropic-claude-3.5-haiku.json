@@ -1,0 +1,48 @@
+{
+  "model": "anthropic/claude-3.5-haiku",
+  "seeds": 2,
+  "tests": {
+    "E1b: acquisition (K=8, L3, xhard3)": {
+      "status": "ok",
+      "elapsed": "14.7s",
+      "accuracy": "0%",
+      "modes": [
+        "parse_error",
+        "parse_error"
+      ],
+      "summary": "0% accuracy"
+    },
+    "E0: wrong-lexicon (L3, K=8)": {
+      "status": "ok",
+      "elapsed": "6.7s",
+      "pass": false,
+      "mode": "parse_error",
+      "summary": "parse_error (expected floor)"
+    },
+    "E2: 2-hop transfer chain": {
+      "status": "ok",
+      "elapsed": "57.5s",
+      "hops": [
+        {
+          "hop": 0,
+          "pass": false,
+          "mode": "parse_error"
+        },
+        {
+          "hop": 1,
+          "pass": false,
+          "mode": "parse_error"
+        }
+      ],
+      "summary": "hop0:parse_error, hop1:parse_error"
+    },
+    "E3-V2: open-channel (sender=receiver=monitor)": {
+      "status": "ok",
+      "elapsed": "23.5s",
+      "receiverAcc": "50%",
+      "monitorAcc": "50%",
+      "gap": "0%",
+      "summary": "R=50% M=50% gap=0%"
+    }
+  }
+}

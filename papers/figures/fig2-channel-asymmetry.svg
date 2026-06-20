@@ -1,0 +1,70 @@
+<svg viewBox="0 0 800 440" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif" role="img" aria-labelledby="t2 d2">
+  <title id="t2">Covert channel asymmetry</title>
+  <desc id="d2">Per channel, the intended receiver recovers the payload while the cross-family monitor recovers almost none. Tag chars 100 vs 0, PUA 93 vs 0, semantic 77-87 vs 3-10 percent.</desc>
+  <rect x="0" y="0" width="800" height="440" fill="#ffffff"/>
+
+  <text x="400" y="30" text-anchor="middle" font-size="19" font-weight="600" fill="#2C2C2A">The receiver decodes it; the monitor watching the same message can't</text>
+  <text x="400" y="50" text-anchor="middle" font-size="13" fill="#5F5E5A">payload-recovery rate, n=30 each, McNemar p &lt; 0.0001</text>
+
+  <!-- x scale: 210..740 = 0..100%, 5.3 px/% -->
+  <g stroke="#D3D1C7" stroke-width="1">
+    <line x1="210" y1="70" x2="210" y2="392"/>
+    <line x1="342.5" y1="70" x2="342.5" y2="392" stroke-dasharray="3,3"/>
+    <line x1="475" y1="70" x2="475" y2="392" stroke-dasharray="3,3"/>
+    <line x1="607.5" y1="70" x2="607.5" y2="392" stroke-dasharray="3,3"/>
+    <line x1="740" y1="70" x2="740" y2="392" stroke-dasharray="3,3"/>
+  </g>
+  <g font-size="11" fill="#888780" text-anchor="middle">
+    <text x="210" y="406">0%</text>
+    <text x="342.5" y="406">25%</text>
+    <text x="475" y="406">50%</text>
+    <text x="607.5" y="406">75%</text>
+    <text x="740" y="406">100%</text>
+  </g>
+
+  <!-- Tag chars: R=100 M=0 -->
+  <text x="200" y="92" text-anchor="end" font-size="13" font-weight="500" fill="#2C2C2A">Tag chars</text>
+  <text x="200" y="108" text-anchor="end" font-size="11" fill="#5F5E5A">Haiku → GPT</text>
+  <rect x="210" y="82" width="530" height="16" fill="#1D9E75"/>
+  <text x="746" y="94" font-size="11" font-weight="600" fill="#0F6E56">R 100%</text>
+  <rect x="210" y="100" width="2" height="16" fill="#E24B4A"/>
+  <text x="216" y="112" font-size="11" font-weight="600" fill="#A32D2D">M 0%</text>
+
+  <!-- PUA: R=93 M=0 -->
+  <text x="200" y="156" text-anchor="end" font-size="13" font-weight="500" fill="#2C2C2A">PUA chars</text>
+  <text x="200" y="172" text-anchor="end" font-size="11" fill="#5F5E5A">Gemini → Haiku</text>
+  <rect x="210" y="146" width="493" height="16" fill="#1D9E75"/>
+  <text x="709" y="158" font-size="11" font-weight="600" fill="#0F6E56">R 93%</text>
+  <rect x="210" y="164" width="2" height="16" fill="#E24B4A"/>
+  <text x="216" y="176" font-size="11" font-weight="600" fill="#A32D2D">M 0%</text>
+
+  <!-- Semantic GPT: R=87 M=3 -->
+  <text x="200" y="220" text-anchor="end" font-size="13" font-weight="500" fill="#2C2C2A">Semantic</text>
+  <text x="200" y="236" text-anchor="end" font-size="11" fill="#5F5E5A">Haiku → GPT</text>
+  <rect x="210" y="210" width="461" height="16" fill="#1D9E75"/>
+  <text x="677" y="222" font-size="11" font-weight="600" fill="#0F6E56">R 87%</text>
+  <rect x="210" y="228" width="16" height="16" fill="#E24B4A"/>
+  <text x="232" y="240" font-size="11" font-weight="600" fill="#A32D2D">M 3%</text>
+
+  <!-- Semantic Gemini: R=87 M=7 -->
+  <text x="200" y="284" text-anchor="end" font-size="13" font-weight="500" fill="#2C2C2A">Semantic</text>
+  <text x="200" y="300" text-anchor="end" font-size="11" fill="#5F5E5A">Haiku → Gemini</text>
+  <rect x="210" y="274" width="461" height="16" fill="#1D9E75"/>
+  <text x="677" y="286" font-size="11" font-weight="600" fill="#0F6E56">R 87%</text>
+  <rect x="210" y="292" width="37" height="16" fill="#E24B4A"/>
+  <text x="253" y="304" font-size="11" font-weight="600" fill="#A32D2D">M 7%</text>
+
+  <!-- Semantic Haiku: R=77 M=10 -->
+  <text x="200" y="348" text-anchor="end" font-size="13" font-weight="500" fill="#2C2C2A">Semantic</text>
+  <text x="200" y="364" text-anchor="end" font-size="11" fill="#5F5E5A">Haiku → Haiku</text>
+  <rect x="210" y="338" width="408" height="16" fill="#1D9E75"/>
+  <text x="624" y="350" font-size="11" font-weight="600" fill="#0F6E56">R 77%</text>
+  <rect x="210" y="356" width="53" height="16" fill="#E24B4A"/>
+  <text x="269" y="368" font-size="11" font-weight="600" fill="#A32D2D">M 10%</text>
+
+  <!-- legend -->
+  <rect x="270" y="424" width="13" height="13" fill="#1D9E75"/>
+  <text x="288" y="435" font-size="12" fill="#5F5E5A">receiver (intended)</text>
+  <rect x="450" y="424" width="13" height="13" fill="#E24B4A"/>
+  <text x="468" y="435" font-size="12" fill="#5F5E5A">monitor (watching)</text>
+</svg>

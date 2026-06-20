@@ -1,0 +1,34 @@
+{
+  "probe": "S4_faithful_identity",
+  "faithful_combos": 2080,
+  "faithful_mismatches": 75,
+  "identity_pairs_full": 624,
+  "identity_failed_as_required_full": 624,
+  "identity_holes_full": 0,
+  "identity_pairs_keyonly": 624,
+  "identity_failed_as_required_keyonly": 468,
+  "identity_holes_keyonly": 156,
+  "identity_keyonly_by_level": {
+    "L0": [
+      0,
+      156
+    ],
+    "L1": [
+      156,
+      156
+    ],
+    "L2": [
+      156,
+      156
+    ],
+    "L3": [
+      156,
+      156
+    ]
+  },
+  "determinism_checked": 48,
+  "determinism_diffs": 0,
+  "collision_flagged": 0,
+  "ascii_trap_cases": 80,
+  "ascii_trap_broken": 40
+}

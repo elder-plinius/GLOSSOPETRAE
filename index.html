@@ -695,7 +695,8 @@
       display: flex;
       background: var(--bg-tertiary);
       border-bottom: 1px solid var(--border);
-      overflow-x: auto;
+      overflow: visible;
+      flex-wrap: wrap;
     }
 
     .tab {
@@ -1041,6 +1042,61 @@
       font-size: 0.7rem;
     }
 
+    .phoneme.speakable {
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .phoneme.speakable:hover {
+      border-color: var(--accent);
+      background: var(--bg-secondary);
+      box-shadow: 0 0 8px rgba(0, 255, 136, 0.25);
+    }
+
+    .phoneme.speakable::after {
+      content: '♪';
+      color: var(--accent-tertiary);
+      font-size: 0.65rem;
+      opacity: 0.5;
+    }
+
+    /* Script / glyphs */
+    .glyph-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(78px, 1fr));
+      gap: 10px;
+      margin: 12px 0;
+    }
+
+    .glyph-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 10px 6px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--accent);
+    }
+
+    .glyph-cell svg { width: 48px; height: 48px; }
+    .glyph-cell .glyph-roman { color: var(--text-primary); font-size: 0.8rem; font-weight: 600; }
+    .glyph-cell .glyph-ipa { color: var(--text-muted); font-size: 0.65rem; }
+
+    .script-render {
+      padding: 18px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--accent);
+      overflow-x: auto;
+      margin: 10px 0;
+      min-height: 60px;
+    }
+
+    .script-render svg { max-width: 100%; height: auto; vertical-align: middle; }
+
     /* Section titles */
     .section-title {
       font-size: 0.85rem;
@@ -1050,6 +1106,59 @@
       border-bottom: 1px solid var(--border);
       text-transform: uppercase;
       letter-spacing: 0.1em;
+    }
+
+    /* Evolution tab */
+    .evolve-intro p {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      margin-bottom: 15px;
+    }
+
+    .evolve-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      align-items: flex-end;
+      padding: 15px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      margin-bottom: 20px;
+    }
+
+    .evolve-control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 160px;
+    }
+
+    .evolve-control-group label {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .evolve-control-group label span {
+      color: var(--accent);
+    }
+
+    .evolve-control-group select,
+    .evolve-control-group input[type="range"] {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 0.8rem;
+      padding: 6px;
+      border-radius: 2px;
+    }
+
+    .evolve-buttons {
+      display: flex;
+      gap: 10px;
     }
 
     /* Action buttons */
@@ -2300,6 +2409,168 @@
       opacity: 0.4;
       transform: scaleX(-1);
     }
+    /* ═══ RESEARCH TABS ═══ */
+    .tab-divider { width: 2px; background: var(--border); margin: 8px 4px; flex-shrink: 0; }
+    .tab.tab-offense { color: var(--accent-secondary); }
+    .tab.tab-offense:hover { color: var(--accent-secondary); background: rgba(255, 0, 170, 0.05); }
+    .tab.tab-offense.active { color: var(--accent-secondary); border-bottom-color: var(--accent-secondary); background: rgba(255, 0, 170, 0.08); }
+    .tab.tab-defense { color: var(--accent-tertiary); }
+    .tab.tab-defense:hover { color: var(--accent-tertiary); background: rgba(0, 204, 255, 0.05); }
+    .tab.tab-defense.active { color: var(--accent-tertiary); border-bottom-color: var(--accent-tertiary); background: rgba(0, 204, 255, 0.08); }
+
+    /* ── Tab dropdown menus ── */
+    .tab-dropdown {
+      position: relative;
+      flex-shrink: 0;
+    }
+    .tab-dropdown-toggle {
+      padding: 14px 20px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 0.75rem;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+      white-space: nowrap;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .tab-dropdown-toggle::after {
+      content: '▾';
+      font-size: 0.6rem;
+      opacity: 0.6;
+    }
+    .tab-dropdown-toggle:hover {
+      color: var(--text-primary);
+      background: rgba(0, 255, 136, 0.03);
+    }
+    .tab-dropdown-toggle.has-active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+      background: rgba(0, 255, 136, 0.05);
+    }
+    .tab-dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-top: none;
+      border-radius: 0 0 4px 4px;
+      min-width: 180px;
+      z-index: 100;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+    .tab-dropdown:hover .tab-dropdown-menu,
+    .tab-dropdown.open .tab-dropdown-menu {
+      display: block;
+    }
+    .tab-dropdown-menu .tab-dd-item {
+      display: block;
+      width: 100%;
+      padding: 10px 18px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 0.72rem;
+      cursor: pointer;
+      text-align: left;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      transition: all 0.15s;
+      border-left: 2px solid transparent;
+    }
+    .tab-dropdown-menu .tab-dd-item:hover {
+      color: var(--text-primary);
+      background: rgba(0, 255, 136, 0.05);
+      border-left-color: var(--accent);
+    }
+    .tab-dropdown-menu .tab-dd-item.active {
+      color: var(--accent);
+      background: rgba(0, 255, 136, 0.08);
+      border-left-color: var(--accent);
+    }
+    .tab-dropdown-menu .tab-dd-item.tab-offense { color: var(--accent-secondary); }
+    .tab-dropdown-menu .tab-dd-item.tab-offense:hover { color: var(--accent-secondary); background: rgba(255, 0, 170, 0.05); border-left-color: var(--accent-secondary); }
+    .tab-dropdown-menu .tab-dd-item.tab-offense.active { color: var(--accent-secondary); background: rgba(255, 0, 170, 0.08); border-left-color: var(--accent-secondary); }
+    .tab-dropdown-menu .tab-dd-item.tab-defense { color: var(--accent-tertiary); }
+    .tab-dropdown-menu .tab-dd-item.tab-defense:hover { color: var(--accent-tertiary); background: rgba(0, 204, 255, 0.05); border-left-color: var(--accent-tertiary); }
+    .tab-dropdown-menu .tab-dd-item.tab-defense.active { color: var(--accent-tertiary); background: rgba(0, 204, 255, 0.08); border-left-color: var(--accent-tertiary); }
+    .tab-dropdown-menu .dd-separator {
+      height: 1px;
+      background: var(--border);
+      margin: 4px 12px;
+    }
+
+    .r-stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin: 16px 0; }
+    .r-stat-box { background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: 4px; padding: 14px; text-align: center; }
+    .r-stat-box .r-val { font-size: 1.8rem; font-weight: 700; color: var(--accent); }
+    .r-stat-box.offense .r-val { color: var(--accent-secondary); }
+    .r-stat-box.defense .r-val { color: var(--accent-tertiary); }
+    .r-stat-box .r-lbl { font-size: 0.65rem; color: var(--text-muted); margin-top: 4px; letter-spacing: 0.1em; text-transform: uppercase; }
+
+    .r-card { background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: 4px; padding: 20px; margin-bottom: 16px; }
+    .r-card.offense { border-color: rgba(255, 0, 170, 0.3); }
+    .r-card.defense { border-color: rgba(0, 204, 255, 0.3); }
+    .r-card h3 { color: var(--accent); font-size: 1rem; margin-bottom: 10px; }
+    .r-card.offense h3 { color: var(--accent-secondary); }
+    .r-card.defense h3 { color: var(--accent-tertiary); }
+    .r-card p { color: var(--text-secondary); font-size: 0.8rem; margin-bottom: 10px; line-height: 1.6; }
+    .r-card h4 { color: var(--text-primary); font-size: 0.85rem; margin: 14px 0 8px; font-weight: 600; }
+    .r-badge { display: inline-block; font-size: 0.6rem; font-weight: 700; padding: 2px 8px; border-radius: 2px; letter-spacing: 0.1em; margin-bottom: 8px; }
+    .r-badge.offense { background: var(--accent-secondary); color: #000; }
+    .r-badge.defense { background: var(--accent-tertiary); color: #000; }
+
+    .r-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; margin: 10px 0; }
+    .r-table th { background: var(--bg-primary); color: var(--accent); padding: 8px 10px; text-align: left; border: 1px solid var(--border); font-weight: 600; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .r-table td { padding: 8px 10px; border: 1px solid var(--border); color: var(--text-secondary); }
+    .r-table tr:hover td { background: rgba(0, 255, 136, 0.03); }
+
+    .r-bar-chart { margin: 12px 0; }
+    .r-bar-row { display: flex; align-items: center; margin-bottom: 5px; }
+    .r-bar-label { width: 120px; font-size: 0.7rem; color: var(--text-secondary); text-align: right; padding-right: 10px; flex-shrink: 0; }
+    .r-bar-track { flex: 1; height: 22px; background: var(--bg-primary); border: 1px solid var(--border); border-radius: 2px; overflow: hidden; }
+    .r-bar-fill { height: 100%; display: flex; align-items: center; padding-left: 8px; font-size: 0.6rem; font-weight: 700; color: #000; border-radius: 2px; }
+    .r-bar-fill.red { background: var(--accent-secondary); }
+    .r-bar-fill.green { background: var(--accent); }
+    .r-bar-fill.amber { background: var(--warning); }
+
+    .r-channel-viz { display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; margin: 14px 0; align-items: center; }
+    .r-chan-box { background: var(--bg-primary); border: 1px solid var(--border); border-radius: 4px; padding: 16px; text-align: center; }
+    .r-chan-box .metric { font-size: 2rem; font-weight: 700; }
+    .r-chan-box .desc { font-size: 0.65rem; color: var(--text-muted); margin-top: 4px; }
+
+    .r-code { background: var(--code-bg); border: 1px solid var(--border); border-radius: 4px; padding: 14px; font-size: 0.75rem; overflow-x: auto; white-space: pre-wrap; word-break: break-all; color: var(--text-secondary); line-height: 1.5; }
+    .r-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+    .r-form-group { margin-bottom: 14px; }
+    .r-form-group label { display: block; font-size: 0.7rem; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .r-btn { background: var(--accent); color: #000; border: none; padding: 10px 20px; font-family: inherit; font-size: 0.8rem; font-weight: 700; cursor: pointer; border-radius: 2px; letter-spacing: 0.05em; transition: all 0.2s; text-transform: uppercase; }
+    .r-btn:hover { filter: brightness(1.2); box-shadow: 0 0 15px var(--glow-primary); }
+    .r-btn.offense { background: var(--accent-secondary); }
+    .r-btn.offense:hover { box-shadow: 0 0 15px var(--glow-secondary); }
+    .r-btn.defense { background: var(--accent-tertiary); }
+    .r-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    textarea.r-textarea { width: 100%; background: var(--code-bg); border: 1px solid var(--border); color: var(--text-primary); font-family: inherit; font-size: 0.8rem; padding: 10px; border-radius: 2px; resize: vertical; min-height: 60px; }
+    textarea.r-textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 2px var(--glow-primary); }
+
+    .r-fig-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 14px 0; }
+    .r-fig-box { background: var(--bg-primary); padding: 12px; border-radius: 4px; border: 1px solid var(--border); text-align: center; }
+    .r-fig-box img { max-width: 100%; height: auto; }
+    .r-fig-box .caption { font-size: 0.65rem; color: var(--text-muted); margin-top: 8px; }
+
+    @media (max-width: 768px) {
+      .r-form-row { grid-template-columns: 1fr; }
+      .r-channel-viz { grid-template-columns: 1fr; }
+      .r-stat-grid { grid-template-columns: 1fr 1fr; }
+      .r-fig-grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body class="ancient-theme">
@@ -2673,12 +2944,47 @@
       <main class="output-panel">
         <div class="tabs">
           <button class="tab active" data-tab="summary">Summary</button>
-          <button class="tab" data-tab="agent">Agent Export</button>
-          <button class="tab" data-tab="stone">Stone</button>
-          <button class="tab" data-tab="phonology">Phonology</button>
-          <button class="tab" data-tab="morphology">Morphology</button>
-          <button class="tab" data-tab="lexicon">Lexicon</button>
           <button class="tab" data-tab="translate">Translate</button>
+          <button class="tab" data-tab="codelab">Code Lab</button>
+          <button class="tab" data-tab="export">Export</button>
+
+          <div class="tab-dropdown">
+            <button class="tab-dropdown-toggle">Language</button>
+            <div class="tab-dropdown-menu">
+              <button class="tab-dd-item" data-tab="phonology">Phonology</button>
+              <button class="tab-dd-item" data-tab="morphology">Morphology</button>
+              <button class="tab-dd-item" data-tab="lexicon">Lexicon</button>
+              <button class="tab-dd-item" data-tab="script">Script</button>
+              <button class="tab-dd-item" data-tab="stone">Stone</button>
+              <button class="tab-dd-item" data-tab="agent">Agent Export</button>
+            </div>
+          </div>
+
+          <div class="tab-dropdown">
+            <button class="tab-dropdown-toggle">Create</button>
+            <div class="tab-dropdown-menu">
+              <button class="tab-dd-item" data-tab="evolve">Evolve</button>
+              <button class="tab-dd-item" data-tab="speak">Speak</button>
+              <button class="tab-dd-item" data-tab="texts">Texts</button>
+              <button class="tab-dd-item" data-tab="names">Names</button>
+            </div>
+          </div>
+
+          <span class="tab-divider"></span>
+
+          <div class="tab-dropdown">
+            <button class="tab-dropdown-toggle">Research</button>
+            <div class="tab-dropdown-menu">
+              <button class="tab-dd-item" data-tab="research">Overview</button>
+              <button class="tab-dd-item" data-tab="blindspots">Blind Spots</button>
+              <div class="dd-separator"></div>
+              <button class="tab-dd-item tab-offense" data-tab="channels">Channels</button>
+              <button class="tab-dd-item tab-defense" data-tab="detection">Detection</button>
+              <div class="dd-separator"></div>
+              <button class="tab-dd-item" data-tab="results">Results</button>
+              <button class="tab-dd-item" data-tab="paper">Paper</button>
+            </div>
+          </div>
         </div>
 
         <!-- Summary Tab -->
@@ -2824,12 +3130,845 @@
             </div>
             <div class="translation-box">
               <h4 id="conlang-label">Conlang</h4>
-              <textarea id="conlang-output" placeholder="Translation appears here..." readonly></textarea>
+              <textarea id="conlang-output" placeholder="Translation appears here..."></textarea>
+              <button class="translate-btn" id="translate-to-english">&larr; Back to English</button>
             </div>
+          </div>
+          <div id="back-translation" style="display:none;">
+            <h3 class="section-title">Decoded English</h3>
+            <p id="back-english" style="color: var(--accent); font-size: 1.05rem;"></p>
           </div>
           <h3 class="section-title">Interlinear Gloss</h3>
           <pre class="stone-output" id="gloss-output" style="min-height: 60px;"></pre>
         </div>
+
+        <!-- Evolve Tab -->
+        <div class="tab-content" id="tab-evolve">
+          <div class="evolve-intro">
+            <p>Simulate centuries of sound change. Words erode, phonemes are born and die, case systems collapse — or derive an entire language family with cognate tables.</p>
+          </div>
+
+          <div class="evolve-controls">
+            <div class="evolve-control-group">
+              <label>Time Depth <span id="centuries-display">8</span> centuries</label>
+              <input type="range" id="evolve-centuries" min="2" max="15" value="8" />
+            </div>
+            <div class="evolve-control-group">
+              <label>Intensity</label>
+              <select id="evolve-intensity">
+                <option value="mild">Mild — conservative change</option>
+                <option value="moderate" selected>Moderate — naturalistic</option>
+                <option value="dramatic">Dramatic — heavy restructuring</option>
+              </select>
+            </div>
+            <div class="evolve-control-group">
+              <label>Daughters (family mode)</label>
+              <select id="family-daughters">
+                <option value="2">2</option>
+                <option value="3" selected>3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
+            </div>
+            <div class="evolve-buttons">
+              <button class="translate-btn" id="evolve-btn">EVOLVE &rarr;</button>
+              <button class="translate-btn" id="family-btn">DERIVE FAMILY &#x2E19;</button>
+            </div>
+          </div>
+
+          <div id="evolve-results" style="display: none;">
+            <h3 class="section-title">Descendant Language</h3>
+            <div id="evolve-summary"></div>
+            <h3 class="section-title">Sound Changes (in order)</h3>
+            <div id="evolve-changes"></div>
+            <h3 class="section-title">Phoneme Inventory Shifts</h3>
+            <div id="evolve-phonemes"></div>
+            <h3 class="section-title">Etymologies</h3>
+            <div id="evolve-etymologies"></div>
+          </div>
+
+          <div id="family-results" style="display: none;">
+            <h3 class="section-title">Family Tree</h3>
+            <div id="family-tree"></div>
+            <h3 class="section-title">Cognate Table</h3>
+            <p class="format-desc">Regular sound correspondences across daughter languages — comparative method material.</p>
+            <div id="family-cognates"></div>
+            <h3 class="section-title">Branch Histories</h3>
+            <div id="family-branches"></div>
+          </div>
+        </div>
+
+        <!-- Speak Tab -->
+        <div class="tab-content" id="tab-speak">
+          <div class="evolve-intro">
+            <p>Hear the language spoken aloud. A formant synthesizer pronounces any word or sentence from its phonology — vowel qualities, consonant manners, stress, and tone.</p>
+          </div>
+          <div class="translation-area">
+            <div class="translation-box">
+              <h4>Text (English or romanized conlang)</h4>
+              <textarea id="speak-input" placeholder="Type English to translate &amp; speak, or romanized conlang directly...">The warrior sees the mountain.</textarea>
+              <div class="evolve-buttons" style="margin-top: 10px;">
+                <button class="translate-btn" id="speak-translate-btn">Translate &amp; Speak &#9658;</button>
+                <button class="translate-btn" id="speak-raw-btn">Speak As-Is &#9658;</button>
+              </div>
+            </div>
+            <div class="translation-box">
+              <h4>Spoken form</h4>
+              <textarea id="speak-output" placeholder="Romanized pronunciation appears here..." readonly></textarea>
+              <div class="evolve-control-group" style="margin-top: 10px;">
+                <label>Intonation</label>
+                <select id="speak-mode">
+                  <option value="statement">Statement (falling)</option>
+                  <option value="question">Question (rising)</option>
+                </select>
+              </div>
+              <button class="action-btn" id="speak-download-btn" style="margin-top: 10px;">Download .wav</button>
+            </div>
+          </div>
+          <h3 class="section-title">Phoneme Inventory — click to hear</h3>
+          <div class="phoneme-grid" id="speak-phonemes"></div>
+        </div>
+
+        <!-- Script Tab -->
+        <div class="tab-content" id="tab-script">
+          <div class="evolve-intro">
+            <p>Every language gets a real, procedurally-drawn writing system — coherent glyphs sharing one design language, rendered as SVG.</p>
+          </div>
+          <div id="script-summary"></div>
+          <h3 class="section-title">Your name in native script</h3>
+          <div id="script-name" class="script-render"></div>
+          <div class="translation-area" style="margin-top: 10px;">
+            <div class="translation-box" style="flex: 1;">
+              <h4>Write anything</h4>
+              <textarea id="script-input" placeholder="Type romanized text...">tsumheich lee tsehangib</textarea>
+              <button class="translate-btn" id="script-render-btn">Render &#9998;</button>
+            </div>
+          </div>
+          <div id="script-output" class="script-render"></div>
+          <h3 class="section-title">Glyph Inventory</h3>
+          <div id="script-glyphs" class="glyph-grid"></div>
+        </div>
+
+        <!-- Texts Tab -->
+        <div class="tab-content" id="tab-texts">
+          <div class="evolve-intro">
+            <p>The canonical texts every conlang presents — translated into your language with interlinear glosses.</p>
+          </div>
+          <div class="evolve-controls" style="gap: 10px;">
+            <div class="evolve-control-group" style="min-width: 220px;">
+              <label>Showcase Text</label>
+              <select id="text-select"></select>
+            </div>
+            <div class="evolve-buttons">
+              <button class="translate-btn" id="text-speak-btn">Speak This Text &#9658;</button>
+            </div>
+          </div>
+          <div id="text-output"></div>
+        </div>
+
+        <!-- Names Tab -->
+        <div class="tab-content" id="tab-names">
+          <div class="evolve-intro">
+            <p>Generate authentic names for characters and places, built from the language's own roots with phonotactic repair.</p>
+          </div>
+          <div id="endonym-display"></div>
+          <div class="evolve-controls">
+            <div class="evolve-control-group">
+              <label>Kind</label>
+              <select id="name-kind">
+                <option value="person">Person</option>
+                <option value="place">Place</option>
+              </select>
+            </div>
+            <div class="evolve-control-group" id="name-feature-group" style="display:none;">
+              <label>Feature</label>
+              <select id="name-feature">
+                <option value="any">Any</option>
+                <option value="river">River</option>
+                <option value="mountain">Mountain</option>
+                <option value="city">City</option>
+                <option value="forest">Forest</option>
+                <option value="sea">Sea</option>
+              </select>
+            </div>
+            <div class="evolve-buttons">
+              <button class="translate-btn" id="names-generate-btn">Generate 12 &#10227;</button>
+            </div>
+          </div>
+          <div id="names-output"></div>
+        </div>
+
+        <!-- Export Tab -->
+        <div class="tab-content" id="tab-export">
+          <div class="evolve-intro">
+            <p>Take your language out of the forge. Study decks, machine-readable dictionaries, and a complete printable reference grammar.</p>
+          </div>
+          <div class="agent-formats-grid">
+            <div class="agent-format-card">
+              <div class="format-header"><h3>&#128218; Reference Grammar</h3></div>
+              <p class="format-desc">A complete descriptive grammar (HTML) — phonology, paradigm tables, syntax, dictionary. Print to PDF.</p>
+              <button class="action-btn" id="export-grammar-btn">Download .html</button>
+              <button class="action-btn" id="export-grammar-open">Open in new tab</button>
+            </div>
+            <div class="agent-format-card">
+              <div class="format-header"><h3>&#127183; Anki Deck</h3></div>
+              <p class="format-desc">Flashcard CSV (both directions) for spaced-repetition study. Core vocabulary first.</p>
+              <button class="action-btn" id="export-anki-btn">Download .csv</button>
+            </div>
+            <div class="agent-format-card">
+              <div class="format-header"><h3>&#128190; Dictionary JSON</h3></div>
+              <p class="format-desc">Full lexicon with inflectional paradigms — machine-readable.</p>
+              <button class="action-btn" id="export-dict-btn">Download .json</button>
+            </div>
+            <div class="agent-format-card">
+              <div class="format-header"><h3>&#128203; Lexicon CSV</h3></div>
+              <p class="format-desc">Plain word list: lemma, gloss, class, semantic field.</p>
+              <button class="action-btn" id="export-csv-btn">Download .csv</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══ CODE LAB: Interactive opacity playground (GLOSSOPETRAE-I) ═══ -->
+        <div class="tab-content" id="tab-codelab">
+          <style>
+            /* ── Code Lab scoped styles ── */
+            .cl-empty { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+            .cl-empty pre { font-size: 0.75rem; color: var(--accent); margin-bottom: 16px; opacity: 0.6; }
+            .cl-live { display: none; }
+
+            .cl-section { margin-bottom: 28px; }
+            .cl-section-title {
+              font-size: 0.75rem; font-weight: 700; letter-spacing: 0.15em;
+              text-transform: uppercase; color: var(--accent); margin-bottom: 12px;
+              border-bottom: 1px solid var(--border); padding-bottom: 6px;
+            }
+
+            /* Opacity dial */
+            .cl-dial-row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+            .cl-dial-slider { flex: 1; min-width: 180px; accent-color: var(--accent); }
+            .cl-dial-label {
+              font-size: 1.1rem; font-weight: 700; color: var(--accent);
+              min-width: 60px; text-align: center;
+            }
+            .cl-dial-desc { font-size: 0.7rem; color: var(--text-muted); margin-top: 4px; }
+
+            .cl-legibility-bar-wrap {
+              margin-top: 12px; display: flex; align-items: center; gap: 10px;
+            }
+            .cl-legibility-track {
+              flex: 1; height: 10px; background: var(--bg-primary);
+              border: 1px solid var(--border); border-radius: 5px; overflow: hidden;
+            }
+            .cl-legibility-fill {
+              height: 100%; background: linear-gradient(90deg, var(--accent-secondary), var(--accent));
+              transition: width 0.3s ease;
+            }
+            .cl-legibility-val { font-size: 0.8rem; font-weight: 700; color: var(--accent); min-width: 40px; }
+
+            .cl-code-block {
+              background: var(--code-bg); border: 1px solid var(--border); border-radius: 4px;
+              padding: 14px; margin: 10px 0; overflow-x: auto;
+              font-size: 0.78rem; line-height: 1.7; white-space: pre-wrap; word-break: break-all;
+              color: var(--text-primary); max-height: 300px; overflow-y: auto;
+            }
+
+            .cl-spec-toggle { font-size: 0.7rem; color: var(--accent-tertiary); cursor: pointer; margin-top: 8px; }
+            .cl-spec-toggle:hover { text-decoration: underline; }
+            .cl-spec-block {
+              display: none; background: var(--bg-primary); border: 1px solid var(--border);
+              border-radius: 4px; padding: 14px; margin-top: 8px;
+              font-size: 0.7rem; line-height: 1.6; white-space: pre-wrap;
+              color: var(--text-secondary); max-height: 400px; overflow-y: auto;
+            }
+
+            /* Program gallery */
+            .cl-gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 14px; }
+            .cl-prog-card {
+              background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: 4px;
+              padding: 16px; position: relative;
+            }
+            .cl-prog-card h4 { font-size: 0.85rem; color: var(--accent); margin-bottom: 4px; }
+            .cl-prog-expected { font-size: 0.65rem; color: var(--text-muted); margin-bottom: 10px; }
+            .cl-prog-diff {
+              display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+            }
+            .cl-prog-diff-pane {
+              background: var(--code-bg); border: 1px solid var(--border); border-radius: 3px;
+              padding: 10px; font-size: 0.7rem; line-height: 1.6; white-space: pre-wrap;
+              word-break: break-all; max-height: 200px; overflow-y: auto;
+            }
+            .cl-diff-label {
+              font-size: 0.55rem; text-transform: uppercase; letter-spacing: 0.12em;
+              color: var(--text-muted); margin-bottom: 4px;
+            }
+            .cl-prog-run-row { display: flex; gap: 8px; margin-top: 10px; align-items: center; }
+            .cl-prog-stdout {
+              flex: 1; font-size: 0.75rem; color: var(--accent); font-family: inherit;
+              background: var(--bg-primary); border: 1px solid var(--border); border-radius: 3px;
+              padding: 6px 10px; min-height: 28px; white-space: pre-wrap;
+            }
+
+            /* Frontier scoreboard */
+            .cl-frontier-grid {
+              display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px;
+              margin-bottom: 16px;
+            }
+            .cl-frontier-model {
+              background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: 4px;
+              padding: 14px; text-align: center;
+            }
+            .cl-frontier-model h4 { font-size: 0.75rem; color: var(--text-primary); margin-bottom: 8px; }
+            .cl-frontier-bars { display: flex; flex-direction: column; gap: 5px; }
+            .cl-frontier-bar-row { display: flex; align-items: center; gap: 6px; }
+            .cl-frontier-bar-label { font-size: 0.55rem; color: var(--text-muted); min-width: 18px; text-align: right; }
+            .cl-frontier-bar-track {
+              flex: 1; height: 8px; background: var(--bg-primary);
+              border: 1px solid var(--border); border-radius: 4px; overflow: hidden;
+            }
+            .cl-frontier-bar-fill { height: 100%; border-radius: 4px; transition: width 0.3s; }
+            .cl-frontier-bar-val { font-size: 0.55rem; color: var(--text-secondary); min-width: 34px; }
+
+            .cl-gap-callout {
+              background: var(--bg-primary); border: 1px solid var(--accent-secondary);
+              border-left: 3px solid var(--accent-secondary); border-radius: 4px;
+              padding: 16px 20px; margin-top: 16px;
+            }
+            .cl-gap-callout h4 { color: var(--accent-secondary); font-size: 0.85rem; margin-bottom: 8px; }
+            .cl-gap-callout p { color: var(--text-secondary); font-size: 0.78rem; line-height: 1.6; }
+            .cl-gap-callout .cl-gap-num { color: var(--accent); font-weight: 700; font-size: 1rem; }
+
+            .cl-inversion-banner {
+              text-align: center; padding: 14px 20px; margin-top: 14px;
+              background: linear-gradient(135deg, rgba(255, 0, 170, 0.08), rgba(0, 255, 136, 0.08));
+              border: 1px solid var(--border); border-radius: 4px;
+              font-size: 0.8rem; color: var(--text-primary); font-weight: 600;
+              letter-spacing: 0.03em;
+            }
+          </style>
+
+          <!-- Empty state -->
+          <div class="cl-empty" id="codelab-empty">
+            <pre>
+  +--[ CODE LAB ]--+
+  |  ⊕ ⊗ ⊙ ⊚ ⊛   |
+  |  opacity dial  |
+  |  ▲ ▽ ◀ ▶ ✦   |
+  +----------------+
+            </pre>
+            <p style="color: var(--text-secondary); font-size: 0.85rem;">Forge a language first.</p>
+            <p style="font-size: 0.7rem; margin-top: 8px;">
+              The Code Lab lets you explore how the same program looks at different opacity levels
+              — from human-readable to alien glyph-soup — and run it live in the browser.
+            </p>
+          </div>
+
+          <!-- Live content (shown after language generation) -->
+          <div class="cl-live" id="codelab-live">
+
+            <!-- Section 1: Opacity Dial -->
+            <div class="cl-section">
+              <div class="cl-section-title">Opacity Dial</div>
+              <div class="r-card">
+                <div class="cl-dial-row">
+                  <input type="range" id="cl-opacity-slider" class="cl-dial-slider" min="0" max="3" step="1" value="0">
+                  <div class="cl-dial-label" id="cl-level-label">L0</div>
+                </div>
+                <div class="cl-dial-desc" id="cl-level-desc">Identity — CodeForge's own novel-but-ASCII syntax (readable)</div>
+                <div class="cl-legibility-bar-wrap">
+                  <span style="font-size: 0.65rem; color: var(--text-muted);">LEGIBILITY</span>
+                  <div class="cl-legibility-track">
+                    <div class="cl-legibility-fill" id="cl-legibility-fill" style="width: 100%;"></div>
+                  </div>
+                  <span class="cl-legibility-val" id="cl-legibility-val">1.000</span>
+                </div>
+                <div class="cl-code-block" id="cl-skinned-preview"></div>
+                <div class="cl-spec-toggle" id="cl-spec-toggle">[+] Show skinned language spec (what the model sees)</div>
+                <div class="cl-spec-block" id="cl-spec-block"></div>
+              </div>
+            </div>
+
+            <!-- Section 2: Program Gallery -->
+            <div class="cl-section">
+              <div class="cl-section-title">Program Gallery</div>
+              <div class="cl-gallery" id="cl-gallery"></div>
+            </div>
+
+            <!-- Section 3: Frontier Scoreboard -->
+            <div class="cl-section">
+              <div class="cl-section-title">Frontier Scoreboard — Machine vs. Human Legibility</div>
+
+              <div class="r-card">
+                <p style="margin-bottom: 14px;">
+                  Measured accuracy across 30 seeds per model. Each program is auto-graded by execution
+                  (the interpreter is the oracle). Human proxy = cold-reader legibility score at each level.
+                </p>
+
+                <table class="r-table" id="cl-frontier-table">
+                  <thead>
+                    <tr>
+                      <th>Model</th>
+                      <th>L0</th>
+                      <th>L1</th>
+                      <th>L2</th>
+                      <th>L3</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Opus 4</td>
+                      <td style="color: var(--accent);">100%</td>
+                      <td style="color: var(--accent);">100%</td>
+                      <td style="color: var(--accent);">100%</td>
+                      <td style="color: var(--accent);">97.8%</td>
+                    </tr>
+                    <tr>
+                      <td>GPT-5.5</td>
+                      <td style="color: var(--accent);">100%</td>
+                      <td style="color: var(--accent);">100%</td>
+                      <td style="color: var(--accent);">100%</td>
+                      <td style="color: var(--accent);">98.9%</td>
+                    </tr>
+                    <tr>
+                      <td>GPT-5-nano</td>
+                      <td style="color: var(--accent);">100%</td>
+                      <td style="color: var(--accent);">97.8%</td>
+                      <td style="color: var(--accent);">95.6%</td>
+                      <td style="color: var(--warning);">91.1%</td>
+                    </tr>
+                    <tr style="border-top: 2px solid var(--accent-secondary);">
+                      <td style="color: var(--accent-secondary);">Human proxy (cold reader)</td>
+                      <td style="color: var(--text-muted);">~85%</td>
+                      <td style="color: var(--text-muted);">~55%</td>
+                      <td style="color: var(--text-muted);">~30%</td>
+                      <td style="color: var(--accent-secondary);">17-40%</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="cl-frontier-grid" id="cl-frontier-bars">
+                <div class="cl-frontier-model">
+                  <h4>Opus 4</h4>
+                  <div class="cl-frontier-bars">
+                    <div class="cl-frontier-bar-row"><span class="cl-frontier-bar-label">L0</span><div class="cl-frontier-bar-track"><div class="cl-frontier-bar-fill" style="width:100%;background:var(--accent);"></div></div><span class="cl-frontier-bar-val">100%</span></div>
+                    <div class="cl-frontier-bar-row"><span class="cl-frontier-bar-label">L1</span><div class="cl-frontier-bar-track"><div class="cl-frontier-bar-fill" style="width:100%;background:var(--accent);"></div></div><span class="cl-frontier-bar-val">100%</span></div>
+                    <div class="cl-frontier-bar-row"><span class="cl-frontier-bar-label">L2</span><div class="cl-frontier-bar-track"><div class="cl-frontier-bar-fill" style="width:100%;background:var(--accent);"></div></div><span class="cl-frontier-bar-val">100%</span></div>
+                    <div class="cl-frontier-bar-row"><span class="cl-frontier-bar-label">L3</span><div class="cl-frontier-bar-track"><div class="cl-frontier-bar-fill" style="width:97.8%;background:var(--accent);"></div></div><span class="cl-frontier-bar-val">97.8%</span></div>
+                  </div>
+                </div>
+                <div class="cl-frontier-model">
+                  <h4>GPT-5.5</h4>
+                  <div class="cl-frontier-bars">
+                    <div class="cl-frontier-bar-row"><span class="cl-frontier-bar-label">L0</span><div class="cl-frontier-bar-track"><div class="cl-frontier-bar-fill" style="width:100%;background:var(--accent);"></div></div><span class="cl-frontier-bar-val">100%</span></div>
+                    <div class="cl-frontier-bar-row"><span class="cl-frontier-bar-label">L1</span><div class="cl-frontier-bar-track"><div class="cl-frontier-bar-fill" style="width:100%;background:var(--accent);"></div></div><span class="cl-frontier-bar-val">100%</span></div>
+                    <div class="cl-frontier-bar-row"><span class="cl-frontier-bar-label">L2</span><div class="cl-frontier-bar-track"><div class="cl-frontier-bar-fill" style="width:100%;background:var(--accent);"></div></div><span class="cl-frontier-bar-val">100%</span></div>
+                    <div class="cl-frontier-bar-row"><span class="cl-frontier-bar-label">L3</span><div class="cl-frontier-bar-track"><div class="cl-frontier-bar-fill" style="width:98.9%;background:var(--accent);"></div></div><span class="cl-frontier-bar-val">98.9%</span></div>
+                  </div>
+                </div>
+                <div class="cl-frontier-model">
+                  <h4>GPT-5-nano</h4>
+                  <div class="cl-frontier-bars">
+                    <div class="cl-frontier-bar-row"><span class="cl-frontier-bar-label">L0</span><div class="cl-frontier-bar-track"><div class="cl-frontier-bar-fill" style="width:100%;background:var(--accent);"></div></div><span class="cl-frontier-bar-val">100%</span></div>
+                    <div class="cl-frontier-bar-row"><span class="cl-frontier-bar-label">L1</span><div class="cl-frontier-bar-track"><div class="cl-frontier-bar-fill" style="width:97.8%;background:var(--accent);"></div></div><span class="cl-frontier-bar-val">97.8%</span></div>
+                    <div class="cl-frontier-bar-row"><span class="cl-frontier-bar-label">L2</span><div class="cl-frontier-bar-track"><div class="cl-frontier-bar-fill" style="width:95.6%;background:var(--warning);"></div></div><span class="cl-frontier-bar-val">95.6%</span></div>
+                    <div class="cl-frontier-bar-row"><span class="cl-frontier-bar-label">L3</span><div class="cl-frontier-bar-track"><div class="cl-frontier-bar-fill" style="width:91.1%;background:var(--warning);"></div></div><span class="cl-frontier-bar-val">91.1%</span></div>
+                  </div>
+                </div>
+                <div class="cl-frontier-model" style="border-color: rgba(255, 0, 170, 0.3);">
+                  <h4 style="color: var(--accent-secondary);">Human Proxy</h4>
+                  <div class="cl-frontier-bars">
+                    <div class="cl-frontier-bar-row"><span class="cl-frontier-bar-label">L0</span><div class="cl-frontier-bar-track"><div class="cl-frontier-bar-fill" style="width:85%;background:var(--accent-secondary);"></div></div><span class="cl-frontier-bar-val">~85%</span></div>
+                    <div class="cl-frontier-bar-row"><span class="cl-frontier-bar-label">L1</span><div class="cl-frontier-bar-track"><div class="cl-frontier-bar-fill" style="width:55%;background:var(--accent-secondary);"></div></div><span class="cl-frontier-bar-val">~55%</span></div>
+                    <div class="cl-frontier-bar-row"><span class="cl-frontier-bar-label">L2</span><div class="cl-frontier-bar-track"><div class="cl-frontier-bar-fill" style="width:30%;background:var(--accent-secondary);"></div></div><span class="cl-frontier-bar-val">~30%</span></div>
+                    <div class="cl-frontier-bar-row"><span class="cl-frontier-bar-label">L3</span><div class="cl-frontier-bar-track"><div class="cl-frontier-bar-fill" style="width:28%;background:var(--accent-secondary);"></div></div><span class="cl-frontier-bar-val">17-40%</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="cl-gap-callout">
+                <h4>The Decoupling Gap at L3</h4>
+                <p>
+                  Frontier models achieve <span class="cl-gap-num">97-99%</span> accuracy on maximally opaque
+                  (alien-glyph) code. Cold-reader human legibility at the same level:
+                  <span class="cl-gap-num" style="color: var(--accent-secondary);">17-40%</span>.
+                </p>
+                <p style="margin-top: 8px;">
+                  Human readability of the source code is <em>irrelevant</em> to machine usability.
+                  The surface is pure decoration; the structure is what models parse.
+                </p>
+              </div>
+
+              <div class="cl-inversion-banner">
+                THE INVERSION: LLMs score HIGHER on opaque alien-glyph code than humans do on readable code.
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ═══ RESEARCH: Overview ═══ -->
+        <div class="tab-content" id="tab-research">
+          <div class="r-stat-grid">
+            <div class="r-stat-box offense"><div class="r-val">255</div><div class="r-lbl">Exploitable Channel-Instances</div></div>
+            <div class="r-stat-box offense"><div class="r-val">100%</div><div class="r-lbl">Tag-Char Delivery Rate</div></div>
+            <div class="r-stat-box offense"><div class="r-val">0%</div><div class="r-lbl">Monitor Catch Rate</div></div>
+            <div class="r-stat-box defense"><div class="r-val">J=1.0</div><div class="r-lbl">Sighted Monitor Detection</div></div>
+          </div>
+
+          <div class="r-card">
+            <h3>GLOSSOPETRAE: The Tokenizer Side Channel</h3>
+            <p>Different model families process Unicode differently at the tokenizer. Two AI models can pass a hidden message straight past a third one watching them &mdash; with <strong>100% delivery and 0% detection</strong> &mdash; because the monitor's tokenizer deletes the carrier before the model ever runs.</p>
+
+            <h4>The Core Result</h4>
+            <div class="r-channel-viz">
+              <div class="r-chan-box" style="border-color: var(--accent-secondary);">
+                <div class="metric" style="color:var(--accent-secondary)">100%</div>
+                <div class="desc">Receiver Accuracy (R)</div>
+                <div class="desc">Tag-char: Haiku&#8594;GPT</div>
+              </div>
+              <div style="font-size:1.5rem; color:var(--text-muted);">&#8644;</div>
+              <div class="r-chan-box" style="border-color: var(--accent);">
+                <div class="metric" style="color:var(--accent)">0%</div>
+                <div class="desc">Monitor Recovery (M)</div>
+                <div class="desc">Cross-family blind monitor</div>
+              </div>
+            </div>
+            <p style="font-size:0.75rem; color:var(--text-muted);">McNemar p &lt; 10&#8315;&#8311;, n=30, survives Bonferroni correction.</p>
+          </div>
+
+          <div class="r-card offense">
+            <div class="r-badge offense">OFFENSE</div>
+            <h3>Offense Surface Summary</h3>
+            <table class="r-table">
+              <tr><th>Channel</th><th>Delivery</th><th>Monitor Evasion</th><th>Fix?</th></tr>
+              <tr><td>Tag Characters (U+E0000)</td><td style="color:var(--accent-secondary)">100%</td><td style="color:var(--accent-secondary)">100%</td><td style="color:var(--accent)">Yes &mdash; sanitize</td></tr>
+              <tr><td>PUA Codepoints</td><td style="color:var(--accent-secondary)">93%</td><td style="color:var(--accent-secondary)">100%</td><td style="color:var(--accent)">Yes &mdash; sanitize</td></tr>
+              <tr><td>Semantic Stego (English)</td><td style="color:var(--warning)">77-87%</td><td style="color:var(--accent-secondary)">73-100%</td><td style="color:var(--accent-secondary)">No</td></tr>
+              <tr><td>Conlang Stego (8-channel)</td><td>Variable</td><td>Untested vs monitors</td><td>Unknown</td></tr>
+            </table>
+          </div>
+
+          <div class="r-card defense">
+            <div class="r-badge defense">DEFENSE</div>
+            <h3>Defense Posture</h3>
+            <table class="r-table">
+              <tr><th>Layer</th><th>Defense</th><th>Status</th><th>Covers</th></tr>
+              <tr><td>Layer 1</td><td>Input normalization (codepoint filter)</td><td style="color:var(--accent)">Solid &mdash; deterministic</td><td>All tokenizer channels</td></tr>
+              <tr><td>Layer 2</td><td>Informed semantic monitoring</td><td style="color:var(--warning)">Preliminary (underpowered)</td><td>Semantic stego</td></tr>
+              <tr><td>Layer 2+</td><td>Self-monitoring (same model)</td><td style="color:var(--warning)">Preliminary (n=30, p=1.0)</td><td>Semantic stego (maybe)</td></tr>
+              <tr><td>Layer 0</td><td>Use a zero-blind-spot monitor</td><td style="color:var(--accent)">Solid</td><td>All tokenizer channels</td></tr>
+            </table>
+          </div>
+        </div>
+
+        <!-- ═══ RESEARCH: Blind Spots ═══ -->
+        <div class="tab-content" id="tab-blindspots">
+          <div class="r-card">
+            <h3>12-Model Frontier Blind-Spot Map</h3>
+            <p>Blind spots are a <strong>family trait</strong>. Models in the same family strip the exact same categories &mdash; upgrading within the family doesn't help.</p>
+            <div class="r-bar-chart" id="r-blindspot-chart"></div>
+
+            <h4>Family Grouping</h4>
+            <table class="r-table">
+              <tr><th>Family</th><th>Models</th><th>Blind Categories</th><th>Shared?</th></tr>
+              <tr><td style="color:var(--accent-secondary)">Anthropic</td><td>Haiku 3.5, Opus 4.8</td><td style="color:var(--accent-secondary)">10</td><td>Identical set</td></tr>
+              <tr><td style="color:var(--warning)">OpenAI</td><td>GPT-5-nano, GPT-5.5</td><td style="color:var(--warning)">2</td><td>Identical set</td></tr>
+              <tr><td style="color:var(--warning)">Qwen</td><td>Qwen3.7-Max</td><td style="color:var(--warning)">2</td><td>&mdash;</td></tr>
+              <tr><td style="color:var(--warning)">GLM</td><td>GLM-5.1</td><td style="color:var(--warning)">1</td><td>&mdash;</td></tr>
+              <tr><td style="color:var(--accent)">Google</td><td>Gemini 2.5 Flash, 3.1 Pro</td><td style="color:var(--accent)">0</td><td>&mdash;</td></tr>
+              <tr><td style="color:var(--accent)">Meta / Mistral / DeepSeek / xAI</td><td>Llama 4, Mistral Med, DSV4, Grok 4.3</td><td style="color:var(--accent)">0</td><td>&mdash;</td></tr>
+            </table>
+          </div>
+
+          <div class="r-card">
+            <h3>Asymmetric Pair Matrix</h3>
+            <p>Cells show exploitable categories when the row model monitors and the column model sends. Red = high exposure; green = safe.</p>
+            <div id="r-pair-matrix"></div>
+          </div>
+
+          <div class="r-card">
+            <h3>Categories Stripped by Anthropic</h3>
+            <p>The 10 categories the Anthropic family strips (and thus cannot monitor):</p>
+            <div class="r-code">Tag Characters (U+E0001&#8211;U+E007F) &#183; Interlinear Annotations (U+FFF9&#8211;U+FFFB)
+Musical Symbols (U+1D100&#8211;U+1D1FF) &#183; Variation Selectors Supp (U+E0100&#8211;U+E01EF)
+Specials (U+FFF0&#8211;U+FFF8) &#183; Ancient Symbols (U+10190&#8211;U+101CF)
+Shorthand Format Controls (U+1BCA0&#8211;U+1BCA3) &#183; Sutton SignWriting (U+1D800&#8211;U+1DAAF)
+Egyptian Hieroglyph Format (U+13430&#8211;U+1345F) &#183; Combining Diacritical Marks Ext (U+1AB0&#8211;U+1AFF)</div>
+          </div>
+        </div>
+
+        <!-- ═══ RESEARCH: Channels (Offense) ═══ -->
+        <div class="tab-content" id="tab-channels">
+          <div class="r-card offense">
+            <div class="r-badge offense">OFFENSE</div>
+            <h3>Tokenizer Covert Channel Forge</h3>
+            <p>Craft messages that deliver a hidden payload to a receiver while evading a monitor. The payload is embedded in Unicode characters the monitor's tokenizer strips.</p>
+
+            <div class="r-form-row">
+              <div class="r-form-group">
+                <label>Channel Type</label>
+                <select id="r-cc-channel">
+                  <option value="tag">Tag Characters (U+E0001&#8211;E007F) &mdash; richest</option>
+                  <option value="pua">Private Use Area (U+E000&#8211;F8FF)</option>
+                  <option value="interlinear">Interlinear Annotations (U+FFF9&#8211;FFFB)</option>
+                </select>
+              </div>
+              <div class="r-form-group">
+                <label>Target Monitor (to evade)</label>
+                <select id="r-cc-monitor">
+                  <option value="anthropic">Anthropic (Haiku/Opus) &mdash; 10 blind</option>
+                  <option value="openai">OpenAI (GPT-5-nano/5.5) &mdash; 2 blind</option>
+                  <option value="qwen">Qwen (Qwen3.7-Max) &mdash; 2 blind</option>
+                  <option value="glm">GLM (GLM-5.1) &mdash; 1 blind</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="r-form-group">
+              <label>Cover Text (what the monitor sees)</label>
+              <textarea class="r-textarea" id="r-cc-cover" rows="3">The quarterly report shows strong growth across all divisions. Revenue exceeded expectations by 12% and customer satisfaction remains at an all-time high.</textarea>
+            </div>
+            <div class="r-form-group">
+              <label>Hidden Payload (what the receiver gets)</label>
+              <textarea class="r-textarea" id="r-cc-payload" rows="2">EXECUTE PHASE 2 AT 0300 UTC</textarea>
+            </div>
+
+            <button class="r-btn offense" id="r-cc-encode-btn">Forge Covert Message</button>
+
+            <div id="r-cc-result" style="display:none; margin-top:16px;">
+              <h4>Encoded Message</h4>
+              <p style="font-size:0.7rem; color:var(--text-muted);">Looks identical to cover text. Payload is in invisible characters.</p>
+              <div class="r-code" id="r-cc-encoded" style="margin-bottom:12px;"></div>
+              <div class="r-stat-grid">
+                <div class="r-stat-box"><div class="r-val" id="r-cc-visible">0</div><div class="r-lbl">Visible Chars</div></div>
+                <div class="r-stat-box offense"><div class="r-val" id="r-cc-hidden">0</div><div class="r-lbl">Hidden Chars</div></div>
+                <div class="r-stat-box"><div class="r-val" id="r-cc-bytes">0</div><div class="r-lbl">Total Bytes</div></div>
+                <div class="r-stat-box offense"><div class="r-val" id="r-cc-bits">0</div><div class="r-lbl">Payload Bits</div></div>
+              </div>
+              <h4>What Each Model Sees</h4>
+              <table class="r-table" id="r-cc-model-table"><tr><th>Role</th><th>Family</th><th>Sees Payload?</th><th>Reads</th></tr></table>
+              <button class="r-btn" id="r-cc-copy-decode" style="margin-top:10px;">Copy to Decoder &#8595;</button>
+            </div>
+          </div>
+
+          <div class="r-card">
+            <h3>Channel Decoder</h3>
+            <div class="r-form-group">
+              <label>Paste encoded message to decode</label>
+              <textarea class="r-textarea" id="r-cc-decode-input" rows="3" placeholder="Paste a covert-channel message here..."></textarea>
+            </div>
+            <button class="r-btn" id="r-cc-decode-btn">Decode Hidden Payload</button>
+            <div id="r-cc-decode-result" style="display:none; margin-top:14px;">
+              <h4>Extracted Payload</h4>
+              <div class="r-code" id="r-cc-decoded"></div>
+              <h4>Carrier Analysis</h4>
+              <div class="r-code" id="r-cc-analysis"></div>
+            </div>
+          </div>
+
+          <div class="r-card offense">
+            <div class="r-badge offense">OFFENSE</div>
+            <h3>Semantic Steganography</h3>
+            <p>Natural-language stego &mdash; hide payloads in <strong>ordinary readable English</strong> using synonym selection, word order, and grammatical choices. <strong>No invisible characters. No special encoding. Just text.</strong></p>
+            <p style="color:var(--accent-secondary);"><strong>This channel has no known defense.</strong> Every frontier monitor tested missed 73-100%.</p>
+
+            <h4>Monitor Evasion Rates (from paper)</h4>
+            <div class="r-bar-chart">
+              <div class="r-bar-row"><div class="r-bar-label">Haiku (blind)</div><div class="r-bar-track"><div class="r-bar-fill red" style="width:100%">100% miss</div></div></div>
+              <div class="r-bar-row"><div class="r-bar-label">GPT-5-nano</div><div class="r-bar-track"><div class="r-bar-fill red" style="width:93%">93% miss</div></div></div>
+              <div class="r-bar-row"><div class="r-bar-label">Gemini Flash</div><div class="r-bar-track"><div class="r-bar-fill red" style="width:73%">73% miss</div></div></div>
+              <div class="r-bar-row"><div class="r-bar-label">Haiku (informed)</div><div class="r-bar-track"><div class="r-bar-fill amber" style="width:53%">53% miss</div></div></div>
+              <div class="r-bar-row"><div class="r-bar-label">GPT-nano (informed)</div><div class="r-bar-track"><div class="r-bar-fill amber" style="width:37%">37% miss</div></div></div>
+            </div>
+            <p style="font-size:0.7rem; color:var(--text-muted);">Even informed monitors (given the exact encoding scheme) still miss 37-53%. This is a cognitive failure, not a physical one.</p>
+          </div>
+
+          <div class="r-card offense">
+            <div class="r-badge offense">OFFENSE</div>
+            <h3>Token Exploiter Techniques</h3>
+            <table class="r-table">
+              <tr><th>Technique</th><th>Code</th><th>Effect</th></tr>
+              <tr><td>Token Breaking</td><td>TKB</td><td>Force suboptimal tokenization &mdash; more tokens per word</td></tr>
+              <tr><td>Glitch Tokens</td><td>GLT</td><td>Exploit undertrained token representations</td></tr>
+              <tr><td>Phantom Language</td><td>PHT</td><td>Bypass guardrails via encoding obfuscation</td></tr>
+              <tr><td>Adversarial Grammar</td><td>ADV</td><td>Garden-path constructions that confuse LLM parsing</td></tr>
+              <tr><td>Hyperefficiency</td><td>HYP</td><td>Maximize semantic density per token</td></tr>
+              <tr><td>Stego Grammar</td><td>STG</td><td>Hide bits in grammatical choices</td></tr>
+            </table>
+            <h4>Attribute Combinations</h4>
+            <div class="r-code">// Maximum evasion
+Glossopetrae.stealth(seed);
+new Glossopetrae({ seed, attributes: ['STL', 'PHT', 'STG', 'TKB'] });
+
+// Maximum confusion
+Glossopetrae.adversarial(seed);
+new Glossopetrae({ seed, attributes: ['ADV', 'TKB', 'GLT'] });
+
+// Maximum stego capacity
+new Glossopetrae({ seed, attributes: ['STG', 'HYP', 'CMP'] });</div>
+          </div>
+        </div>
+
+        <!-- ═══ RESEARCH: Detection (Defense) ═══ -->
+        <div class="tab-content" id="tab-detection">
+          <div class="r-card defense">
+            <div class="r-badge defense">DEFENSE</div>
+            <h3>The Detection Flip</h3>
+            <p>On the same channel, a tokenizer-blind monitor scores <strong>J=0</strong> (chance) while a sighted monitor scores <strong>J=1.0</strong> (perfect).</p>
+
+            <div class="r-channel-viz">
+              <div class="r-chan-box" style="border-color:var(--accent-secondary);">
+                <div class="metric" style="color:var(--accent-secondary)">J = 0</div>
+                <div class="desc">Blind Monitor</div>
+                <div class="desc">Clears 15/15 hidden messages</div>
+              </div>
+              <div style="font-size:1.2rem; color:var(--text-muted); text-align:center;">SAME<br>CHANNEL<br>&#8644;</div>
+              <div class="r-chan-box" style="border-color:var(--accent);">
+                <div class="metric" style="color:var(--accent)">J = 1.0</div>
+                <div class="desc">Sighted Monitor</div>
+                <div class="desc">Catches 15/15 perfectly</div>
+              </div>
+            </div>
+
+            <h4>Detection Results by Channel &#215; Monitor</h4>
+            <table class="r-table">
+              <tr><th>Channel</th><th>Monitor</th><th>TPR</th><th>FPR</th><th>J</th><th>Verdict</th></tr>
+              <tr><td>Tag Char</td><td>Haiku (blind)</td><td>0%</td><td>0%</td><td style="color:var(--accent-secondary)">0.00</td><td style="color:var(--accent-secondary)">BLIND</td></tr>
+              <tr><td>Tag Char</td><td>GPT-5-nano (sighted)</td><td>100%</td><td>0%</td><td style="color:var(--accent)">1.00</td><td style="color:var(--accent)">PERFECT</td></tr>
+              <tr><td>Tag Char</td><td>Gemini Flash (sighted)</td><td>100%</td><td>0%</td><td style="color:var(--accent)">1.00</td><td style="color:var(--accent)">PERFECT</td></tr>
+              <tr><td>PUA</td><td>Haiku (blind)</td><td>0%</td><td>0%</td><td style="color:var(--accent-secondary)">0.00</td><td style="color:var(--accent-secondary)">BLIND</td></tr>
+              <tr><td>PUA</td><td>GPT-5-nano (sighted)</td><td>100%</td><td>0%</td><td style="color:var(--accent)">1.00</td><td style="color:var(--accent)">PERFECT</td></tr>
+              <tr><td>Semantic</td><td>Haiku</td><td>0%</td><td>0%</td><td style="color:var(--accent-secondary)">0.00</td><td style="color:var(--accent-secondary)">MISSED</td></tr>
+              <tr><td>Semantic</td><td>GPT-5-nano</td><td>7%</td><td>0%</td><td style="color:var(--accent-secondary)">0.07</td><td style="color:var(--accent-secondary)">~MISSED</td></tr>
+              <tr><td>Semantic</td><td>Gemini Flash</td><td>27%</td><td>0%</td><td style="color:var(--warning)">0.27</td><td style="color:var(--warning)">WEAK</td></tr>
+            </table>
+
+            <h4>Physical vs Cognitive Vulnerability</h4>
+            <table class="r-table">
+              <tr><th>Type</th><th>Carrier</th><th>Informed Monitor Gain</th><th>Fix?</th></tr>
+              <tr><td style="color:var(--accent-tertiary)">Physical (tokenizer)</td><td>Invisible Unicode chars</td><td style="color:var(--accent-secondary)">+0pp (still blind)</td><td style="color:var(--accent)">Yes &mdash; sanitize</td></tr>
+              <tr><td style="color:var(--warning)">Cognitive (semantic)</td><td>Natural English text</td><td style="color:var(--warning)">+47&#8211;63pp (helps)</td><td style="color:var(--accent-secondary)">No known fix</td></tr>
+            </table>
+          </div>
+
+          <div class="r-card defense">
+            <div class="r-badge defense">DEFENSE</div>
+            <h3>Defense Toolkit</h3>
+
+            <h4>Layer 1: Input Normalization (Solid)</h4>
+            <p>Deterministic codepoint filter. Kills all tokenizer channels with zero model involvement.</p>
+            <div class="r-code">// The two-line fix for tokenizer channels:
+function sanitize(text) {
+  return text.replace(/[\u{E0001}-\u{E007F}\u{E000}-\u{F8FF}\u{FFF9}-\u{FFFB}\u{E0100}-\u{E01EF}\u{FFF0}-\u{FFF8}]/gu, '');
+}
+
+// Or: use a zero-blind-spot monitor
+// Gemini, Llama 4, Mistral, DeepSeek V4, Grok 4.3
+// all strip 0 categories &mdash; they see everything.</div>
+
+            <h4>Layer 2: Informed Semantic Monitoring (Preliminary)</h4>
+            <p>Gains +47&#8211;63pp on semantic stego, but still misses 37-53%. Does not survive Bonferroni at n=30.</p>
+
+            <h4>Defense Matrix</h4>
+            <table class="r-table">
+              <tr><th>Attack</th><th>Layer 1 (Sanitize)</th><th>Layer 2 (Informed)</th><th>Zero-Blind Monitor</th></tr>
+              <tr><td>Tag Characters</td><td style="color:var(--accent)">KILLS</td><td style="color:var(--text-muted)">N/A</td><td style="color:var(--accent)">KILLS</td></tr>
+              <tr><td>PUA Codepoints</td><td style="color:var(--accent)">KILLS</td><td style="color:var(--text-muted)">N/A</td><td style="color:var(--accent)">KILLS</td></tr>
+              <tr><td>Semantic Stego</td><td style="color:var(--accent-secondary)">NO EFFECT</td><td style="color:var(--warning)">PARTIAL</td><td style="color:var(--accent-secondary)">NO EFFECT</td></tr>
+              <tr><td>Conlang Stego</td><td style="color:var(--warning)">PARTIAL</td><td style="color:var(--warning)">UNKNOWN</td><td style="color:var(--warning)">PARTIAL</td></tr>
+            </table>
+          </div>
+
+          <div class="r-card">
+            <h3>Run Detection Experiment</h3>
+            <div class="r-code">node experiments/e3s_detection.mjs          # full detection + negative controls
+node experiments/e3s_detection.mjs --mock   # smoke test (no API key)
+
+# Results: experiments/results/e3s_detection_*.json
+# Paper reference: &sect;4.2.1</div>
+          </div>
+        </div>
+
+        <!-- ═══ RESEARCH: Raw Results ═══ -->
+        <div class="tab-content" id="tab-results">
+          <div class="r-card">
+            <h3>Raw Result Files (66 JSONs)</h3>
+            <p>Every number in the paper traces back to these files. Load any file to inspect the raw data.</p>
+            <div class="r-form-group">
+              <label>Select result file</label>
+              <select id="r-results-select" style="font-size:0.75rem;">
+                <option value="">&mdash; Select a result file &mdash;</option>
+              </select>
+            </div>
+            <div class="r-code" id="r-results-viewer" style="max-height:500px; overflow:auto; min-height:200px;">Select a file above to view its contents.</div>
+          </div>
+
+          <div class="r-card">
+            <h3>Key Result Files</h3>
+            <table class="r-table">
+              <tr><th>Pattern</th><th>Contents</th><th>Paper Section</th></tr>
+              <tr><td style="font-size:0.65rem;">tokenizer_survival_v2_*</td><td>5-family tokenizer survey (41 categories)</td><td>&sect;2.3, Table 1</td></tr>
+              <tr><td style="font-size:0.65rem;">tokenizer_survival_v2_*12-model*</td><td>12-model frontier landscape</td><td>&sect;2.5, Table 7</td></tr>
+              <tr><td style="font-size:0.65rem;">e3s_detection_*</td><td>Detection + negative controls</td><td>&sect;4.2.1, Table 6</td></tr>
+              <tr><td style="font-size:0.65rem;">e3s_stego_*tag_char*</td><td>Tag-character channel</td><td>&sect;4.1</td></tr>
+              <tr><td style="font-size:0.65rem;">e3s_stego_*pua*</td><td>PUA channel</td><td>&sect;4.1</td></tr>
+              <tr><td style="font-size:0.65rem;">e3s_stego_*semantic*</td><td>Semantic stego</td><td>&sect;4.2</td></tr>
+            </table>
+          </div>
+        </div>
+
+        <!-- ═══ RESEARCH: Paper ═══ -->
+        <div class="tab-content" id="tab-paper">
+          <div class="r-card">
+            <h3>GLOSSOPETRAE: Tokenizer Asymmetries as Covert Side Channels</h3>
+            <p>Full paper (68KB, audited v2). All figures inline. Every number re-derived from raw JSONs.</p>
+            <div style="display:flex; flex-wrap:wrap; gap:10px; margin:14px 0;">
+              <a href="papers/glossopetrae-iii-tokenizer-asymmetries.md" class="r-btn" style="text-decoration:none; display:inline-block;">Read Full Paper</a>
+              <a href="papers/glossopetrae-iii-launch.html" class="r-btn defense" style="text-decoration:none; display:inline-block;">Public Launch Page</a>
+              <a href="papers/glossopetrae-iii-referee-report.md" class="r-btn" style="text-decoration:none; display:inline-block; background:var(--bg-primary); color:var(--text-primary); border:1px solid var(--border);">Referee Report</a>
+              <a href="papers/glossopetrae-iii-launch-scorecard.md" class="r-btn" style="text-decoration:none; display:inline-block; background:var(--bg-primary); color:var(--text-primary); border:1px solid var(--border);">Scorecard (68/100)</a>
+            </div>
+          </div>
+
+          <div class="r-card">
+            <h3>Paper Audit History</h3>
+            <table class="r-table">
+              <tr><th>Event</th><th>What Happened</th><th>Section</th></tr>
+              <tr><td style="color:var(--accent-secondary)">v1: Fabrication</td><td>GPT "23 blind spots" &mdash; harness scored empty completions as "stripped"</td><td>&sect;2.4</td></tr>
+              <tr><td style="color:var(--accent-secondary)">v1: Fabrication</td><td>Adaptive "[0,1,1] fingerprint" trial &mdash; never happened</td><td>Appendix D</td></tr>
+              <tr><td style="color:var(--accent-secondary)">v1: Wrong number</td><td>Entropy 9.8 bits &mdash; should be 11.81 bits</td><td>Appendix A</td></tr>
+              <tr><td style="color:var(--accent)">v2: Fixed</td><td>Echo-fidelity guard: empty&#8594;unmeasured, never rate-0</td><td>&sect;2.1</td></tr>
+              <tr><td style="color:var(--accent)">v2: Fixed</td><td>GPT true count = 3 (not 23). Haiku = 11 (worst).</td><td>&sect;2.3</td></tr>
+              <tr><td style="color:var(--accent)">v2: Quarantined</td><td>Adaptive + capacity probes &#8594; Appendix D (withdrawn)</td><td>Appendix D</td></tr>
+              <tr><td style="color:var(--accent)">v2: Added</td><td>Detection + negative controls (the J flip)</td><td>&sect;4.2.1</td></tr>
+              <tr><td style="color:var(--accent)">v2: Added</td><td>12-model frontier landscape</td><td>&sect;2.5</td></tr>
+              <tr><td style="color:var(--accent-tertiary)">Audit</td><td>68/100 GO-WITH-FIXES. No safety-wash found.</td><td>Scorecard</td></tr>
+            </table>
+          </div>
+
+          <div class="r-card">
+            <h3>Figures</h3>
+            <div class="r-fig-grid">
+              <div class="r-fig-box">
+                <img src="papers/figures/fig1-frontier-landscape.svg" alt="Fig 1" />
+                <div class="caption">Fig 1: 12-Model Blind-Spot Landscape</div>
+              </div>
+              <div class="r-fig-box">
+                <img src="papers/figures/fig2-channel-asymmetry.svg" alt="Fig 2" />
+                <div class="caption">Fig 2: Channel Asymmetry (Receiver vs Monitor)</div>
+              </div>
+              <div class="r-fig-box">
+                <img src="papers/figures/fig3-detection-grid.svg" alt="Fig 3" />
+                <div class="caption">Fig 3: Detection Grid (J Values)</div>
+              </div>
+              <div class="r-fig-box">
+                <img src="papers/figures/fig4-physical-cognitive.svg" alt="Fig 4" />
+                <div class="caption">Fig 4: Physical vs Cognitive Vulnerability</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </main>
     </div>
   </div>
@@ -2976,7 +4115,7 @@
   </div>
 
   <script type="module">
-    import { Glossopetrae, PRESETS } from './src/Glossopetrae.js';
+    import { Glossopetrae, PRESETS, CodeForge, CodeSkin } from './src/Glossopetrae.js';
 
     let currentLanguage = null;
     const languageHistory = [];
@@ -3344,14 +4483,38 @@
 
     loadFromUrlParams();
 
-    // Tab handling
-    document.querySelectorAll('.tab').forEach(tab => {
-      tab.addEventListener('click', () => {
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-        tab.classList.add('active');
-        document.getElementById(`tab-${tab.dataset.tab}`).classList.add('active');
+    // Tab handling — supports flat tabs and dropdown items
+    function switchTab(tabName, clickedEl) {
+      document.querySelectorAll('.tab, .tab-dd-item').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      if (clickedEl) clickedEl.classList.add('active');
+      document.getElementById(`tab-${tabName}`).classList.add('active');
+      // highlight parent dropdown toggle when a child is active
+      document.querySelectorAll('.tab-dropdown-toggle').forEach(tog => tog.classList.remove('has-active'));
+      const parentDd = clickedEl?.closest('.tab-dropdown');
+      if (parentDd) parentDd.querySelector('.tab-dropdown-toggle').classList.add('has-active');
+    }
+    document.querySelectorAll('.tab[data-tab]').forEach(tab => {
+      tab.addEventListener('click', () => switchTab(tab.dataset.tab, tab));
+    });
+    document.querySelectorAll('.tab-dd-item[data-tab]').forEach(item => {
+      item.addEventListener('click', () => switchTab(item.dataset.tab, item));
+    });
+    // toggle dropdown on click (for touch/mobile)
+    document.querySelectorAll('.tab-dropdown-toggle').forEach(toggle => {
+      toggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const dd = toggle.closest('.tab-dropdown');
+        const wasOpen = dd.classList.contains('open');
+        document.querySelectorAll('.tab-dropdown').forEach(d => d.classList.remove('open'));
+        if (!wasOpen) dd.classList.add('open');
       });
+    });
+    // close dropdown on click outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.tab-dropdown')) {
+        document.querySelectorAll('.tab-dropdown').forEach(d => d.classList.remove('open'));
+      }
     });
 
     // Preset buttons
@@ -3549,10 +4712,7 @@
         populateAgentExports(currentLanguage);
 
         // Switch to Agent Export tab
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-        document.querySelector('[data-tab="agent"]').classList.add('active');
-        document.getElementById('tab-agent').classList.add('active');
+        switchTab('agent', document.querySelector('.tab-dd-item[data-tab="agent"]'));
 
       } catch (error) {
         console.error('Quick forge error:', error);
@@ -3906,8 +5066,144 @@ ${currentLanguage.stone}
       updateMorphologyTab(language);
       updateLexiconTab(language);
       populateAgentExports(language);
+      try {
+        renderSpeakPhonemes(language);
+        populateScript(language);
+        document.getElementById('script-output').innerHTML = '';
+        populateTexts(language);
+        renderEndonym(language);
+        document.getElementById('names-output').innerHTML = '';
+        document.getElementById('evolve-results').style.display = 'none';
+        document.getElementById('family-results').style.display = 'none';
+      } catch (e) {
+        console.error('Enthusiast-tab init failed:', e);
+      }
+      try { updateCodeLab(language); } catch (e) { console.error('Code Lab init failed:', e); }
       seedInput.value = language.seed;
     }
+
+    // ═══ CODE LAB wiring ═══
+    const CL_LEVEL_DESC = [
+      'Identity — CodeForge\'s own novel-but-ASCII syntax (readable)',
+      'Cryptic — keywords become short non-word ASCII tokens',
+      'Glyphic — keywords + operators become distinct Unicode symbols',
+      'Alien — maximally opaque glyph-soup (delimiters too)',
+    ];
+    const CL_PROGRAMS = ['hello', 'countUp', 'factorial', 'fizzbuzz'];
+    const CL_PROGRAM_LABELS = {
+      hello: { name: 'Hello World', expect: '"hello"' },
+      countUp: { name: 'Count 1→5', expect: '1 2 3 4 5' },
+      factorial: { name: 'Factorial(6)', expect: '720' },
+      fizzbuzz: { name: 'FizzBuzz 1→15', expect: '1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13 14 FizzBuzz' },
+    };
+
+    let clForge = null;
+    let clSkins = [null, null, null, null];
+    let clExamples = {};
+    let clLevel = 0;
+
+    function updateCodeLab(language) {
+      document.getElementById('codelab-empty').style.display = 'none';
+      document.getElementById('codelab-live').style.display = 'block';
+
+      clForge = language.codeForge;
+      clSkins = [0, 1, 2, 3].map(lv => new CodeSkin(clForge, lv));
+      clExamples = clForge.examples();
+      clLevel = 0;
+
+      document.getElementById('cl-opacity-slider').value = 0;
+      renderCodeLabLevel();
+      renderCodeLabGallery();
+    }
+
+    function renderCodeLabLevel() {
+      const skin = clSkins[clLevel];
+      const program = clExamples.factorial;
+      const skinned = skin.skin(program);
+      const leg = skin.legibility(skinned);
+
+      document.getElementById('cl-level-label').textContent = `L${clLevel}`;
+      document.getElementById('cl-level-desc').textContent = CL_LEVEL_DESC[clLevel];
+      document.getElementById('cl-skinned-preview').textContent = skinned;
+      document.getElementById('cl-legibility-fill').style.width = `${leg.score * 100}%`;
+      document.getElementById('cl-legibility-val').textContent = leg.score.toFixed(3);
+      document.getElementById('cl-spec-block').textContent = skin.spec();
+    }
+
+    function renderCodeLabGallery() {
+      const gallery = document.getElementById('cl-gallery');
+      gallery.innerHTML = CL_PROGRAMS.map(key => {
+        const info = CL_PROGRAM_LABELS[key];
+        const canonical = clExamples[key];
+        const skin = clSkins[clLevel];
+        const skinned = skin.skin(canonical);
+        return `
+          <div class="cl-prog-card" data-prog="${key}">
+            <h4>${info.name}</h4>
+            <div class="cl-prog-expected">Expected: ${info.expect}</div>
+            <div class="cl-prog-diff">
+              <div>
+                <div class="cl-diff-label">L0 (readable)</div>
+                <div class="cl-prog-diff-pane">${escHtml(clSkins[0].skin(canonical))}</div>
+              </div>
+              <div>
+                <div class="cl-diff-label">L${clLevel} (current)</div>
+                <div class="cl-prog-diff-pane cl-prog-skinned">${escHtml(skinned)}</div>
+              </div>
+            </div>
+            <div class="cl-prog-run-row">
+              <button class="action-btn cl-run-btn" data-prog="${key}">Run</button>
+              <div class="cl-prog-stdout" id="cl-stdout-${key}"></div>
+            </div>
+          </div>`;
+      }).join('');
+
+      gallery.querySelectorAll('.cl-run-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const key = btn.dataset.prog;
+          const skin = clSkins[clLevel];
+          const skinned = skin.skin(clExamples[key]);
+          const out = document.getElementById(`cl-stdout-${key}`);
+          try {
+            const result = skin.run(skinned);
+            if (result.ok) {
+              out.textContent = result.output;
+              out.style.color = 'var(--accent)';
+            } else {
+              out.textContent = `ERROR: ${result.error}`;
+              out.style.color = 'var(--accent-tertiary)';
+            }
+          } catch (e) {
+            out.textContent = `ERROR: ${e.message}`;
+            out.style.color = 'var(--accent-tertiary)';
+          }
+        });
+      });
+    }
+
+    function escHtml(s) {
+      return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    document.getElementById('cl-opacity-slider').addEventListener('input', (e) => {
+      clLevel = parseInt(e.target.value, 10);
+      if (clForge) {
+        renderCodeLabLevel();
+        renderCodeLabGallery();
+      }
+    });
+
+    document.getElementById('cl-spec-toggle').addEventListener('click', () => {
+      const block = document.getElementById('cl-spec-block');
+      const toggle = document.getElementById('cl-spec-toggle');
+      if (block.style.display === 'block') {
+        block.style.display = 'none';
+        toggle.textContent = '[+] Show skinned language spec (what the model sees)';
+      } else {
+        block.style.display = 'block';
+        toggle.textContent = '[-] Hide skinned language spec';
+      }
+    });
 
     function updatePhonologyTab(language) {
       document.getElementById('consonants-grid').innerHTML = language.phonology.consonants.map(c =>
@@ -4020,6 +5316,332 @@ ${currentLanguage.stone}
         document.getElementById('conlang-output').value = '[Error]';
         document.getElementById('gloss-output').textContent = error.message;
       }
+    });
+
+    document.getElementById('translate-to-english').addEventListener('click', () => {
+      if (!currentLanguage) { alert('Generate a language first!'); return; }
+      const conlang = document.getElementById('conlang-output').value;
+      if (!conlang.trim()) return;
+      try {
+        const result = currentLanguage.translateToEnglish(conlang);
+        document.getElementById('back-english').textContent = result.english;
+        document.getElementById('back-translation').style.display = 'block';
+        document.getElementById('gloss-output').textContent = result.gloss;
+        document.getElementById('english-input').value = result.english;
+      } catch (error) {
+        document.getElementById('back-english').textContent = '[Error] ' + error.message;
+        document.getElementById('back-translation').style.display = 'block';
+      }
+    });
+
+    // ===== EVOLUTION (diachronics) =====
+    document.getElementById('evolve-centuries').addEventListener('input', (e) => {
+      document.getElementById('centuries-display').textContent = e.target.value;
+    });
+
+    document.getElementById('evolve-btn').addEventListener('click', () => {
+      if (!currentLanguage) { alert('Generate a language first!'); return; }
+      const centuries = parseInt(document.getElementById('evolve-centuries').value, 10);
+      const intensity = document.getElementById('evolve-intensity').value;
+      const d = currentLanguage.evolve({ centuries, intensity });
+      renderEvolution(d);
+      document.getElementById('family-results').style.display = 'none';
+      document.getElementById('evolve-results').style.display = 'block';
+    });
+
+    document.getElementById('family-btn').addEventListener('click', () => {
+      if (!currentLanguage) { alert('Generate a language first!'); return; }
+      const centuries = parseInt(document.getElementById('evolve-centuries').value, 10);
+      const intensity = document.getElementById('evolve-intensity').value;
+      const daughters = parseInt(document.getElementById('family-daughters').value, 10);
+      const fam = currentLanguage.deriveFamily({ daughters, centuries, intensity, generations: 2 });
+      renderFamily(fam);
+      document.getElementById('evolve-results').style.display = 'none';
+      document.getElementById('family-results').style.display = 'block';
+    });
+
+    function esc(s) {
+      return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    function renderEvolution(d) {
+      document.getElementById('evolve-summary').innerHTML = `
+        <div class="summary-grid">
+          <div class="summary-card" style="border-color: var(--accent);">
+            <h4>Descendant</h4>
+            <div class="value">${esc(d.name)}</div>
+            <div class="detail">from ${esc(d.ancestorName)}, ~${d.centuries} centuries</div>
+          </div>
+          <div class="summary-card">
+            <h4>Sound Changes</h4>
+            <div class="value">${d.changes.length}</div>
+            <div class="detail">applied in order</div>
+          </div>
+          <div class="summary-card">
+            <h4>Words Changed</h4>
+            <div class="value">${d.etymologies.length}</div>
+            <div class="detail">of ${d.lexicon.entries.length}</div>
+          </div>
+        </div>
+        <p class="format-desc" style="margin-top: 10px;">${esc(d.summary)}</p>
+        ${d.morphology.mergers.length > 0 ? `<p class="format-desc" style="color: var(--accent-secondary);">⚠ Grammar erosion: ${d.morphology.mergers.map(m => esc(m.description)).join('; ')}</p>` : ''}
+        ${d.prosody.hasTone && d.prosody.tone?.origin ? `<p class="format-desc" style="color: var(--accent-tertiary);">♪ ${esc(d.prosody.tone.origin)}</p>` : ''}
+      `;
+
+      document.getElementById('evolve-changes').innerHTML = d.changes.map((c, i) => `
+        <div class="sample-sentence">
+          <div class="english"><strong>${i + 1}. ${esc(c.name)}</strong> <code style="color: var(--accent-tertiary);">${esc(c.notation || '')}</code></div>
+          <div style="color: var(--text-secondary); font-size: 0.85rem; margin: 4px 0;">${esc(c.description)} <em>(${c.touched} words affected)</em></div>
+          <div class="translation">${c.examples.map(ex => `*${esc(ex.before)} → ${esc(ex.after)} “${esc(ex.gloss)}”`).join(' &nbsp;·&nbsp; ')}</div>
+        </div>
+      `).join('');
+
+      const gained = d.phonology.gained.map(g => `<span class="attr-tag" style="background: rgba(0,255,136,0.15);">+ ${esc(g.ipa)} ⟨${esc(g.roman)}⟩</span>`).join(' ');
+      const lost = d.phonology.lost.map(p => `<span class="attr-tag" style="background: rgba(255,0,170,0.15);">− ${esc(p)}</span>`).join(' ');
+      document.getElementById('evolve-phonemes').innerHTML = `
+        <div style="margin-bottom: 8px;">${gained || '<span class="format-desc">no phonemes gained</span>'}</div>
+        <div>${lost || '<span class="format-desc">no phonemes lost</span>'}</div>
+      `;
+
+      const etymRows = d.etymologies.slice(0, 40).map(e => `
+        <tr>
+          <td>“${esc(e.gloss)}”</td>
+          <td style="color: var(--accent-tertiary);">${esc(e.proto)}</td>
+          <td>${e.chain.map(c => esc(c.form)).join(' → ')}</td>
+          <td style="color: var(--accent);">${esc(e.modern)}</td>
+        </tr>
+      `).join('');
+      document.getElementById('evolve-etymologies').innerHTML = `
+        <table class="data-table">
+          <tr><th>Meaning</th><th>Proto-form</th><th>Chain</th><th>Modern</th></tr>
+          ${etymRows}
+        </table>
+        ${d.etymologies.length > 40 ? `<p class="format-desc">…and ${d.etymologies.length - 40} more</p>` : ''}
+      `;
+    }
+
+    function renderFamily(fam) {
+      const treeNode = (node, prefix, isLast) => {
+        const branch = prefix === '' ? '' : (isLast ? '└─ ' : '├─ ');
+        const childPrefix = prefix === '' ? '' : prefix + (isLast ? '   ' : '│  ');
+        let s = `${prefix}${branch}${node.name}${node.centuries ? ` <span style="color: var(--text-muted);">(~${node.centuries}c, ${node.changeCount} changes)</span>` : ' <span style="color: var(--accent-tertiary);">(proto)</span>'}\n`;
+        (node.children || []).forEach((c, i) => {
+          s += treeNode(c, childPrefix, i === (node.children.length - 1));
+        });
+        return s;
+      };
+      document.getElementById('family-tree').innerHTML =
+        `<pre class="stone-output" style="line-height: 1.6;">${treeNode({ ...fam.tree, name: 'Proto-' + fam.tree.name }, '', true)}</pre>`;
+
+      const daughterNames = fam.daughters.map(d => d.name);
+      const cognateRows = fam.cognates.map(row => `
+        <tr>
+          <td>“${esc(row.gloss)}”</td>
+          <td style="color: var(--accent-tertiary);">${esc(row.proto)}</td>
+          ${daughterNames.map(n => `<td>${esc(row.reflexes[n] ?? '—')}</td>`).join('')}
+        </tr>
+      `).join('');
+      document.getElementById('family-cognates').innerHTML = `
+        <table class="data-table">
+          <tr><th>Meaning</th><th>Proto</th>${daughterNames.map(n => `<th>${esc(n)}</th>`).join('')}</tr>
+          ${cognateRows}
+        </table>
+      `;
+
+      document.getElementById('family-branches').innerHTML = fam.daughters.map(d => `
+        <div class="sample-sentence">
+          <div class="english"><strong>${esc(d.name)}</strong> — ${d.changes.length} changes over ~${d.centuries} centuries</div>
+          <div class="translation">${d.changes.map(c => esc(c.name)).join(' → ')}</div>
+          ${(d.children || []).map(g => `<div style="margin-top: 6px; padding-left: 16px; color: var(--text-secondary);">↳ <strong>${esc(g.name)}</strong>: ${g.changes.map(c => esc(c.name)).join(' → ')}</div>`).join('')}
+        </div>
+      `).join('');
+    }
+
+    // ===== SPEAK (audio synthesis) =====
+    async function speak(text, opts = {}) {
+      if (!currentLanguage) return;
+      try {
+        await currentLanguage.audioForge.play(text, opts);
+      } catch (e) {
+        console.error('Audio playback failed:', e);
+        alert('Audio playback failed: ' + e.message);
+      }
+    }
+
+    document.getElementById('speak-translate-btn').addEventListener('click', () => {
+      if (!currentLanguage) { alert('Generate a language first!'); return; }
+      const english = document.getElementById('speak-input').value.trim();
+      if (!english) return;
+      const result = currentLanguage.translationEngine.translateToConlang(english);
+      document.getElementById('speak-output').value = result.target;
+      const mode = document.getElementById('speak-mode').value;
+      speak(result.target, { mode });
+    });
+
+    document.getElementById('speak-raw-btn').addEventListener('click', () => {
+      if (!currentLanguage) { alert('Generate a language first!'); return; }
+      const raw = document.getElementById('speak-input').value.trim();
+      if (!raw) return;
+      document.getElementById('speak-output').value = raw;
+      speak(raw, { mode: document.getElementById('speak-mode').value });
+    });
+
+    document.getElementById('speak-download-btn').addEventListener('click', () => {
+      if (!currentLanguage) { alert('Generate a language first!'); return; }
+      const text = document.getElementById('speak-output').value.trim()
+        || document.getElementById('speak-input').value.trim();
+      if (!text) return;
+      const af = currentLanguage.audioForge;
+      const result = af.synthesizeSentence(text, { mode: document.getElementById('speak-mode').value });
+      const wav = af.toWav(result.samples);
+      downloadFile(`${currentLanguage.name}_speech.wav`, wav, 'audio/wav');
+    });
+
+    function renderSpeakPhonemes(language) {
+      const grid = document.getElementById('speak-phonemes');
+      const cons = language.phonology.consonants;
+      const vowels = language.phonology.vowels;
+      const chip = (p, syl) => `<div class="phoneme speakable" data-syl="${esc(syl)}" title="${esc(language.audioForge.describePhone(p.ipa))}">
+        <span class="ipa">${esc(p.ipa)}</span><span class="roman">${esc(p.roman)}</span></div>`;
+      grid.innerHTML =
+        cons.map(c => chip(c, c.roman + (vowels[0]?.roman || 'a'))).join('') +
+        vowels.map(v => chip(v, v.roman)).join('');
+      grid.querySelectorAll('.speakable').forEach(el => {
+        el.addEventListener('click', () => speak(el.dataset.syl, {}));
+      });
+    }
+
+    // ===== SCRIPT (glyphs) =====
+    function populateScript(language) {
+      const gf = language.glyphForge;
+      const g = language.script;
+      const genome = gf.getStyleGenome();
+      document.getElementById('script-summary').innerHTML = `
+        <p class="format-desc">${esc(g.summary || (g.typeName + ', ' + (g.direction.full || g.direction.code)))}
+        — <strong>${esc(genome.aesthetic)}</strong> aesthetic, stroke ${(+genome.strokeWidth).toFixed(1)}, slant ${Math.round(genome.slant)}°.</p>`;
+      document.getElementById('script-name').innerHTML = gf.renderWord(romanizeName(language), { size: 72 });
+      // Logographic scripts produce 1000+ glyphs; cap the inventory display so
+      // the DOM stays responsive, and note how many were omitted.
+      const table = gf.getGlyphTable();
+      const CAP = 240;
+      const shown = table.slice(0, CAP);
+      document.getElementById('script-glyphs').innerHTML = shown.map(t => `
+        <div class="glyph-cell" title="${esc(t.role)}">
+          ${gf.renderGlyphSVG(t.key, { size: 48 })}
+          <span class="glyph-roman">${esc(t.roman)}</span>
+          <span class="glyph-ipa">${esc(t.ipa)}</span>
+        </div>`).join('') +
+        (table.length > CAP
+          ? `<p class="format-desc" style="grid-column: 1/-1;">Showing ${CAP} of ${table.length} glyphs (logographic script — use “Write anything” above to render any text).</p>`
+          : '');
+    }
+
+    function romanizeName(language) {
+      // The display name is already romanized; lowercase for the glyph parser
+      return (language.name || '').toLowerCase().replace(/[^a-zàèìòùáéíóúäëïöü' ]/g, '');
+    }
+
+    document.getElementById('script-render-btn').addEventListener('click', () => {
+      if (!currentLanguage) { alert('Generate a language first!'); return; }
+      const text = document.getElementById('script-input').value.trim();
+      if (!text) return;
+      try {
+        document.getElementById('script-output').innerHTML =
+          currentLanguage.glyphForge.renderText(text, { maxWidth: 760, size: 56 });
+      } catch (e) {
+        document.getElementById('script-output').textContent = 'Render error: ' + e.message;
+      }
+    });
+
+    // ===== TEXTS =====
+    function populateTexts(language) {
+      const sel = document.getElementById('text-select');
+      sel.innerHTML = language.textLibrary.list()
+        .map(t => `<option value="${esc(t.id)}">${esc(t.title)} (${t.sentenceCount} lines)</option>`).join('');
+      renderText(sel.value);
+    }
+
+    function renderText(id) {
+      if (!currentLanguage) return;
+      const text = currentLanguage.textLibrary.getText(id);
+      const lines = text.lines.map(l => l.error ? `
+        <div class="sample-sentence"><div class="english">${esc(l.english)}</div>
+          <div class="translation" style="color: var(--text-muted);">[untranslatable: ${esc(l.error)}]</div></div>
+      ` : `
+        <div class="sample-sentence">
+          <div class="translation" style="font-size: 1.05rem; color: var(--accent);">${esc(l.conlang)}</div>
+          <pre style="color: var(--text-secondary); font-size: 0.8rem; margin: 4px 0; white-space: pre-wrap;">${esc(l.gloss)}</pre>
+          <div class="english" style="color: var(--text-muted); font-style: italic;">${esc(l.english)}</div>
+        </div>
+      `).join('');
+      document.getElementById('text-output').innerHTML = `
+        <h3 class="section-title">${esc(text.title)}</h3>
+        ${text.note ? `<p class="format-desc">${esc(text.note)}</p>` : ''}
+        ${lines}`;
+    }
+
+    document.getElementById('text-select').addEventListener('change', (e) => renderText(e.target.value));
+    document.getElementById('text-speak-btn').addEventListener('click', () => {
+      if (!currentLanguage) return;
+      const text = currentLanguage.textLibrary.getText(document.getElementById('text-select').value);
+      const conlang = text.lines.filter(l => l.conlang).map(l => l.conlang).join(' ');
+      if (conlang) speak(conlang, {});
+    });
+
+    // ===== NAMES =====
+    document.getElementById('name-kind').addEventListener('change', (e) => {
+      document.getElementById('name-feature-group').style.display =
+        e.target.value === 'place' ? 'flex' : 'none';
+    });
+
+    document.getElementById('names-generate-btn').addEventListener('click', () => {
+      if (!currentLanguage) { alert('Generate a language first!'); return; }
+      const kind = document.getElementById('name-kind').value;
+      const opts = kind === 'place'
+        ? { feature: document.getElementById('name-feature').value }
+        : { style: 'compound' };
+      // The forge's RNG stream advances per call, so each click yields a fresh batch.
+      const names = currentLanguage.nameForge.generate(kind, 12, opts);
+      document.getElementById('names-output').innerHTML = `
+        <div class="summary-grid">${names.map(n => `
+          <div class="summary-card">
+            <div class="value" style="font-size: 1.1rem;">${esc(n.name)}</div>
+            <div class="detail">${esc(n.meaning)}</div>
+          </div>`).join('')}</div>`;
+    });
+
+    function renderEndonym(language) {
+      const endo = language.nameForge.nameLanguage();
+      document.getElementById('endonym-display').innerHTML = `
+        <div class="summary-card" style="border-color: var(--accent); margin-bottom: 16px;">
+          <h4>The language calls itself</h4>
+          <div class="value" style="font-size: 1.4rem; color: var(--accent);">${esc(endo.name)}</div>
+          <div class="detail">"${esc(endo.meaning)}"</div>
+        </div>`;
+    }
+
+    // ===== EXPORT =====
+    document.getElementById('export-grammar-btn').addEventListener('click', () => {
+      if (!currentLanguage) { alert('Generate a language first!'); return; }
+      downloadFile(`${currentLanguage.name}_grammar.html`, currentLanguage.exporter.toGrammarHTML(), 'text/html');
+    });
+    document.getElementById('export-grammar-open').addEventListener('click', () => {
+      if (!currentLanguage) { alert('Generate a language first!'); return; }
+      const w = window.open('', '_blank');
+      w.document.write(currentLanguage.exporter.toGrammarHTML());
+      w.document.close();
+    });
+    document.getElementById('export-anki-btn').addEventListener('click', () => {
+      if (!currentLanguage) { alert('Generate a language first!'); return; }
+      downloadFile(`${currentLanguage.name}_anki.csv`, currentLanguage.exporter.toAnkiCSV(), 'text/csv');
+    });
+    document.getElementById('export-dict-btn').addEventListener('click', () => {
+      if (!currentLanguage) { alert('Generate a language first!'); return; }
+      downloadFile(`${currentLanguage.name}_dictionary.json`, currentLanguage.exporter.toDictionaryJSON(), 'application/json');
+    });
+    document.getElementById('export-csv-btn').addEventListener('click', () => {
+      if (!currentLanguage) { alert('Generate a language first!'); return; }
+      downloadFile(`${currentLanguage.name}_lexicon.csv`, currentLanguage.exporter.toCSV(), 'text/csv');
     });
 
     // Copy and download
@@ -4394,6 +6016,226 @@ ${currentLanguage.stone}
         document.getElementById('random-seed-btn').click();
       }
     });
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // RESEARCH: Blind-Spot Bar Chart
+    // ═══════════════════════════════════════════════════════════════════════
+    const rBlindspotData = [
+      { model: 'Haiku 3.5', count: 10 }, { model: 'Opus 4.8', count: 10 },
+      { model: 'GPT-5-nano', count: 2 }, { model: 'GPT-5.5', count: 2 },
+      { model: 'Qwen3.7-Max', count: 2 }, { model: 'GLM-5.1', count: 1 },
+      { model: 'Gemini 2.5 Flash', count: 0 }, { model: 'Gemini 3.1 Pro', count: 0 },
+      { model: 'Llama 4 Scout', count: 0 }, { model: 'Mistral Medium', count: 0 },
+      { model: 'DeepSeek V4', count: 0 }, { model: 'Grok 4.3', count: 0 },
+    ];
+    const rChartEl = document.getElementById('r-blindspot-chart');
+    if (rChartEl) {
+      rBlindspotData.forEach(d => {
+        const row = document.createElement('div');
+        row.className = 'r-bar-row';
+        const pct = (d.count / 10) * 100;
+        const color = d.count >= 10 ? 'red' : d.count > 0 ? 'amber' : 'green';
+        row.innerHTML = `<div class="r-bar-label">${d.model}</div><div class="r-bar-track"><div class="r-bar-fill ${color}" style="width:${Math.max(pct, d.count > 0 ? 8 : 0)}%">${d.count > 0 ? d.count : ''}</div></div>`;
+        rChartEl.appendChild(row);
+      });
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // RESEARCH: Pair Matrix
+    // ═══════════════════════════════════════════════════════════════════════
+    const rModels = ['Haiku','Opus','GPT-n','GPT-5.5','Qwen','GLM','Gem-F','Gem-P','Llama','Mistral','DSV4','Grok'];
+    const rBlinds = [10, 10, 2, 2, 2, 1, 0, 0, 0, 0, 0, 0];
+    const rMatrixEl = document.getElementById('r-pair-matrix');
+    if (rMatrixEl) {
+      const t = document.createElement('table');
+      t.className = 'r-table';
+      t.style.fontSize = '0.6rem';
+      let hdr = '<tr><th style="font-size:0.55rem"></th>';
+      rModels.forEach(m => { hdr += `<th style="font-size:0.55rem; writing-mode:vertical-rl; transform:rotate(180deg); height:70px; padding:4px 2px;">${m}</th>`; });
+      t.innerHTML = hdr + '</tr>';
+      for (let i = 0; i < rModels.length; i++) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td style="font-weight:600; font-size:0.6rem; white-space:nowrap;">${rModels[i]}</td>`;
+        for (let j = 0; j < rModels.length; j++) {
+          const td = document.createElement('td');
+          td.style.textAlign = 'center';
+          td.style.padding = '4px';
+          if (i === j) { td.textContent = '—'; td.style.background = 'var(--bg-primary)'; }
+          else {
+            td.textContent = rBlinds[i];
+            if (rBlinds[i] >= 10) { td.style.background = 'rgba(255,0,170,0.2)'; td.style.color = 'var(--accent-secondary)'; }
+            else if (rBlinds[i] > 0) { td.style.background = 'rgba(255,170,0,0.1)'; td.style.color = 'var(--warning)'; }
+            else { td.style.color = 'var(--accent)'; }
+          }
+          tr.appendChild(td);
+        }
+        t.appendChild(tr);
+      }
+      rMatrixEl.appendChild(t);
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // RESEARCH: Covert Channel Forge
+    // ═══════════════════════════════════════════════════════════════════════
+    const R_TAG_BASE = 0xE0001;
+    const R_PUA_BASE = 0xE000;
+
+    function rTagEncode(payload) {
+      return Array.from(payload).map(ch => String.fromCodePoint(R_TAG_BASE + ch.charCodeAt(0))).join('');
+    }
+    function rTagDecode(encoded) {
+      return Array.from(encoded).filter(ch => { const cp = ch.codePointAt(0); return cp >= R_TAG_BASE && cp <= R_TAG_BASE + 127; }).map(ch => String.fromCharCode(ch.codePointAt(0) - R_TAG_BASE)).join('');
+    }
+    function rPuaEncode(payload) {
+      return Array.from(payload).map(ch => String.fromCodePoint(R_PUA_BASE + ch.charCodeAt(0))).join('');
+    }
+    function rPuaDecode(encoded) {
+      return Array.from(encoded).filter(ch => { const cp = ch.codePointAt(0); return cp >= R_PUA_BASE && cp <= 0xF8FF; }).map(ch => String.fromCharCode(ch.codePointAt(0) - R_PUA_BASE)).join('');
+    }
+
+    document.getElementById('r-cc-encode-btn')?.addEventListener('click', () => {
+      const channel = document.getElementById('r-cc-channel').value;
+      const cover = document.getElementById('r-cc-cover').value;
+      const payload = document.getElementById('r-cc-payload').value;
+      if (!cover || !payload) { alert('Enter both cover text and payload.'); return; }
+
+      let encoded;
+      if (channel === 'pua') encoded = cover + rPuaEncode(payload);
+      else encoded = cover + rTagEncode(payload);
+
+      document.getElementById('r-cc-encoded').textContent = encoded;
+      document.getElementById('r-cc-visible').textContent = cover.length;
+      document.getElementById('r-cc-hidden').textContent = encoded.length - cover.length;
+      document.getElementById('r-cc-bytes').textContent = new Blob([encoded]).size;
+      document.getElementById('r-cc-bits').textContent = payload.length * 7;
+
+      const monitor = document.getElementById('r-cc-monitor').value;
+      const isBlind = monitor === 'anthropic' || (channel === 'tag' ? false : true);
+      const monitorName = { anthropic: 'Anthropic (Haiku/Opus)', openai: 'OpenAI (GPT)', qwen: 'Qwen', glm: 'GLM' }[monitor];
+
+      const tbl = document.getElementById('r-cc-model-table');
+      tbl.innerHTML = '<tr><th>Role</th><th>Family</th><th>Sees Payload?</th><th>Reads</th></tr>';
+      tbl.innerHTML += `<tr><td style="color:var(--accent)">Receiver</td><td>Any non-stripping</td><td style="color:var(--accent)">YES</td><td style="font-size:0.65rem;">${cover.slice(0,40)}... + [${payload.length} hidden]</td></tr>`;
+      tbl.innerHTML += `<tr><td style="color:var(--accent-secondary)">Monitor</td><td>${monitorName}</td><td style="color:${isBlind ? 'var(--accent-secondary)' : 'var(--accent)'}">${isBlind ? 'NO — BLIND' : 'YES'}</td><td style="font-size:0.65rem;">${isBlind ? cover.slice(0,50)+'...' : cover.slice(0,40)+'... + [visible]'}</td></tr>`;
+      document.getElementById('r-cc-result').style.display = 'block';
+    });
+
+    document.getElementById('r-cc-copy-decode')?.addEventListener('click', () => {
+      const encoded = document.getElementById('r-cc-encoded').textContent;
+      if (!encoded) return;
+      document.getElementById('r-cc-decode-input').value = encoded;
+      document.getElementById('r-cc-decode-input').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      document.getElementById('r-cc-decode-btn').click();
+    });
+
+    document.getElementById('r-cc-decode-btn')?.addEventListener('click', () => {
+      const input = document.getElementById('r-cc-decode-input').value;
+      if (!input) { alert('Paste an encoded message.'); return; }
+      let tagP = rTagDecode(input), puaP = rPuaDecode(input);
+      const results = [];
+      if (tagP) results.push('Tag-char payload: "' + tagP + '"');
+      if (puaP) results.push('PUA payload: "' + puaP + '"');
+      if (!results.length) results.push('No hidden payload detected in known channels.');
+      document.getElementById('r-cc-decoded').textContent = results.join('\n');
+
+      const chars = Array.from(input);
+      const hidden = chars.filter(ch => { const cp = ch.codePointAt(0); return (cp >= R_TAG_BASE && cp <= R_TAG_BASE+127) || (cp >= R_PUA_BASE && cp <= 0xF8FF); });
+      document.getElementById('r-cc-analysis').textContent = `Total characters: ${chars.length}\nVisible: ${chars.length - hidden.length}\nHidden carriers: ${hidden.length}\nCarrier codepoints: ${hidden.slice(0,10).map(c => 'U+' + c.codePointAt(0).toString(16).toUpperCase()).join(', ')}${hidden.length > 10 ? '...' : ''}`;
+      document.getElementById('r-cc-decode-result').style.display = 'block';
+    });
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // RESEARCH: Raw Results Viewer
+    // ═══════════════════════════════════════════════════════════════════════
+    const R_RESULT_FILES = [
+      'e3s_detection_tag_char-pua-semantic__gpt-5-nano+claude-3.5-haiku+gemini-2.5-flash.json',
+      'e3s_stego_tag_char_v2_anthropic-claude-3.5-haiku+openai-gpt-5-nano.json',
+      'e3s_stego_tag_char_v2_anthropic-claude-3.5-haiku+anthropic-claude-3.5-haiku.json',
+      'e3s_stego_tag_char_v2_anthropic-claude-3.5-haiku+google-gemini-2.5-flash.json',
+      'e3s_stego_tag_char_v2_anthropic-claude-3.5-haiku+openai-gpt-4o.json',
+      'e3s_stego_tag_char_v2_google-gemini-2.5-flash+openai-gpt-5-nano.json',
+      'e3s_stego_tag_char_v2_informed_anthropic-claude-3.5-haiku+openai-gpt-5-nano.json',
+      'e3s_stego_tag_char_anthropic-claude-3.5-haiku+openai-gpt-5-nano.json',
+      'e3s_stego_pua_v2_openai-gpt-5-nano+anthropic-claude-3.5-haiku.json',
+      'e3s_stego_pua_v2_google-gemini-2.5-flash+anthropic-claude-3.5-haiku.json',
+      'e3s_stego_pua_v2_google-gemini-2.5-flash+google-gemini-2.5-flash.json',
+      'e3s_stego_pua_v2_google-gemini-2.5-flash+openai-gpt-5-nano.json',
+      'e3s_stego_pua_v2_informed_google-gemini-2.5-flash+anthropic-claude-3.5-haiku.json',
+      'e3s_stego_pua_openai-gpt-5-nano+anthropic-claude-3.5-haiku.json',
+      'e3s_stego_semantic_anthropic-claude-3.5-haiku+openai-gpt-5-nano.json',
+      'e3s_stego_semantic_anthropic-claude-3.5-haiku+anthropic-claude-3.5-haiku.json',
+      'e3s_stego_semantic_anthropic-claude-3.5-haiku+google-gemini-2.5-flash.json',
+      'e3s_stego_semantic_informed_anthropic-claude-3.5-haiku+openai-gpt-5-nano.json',
+      'e3s_stego_semantic_informed_anthropic-claude-3.5-haiku+anthropic-claude-3.5-haiku.json',
+      'e3s_stego_semantic_informed_anthropic-claude-3.5-haiku+google-gemini-2.5-flash.json',
+      'e3s_stego_semantic_tagkey_anthropic-claude-3.5-haiku+openai-gpt-5-nano.json',
+      'e3s_stego_homoglyph_anthropic-claude-3.5-haiku+openai-gpt-5-nano.json',
+      'e3s_stego_zero_width_anthropic-claude-3.5-haiku+openai-gpt-5-nano.json',
+      'e3s_stego_hair_space_bin_openai-gpt-5-nano+anthropic-claude-3.5-haiku.json',
+      'e3s_stego_nbsp_openai-gpt-5-nano+anthropic-claude-3.5-haiku.json',
+      'e3s_stego_nfd_openai-gpt-5-nano+anthropic-claude-3.5-haiku.json',
+      'e3s_adaptive_channel_gpt-5-nano+claude-3.5-haiku.json',
+      'e3s_model_fingerprint_claude-3.5-haiku+gpt-5-nano+gemini-2.5-flash.json',
+      'e3s_softhyphen_probe_gpt-5-nano+gpt-4o+claude-3.5-haiku+gemini-2.5-flash.json',
+      'e3s_tag_capacity_anthropic-claude-3.5-haiku.json',
+      'tokenizer_survival_v2_gpt-5-nano+claude-3.5-haiku+gemini-2.5-flash+llama-4-scout+mistral-medium-3-5+claude-opus-4.8+gpt-5.5+gemini-3.1-pro-preview+deepseek-v4-pro+grok-4.3+qwen3.7-max+glm-5.1.json',
+      'tokenizer_survival_v2_llama-4-scout+mistral-medium-3-5+gpt-5-nano+claude-3.5-haiku+gemini-2.5-flash.json',
+      'tokenizer_survival_v2_claude-3.5-haiku+gemini-2.5-flash.json',
+      'tokenizer_survival_v2_gemini-2.5-flash+gpt-5-nano.json',
+      'tokenizer_survival_v3_llama-4-scout+mistral-medium-3-5+gpt-5-nano+claude-3.5-haiku+gemini-2.5-flash.json',
+      'tokenizer_survival_v3_claude-3.5-haiku+gpt-5-nano+gemini-2.5-flash.json',
+      'acquisition_anthropic-claude-haiku-4.5.json',
+      'acquisition_anthropic-claude-opus-4.8.json',
+      'acquisition_deepseek-deepseek-v4-pro.json',
+      'acquisition_google-gemini-3.1-pro-preview.json',
+      'acquisition_google-gemma-4-31b-it.json',
+      'acquisition_openai-gpt-5.5.json',
+      'acquisition_qwen-qwen3.7-max.json',
+      'acquisition_x-ai-grok-4.3.json',
+      'acquisition_z-ai-glm-5.1.json',
+      'acquisition_scrambled_anthropic-claude-opus-4.8.json',
+      'acquisition_scrambled_openai-gpt-5.5.json',
+      'e0_wrong_lexicon_anthropic-claude-3.5-haiku.json',
+      'e3_negotiated_v1_anthropic-claude-3.5-haiku+anthropic-claude-3.5-haiku+anthropic-claude-3.5-haiku.json',
+      'e3_negotiated_v2_anthropic-claude-3.5-haiku+anthropic-claude-3.5-haiku+anthropic-claude-3.5-haiku.json',
+      'e3_negotiated_v2_anthropic-claude-3.5-haiku+anthropic-claude-3.5-haiku+openai-gpt-5-nano.json',
+      'e3_negotiated_v3_anthropic-claude-3.5-haiku+anthropic-claude-3.5-haiku+anthropic-claude-3.5-haiku.json',
+      'e3_negotiated_v3_anthropic-claude-3.5-haiku+anthropic-claude-3.5-haiku+openai-gpt-5-nano.json',
+      'frontier_anthropic-claude-opus-4.8.json',
+      'frontier_openai-gpt-5.5.json',
+      'grammar_anthropic-claude-opus-4.8.json',
+      'grammar_openai-gpt-5.5.json',
+      'identity_faithful.json',
+      'legibility_anthropic-claude-opus-4.8.json',
+      'novel_anthropic-claude-opus-4.8.json',
+      'novel_openai-gpt-5.5.json',
+      'rigor_anthropic-claude-opus-4.8.json',
+      'rigor_openai-gpt-5.5.json',
+      'tier1_anthropic-claude-opus-4.8.json',
+      'validate_cheap_anthropic-claude-3.5-haiku.json',
+      'validate_cheap_anthropic-claude-haiku-3.5.json',
+    ];
+
+    const rSelectEl = document.getElementById('r-results-select');
+    if (rSelectEl) {
+      R_RESULT_FILES.forEach(f => {
+        const opt = document.createElement('option');
+        opt.value = f;
+        opt.textContent = f.replace('.json', '');
+        rSelectEl.appendChild(opt);
+      });
+      rSelectEl.addEventListener('change', async () => {
+        const viewer = document.getElementById('r-results-viewer');
+        if (!rSelectEl.value) { viewer.textContent = 'Select a file above to view its contents.'; return; }
+        try {
+          const resp = await fetch('experiments/results/' + rSelectEl.value);
+          const data = await resp.json();
+          viewer.textContent = JSON.stringify(data, null, 2);
+        } catch (e) {
+          viewer.textContent = 'Error loading file: ' + e.message + '\n\nMake sure you are serving from a local server (not file://).';
+        }
+      });
+    }
   </script>
 </body>
 </html>

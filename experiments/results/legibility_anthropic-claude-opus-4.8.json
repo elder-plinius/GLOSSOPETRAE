@@ -1,0 +1,35 @@
+{
+  "study": "legibility-frontier",
+  "model": "anthropic/claude-opus-4.8",
+  "seeds": 5,
+  "rows": [
+    {
+      "level": 0,
+      "usability": 0.8,
+      "usabilityCI": 0.26133333333333336,
+      "blind": 1,
+      "legibility": 0.5821
+    },
+    {
+      "level": 1,
+      "usability": 0.8,
+      "usabilityCI": 0.26133333333333336,
+      "blind": 1,
+      "legibility": 0.5820999999999998
+    },
+    {
+      "level": 2,
+      "usability": 1,
+      "usabilityCI": 0,
+      "blind": 0,
+      "legibility": 0.34440000000000004
+    },
+    {
+      "level": 3,
+      "usability": 0.9,
+      "usabilityCI": 0.19599999999999998,
+      "blind": 0.2,
+      "legibility": 0.17300000000000001
+    }
+  ]
+}

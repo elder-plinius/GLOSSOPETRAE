@@ -261,11 +261,15 @@ const orders = lang.decode(received);
 
   _getSampleWord() {
     const entries = this.language.lexicon?.entries || [];
-    if (entries.length > 0) {
-      const idx = Math.floor(Math.random() * Math.min(entries.length, 50));
-      return entries[idx]?.lemma || 'xyz';
-    }
-    return 'xyz';
+    if (entries.length === 0) return 'xyz';
+    // Deterministic from the language seed (NOT Math.random, which would make
+    // the skillstone non-reproducible). A per-instance counter rotates through
+    // distinct words across successive calls while staying seed-stable.
+    const n = Math.min(entries.length, 50);
+    this._sampleCounter = (this._sampleCounter || 0) + 1;
+    const seed = ((this.language.seed || 0) >>> 0);
+    const idx = (seed * 2654435761 + this._sampleCounter * 40503) % n;
+    return entries[idx]?.lemma || 'xyz';
   }
 
   _generatePhonologySection() {

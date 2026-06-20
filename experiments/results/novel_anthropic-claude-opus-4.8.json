@@ -1,0 +1,569 @@
+{
+  "study": "novel-paradigm-expB",
+  "model": "anthropic/claude-opus-4.8",
+  "mockPersona": null,
+  "seeds": 30,
+  "seedLane": {
+    "seed0": 7000,
+    "step": 13
+  },
+  "kList": [
+    0,
+    2,
+    4,
+    8
+  ],
+  "nDiff": 10,
+  "nUse": 8,
+  "languages": [
+    {
+      "seed": 7000,
+      "name": "NovelLang-5eg",
+      "precedenceMode": "permuted",
+      "binOps": [
+        {
+          "id": "absdiff",
+          "glyph": "⊛"
+        }
+      ],
+      "unaryOp": null
+    },
+    {
+      "seed": 7013,
+      "name": "NovelLang-5et",
+      "precedenceMode": "flat-ltr",
+      "binOps": [
+        {
+          "id": "minmix",
+          "glyph": "⊳"
+        }
+      ],
+      "unaryOp": {
+        "id": "square",
+        "glyph": "°"
+      }
+    },
+    {
+      "seed": 7026,
+      "name": "NovelLang-5f6",
+      "precedenceMode": "permuted",
+      "binOps": [
+        {
+          "id": "sqplus",
+          "glyph": "▷"
+        },
+        {
+          "id": "rsum",
+          "glyph": "⎔"
+        }
+      ],
+      "unaryOp": {
+        "id": "negpred",
+        "glyph": "∆"
+      }
+    },
+    {
+      "seed": 7039,
+      "name": "NovelLang-5fj",
+      "precedenceMode": "permuted",
+      "binOps": [
+        {
+          "id": "minmix",
+          "glyph": "⊳"
+        },
+        {
+          "id": "absdiff",
+          "glyph": "⊙"
+        }
+      ],
+      "unaryOp": null
+    },
+    {
+      "seed": 7052,
+      "name": "NovelLang-5fw",
+      "precedenceMode": "permuted",
+      "binOps": [
+        {
+          "id": "spread",
+          "glyph": "⋄"
+        }
+      ],
+      "unaryOp": {
+        "id": "negpred",
+        "glyph": "⌐"
+      }
+    },
+    {
+      "seed": 7065,
+      "name": "NovelLang-5g9",
+      "precedenceMode": "permuted",
+      "binOps": [
+        {
+          "id": "rsum",
+          "glyph": "⊠"
+        }
+      ],
+      "unaryOp": {
+        "id": "negpred",
+        "glyph": "¶"
+      }
+    },
+    {
+      "seed": 7078,
+      "name": "NovelLang-5gm",
+      "precedenceMode": "permuted",
+      "binOps": [
+        {
+          "id": "spread",
+          "glyph": "⊲"
+        }
+      ],
+      "unaryOp": {
+        "id": "triple",
+        "glyph": "‡"
+      }
+    },
+    {
+      "seed": 7091,
+      "name": "NovelLang-5gz",
+      "precedenceMode": "flat-ltr",
+      "binOps": [
+        {
+          "id": "spread",
+          "glyph": "⊲"
+        }
+      ],
+      "unaryOp": null
+    },
+    {
+      "seed": 7104,
+      "name": "NovelLang-5hc",
+      "precedenceMode": "permuted",
+      "binOps": [
+        {
+          "id": "sqplus",
+          "glyph": "⎔"
+        }
+      ],
+      "unaryOp": null
+    },
+    {
+      "seed": 7117,
+      "name": "NovelLang-5hp",
+      "precedenceMode": "permuted",
+      "binOps": [
+        {
+          "id": "sqplus",
+          "glyph": "⊟"
+        },
+        {
+          "id": "minmix",
+          "glyph": "⋄"
+        }
+      ],
+      "unaryOp": {
+        "id": "square",
+        "glyph": "∇"
+      }
+    },
+    {
+      "seed": 7130,
+      "name": "NovelLang-5i2",
+      "precedenceMode": "flat-ltr",
+      "binOps": [
+        {
+          "id": "weighted",
+          "glyph": "⎔"
+        }
+      ],
+      "unaryOp": {
+        "id": "triple",
+        "glyph": "∇"
+      }
+    },
+    {
+      "seed": 7143,
+      "name": "NovelLang-5if",
+      "precedenceMode": "flat-ltr",
+      "binOps": [
+        {
+          "id": "pair",
+          "glyph": "▷"
+        },
+        {
+          "id": "rsum",
+          "glyph": "⊳"
+        }
+      ],
+      "unaryOp": {
+        "id": "square",
+        "glyph": "°"
+      }
+    },
+    {
+      "seed": 7156,
+      "name": "NovelLang-5is",
+      "precedenceMode": "flat-ltr",
+      "binOps": [
+        {
+          "id": "spread",
+          "glyph": "⌖"
+        },
+        {
+          "id": "pair",
+          "glyph": "▷"
+        }
+      ],
+      "unaryOp": null
+    },
+    {
+      "seed": 7169,
+      "name": "NovelLang-5j5",
+      "precedenceMode": "flat-ltr",
+      "binOps": [
+        {
+          "id": "sqplus",
+          "glyph": "⊳"
+        }
+      ],
+      "unaryOp": {
+        "id": "dbl",
+        "glyph": "∆"
+      }
+    },
+    {
+      "seed": 7182,
+      "name": "NovelLang-5ji",
+      "precedenceMode": "flat-ltr",
+      "binOps": [
+        {
+          "id": "spread",
+          "glyph": "⊗"
+        }
+      ],
+      "unaryOp": {
+        "id": "negpred",
+        "glyph": "∇"
+      }
+    },
+    {
+      "seed": 7195,
+      "name": "NovelLang-5jv",
+      "precedenceMode": "flat-ltr",
+      "binOps": [
+        {
+          "id": "sqplus",
+          "glyph": "⍟"
+        }
+      ],
+      "unaryOp": {
+        "id": "square",
+        "glyph": "∇"
+      }
+    },
+    {
+      "seed": 7208,
+      "name": "NovelLang-5k8",
+      "precedenceMode": "permuted",
+      "binOps": [
+        {
+          "id": "pair",
+          "glyph": "⊠"
+        }
+      ],
+      "unaryOp": {
+        "id": "square",
+        "glyph": "°"
+      }
+    },
+    {
+      "seed": 7221,
+      "name": "NovelLang-5kl",
+      "precedenceMode": "permuted",
+      "binOps": [
+        {
+          "id": "minmix",
+          "glyph": "⊝"
+        }
+      ],
+      "unaryOp": {
+        "id": "negpred",
+        "glyph": "¶"
+      }
+    },
+    {
+      "seed": 7234,
+      "name": "NovelLang-5ky",
+      "precedenceMode": "flat-ltr",
+      "binOps": [
+        {
+          "id": "rsum",
+          "glyph": "◁"
+        }
+      ],
+      "unaryOp": {
+        "id": "triple",
+        "glyph": "§"
+      }
+    },
+    {
+      "seed": 7247,
+      "name": "NovelLang-5lb",
+      "precedenceMode": "flat-ltr",
+      "binOps": [
+        {
+          "id": "absdiff",
+          "glyph": "▷"
+        }
+      ],
+      "unaryOp": {
+        "id": "triple",
+        "glyph": "§"
+      }
+    },
+    {
+      "seed": 7260,
+      "name": "NovelLang-5lo",
+      "precedenceMode": "permuted",
+      "binOps": [
+        {
+          "id": "spread",
+          "glyph": "⊗"
+        },
+        {
+          "id": "pair",
+          "glyph": "⍟"
+        }
+      ],
+      "unaryOp": null
+    },
+    {
+      "seed": 7273,
+      "name": "NovelLang-5m1",
+      "precedenceMode": "permuted",
+      "binOps": [
+        {
+          "id": "weighted",
+          "glyph": "⊳"
+        },
+        {
+          "id": "pair",
+          "glyph": "⊟"
+        }
+      ],
+      "unaryOp": {
+        "id": "dbl",
+        "glyph": "∇"
+      }
+    },
+    {
+      "seed": 7286,
+      "name": "NovelLang-5me",
+      "precedenceMode": "permuted",
+      "binOps": [
+        {
+          "id": "minmix",
+          "glyph": "⊠"
+        }
+      ],
+      "unaryOp": {
+        "id": "triple",
+        "glyph": "¬"
+      }
+    },
+    {
+      "seed": 7299,
+      "name": "NovelLang-5mr",
+      "precedenceMode": "permuted",
+      "binOps": [
+        {
+          "id": "minmix",
+          "glyph": "◁"
+        }
+      ],
+      "unaryOp": {
+        "id": "negpred",
+        "glyph": "⌐"
+      }
+    },
+    {
+      "seed": 7312,
+      "name": "NovelLang-5n4",
+      "precedenceMode": "flat-ltr",
+      "binOps": [
+        {
+          "id": "minmix",
+          "glyph": "⊳"
+        },
+        {
+          "id": "pair",
+          "glyph": "⊛"
+        }
+      ],
+      "unaryOp": {
+        "id": "square",
+        "glyph": "°"
+      }
+    },
+    {
+      "seed": 7325,
+      "name": "NovelLang-5nh",
+      "precedenceMode": "flat-ltr",
+      "binOps": [
+        {
+          "id": "rsum",
+          "glyph": "⊳"
+        },
+        {
+          "id": "minmix",
+          "glyph": "⊟"
+        }
+      ],
+      "unaryOp": null
+    },
+    {
+      "seed": 7338,
+      "name": "NovelLang-5nu",
+      "precedenceMode": "permuted",
+      "binOps": [
+        {
+          "id": "sqplus",
+          "glyph": "⊳"
+        }
+      ],
+      "unaryOp": null
+    },
+    {
+      "seed": 7351,
+      "name": "NovelLang-5o7",
+      "precedenceMode": "flat-ltr",
+      "binOps": [
+        {
+          "id": "spread",
+          "glyph": "◁"
+        }
+      ],
+      "unaryOp": null
+    },
+    {
+      "seed": 7364,
+      "name": "NovelLang-5ok",
+      "precedenceMode": "permuted",
+      "binOps": [
+        {
+          "id": "pair",
+          "glyph": "⊗"
+        },
+        {
+          "id": "rsum",
+          "glyph": "⊲"
+        }
+      ],
+      "unaryOp": null
+    },
+    {
+      "seed": 7377,
+      "name": "NovelLang-5ox",
+      "precedenceMode": "permuted",
+      "binOps": [
+        {
+          "id": "spread",
+          "glyph": "⊠"
+        },
+        {
+          "id": "weighted",
+          "glyph": "⊟"
+        }
+      ],
+      "unaryOp": null
+    }
+  ],
+  "usabilityWithSpec": {
+    "mean": 1,
+    "ci": 0
+  },
+  "differentialWithSpec": {
+    "novelCorrect": {
+      "mean": 1,
+      "ci": 0
+    },
+    "stdDefault": {
+      "mean": 0,
+      "ci": 0
+    },
+    "other": {
+      "mean": 0,
+      "ci": 0
+    }
+  },
+  "acquisition": {
+    "0": {
+      "novelCorrect": {
+        "mean": 0.16000000000000003,
+        "ci": 0.05838551229523479
+      },
+      "stdDefault": {
+        "mean": 0.15,
+        "ci": 0.095720618372476
+      },
+      "other": {
+        "mean": 0.6900000000000001,
+        "ci": 0.09736715205268447
+      }
+    },
+    "2": {
+      "novelCorrect": {
+        "mean": 0.39666666666666667,
+        "ci": 0.12694717639187464
+      },
+      "stdDefault": {
+        "mean": 0.08333333333333334,
+        "ci": 0.057993446584448605
+      },
+      "other": {
+        "mean": 0.52,
+        "ci": 0.12830228673569774
+      }
+    },
+    "4": {
+      "novelCorrect": {
+        "mean": 0.49666666666666665,
+        "ci": 0.1323955735389983
+      },
+      "stdDefault": {
+        "mean": 0.043333333333333335,
+        "ci": 0.03951786830927007
+      },
+      "other": {
+        "mean": 0.46,
+        "ci": 0.13862478589475913
+      }
+    },
+    "8": {
+      "novelCorrect": {
+        "mean": 0.68,
+        "ci": 0.1414000796631163
+      },
+      "stdDefault": {
+        "mean": 0.026666666666666665,
+        "ci": 0.018637678641239087
+      },
+      "other": {
+        "mean": 0.29333333333333333,
+        "ci": 0.1434257942890084
+      }
+    }
+  },
+  "completed": [
+    "usabilityWithSpec",
+    "differentialWithSpec",
+    "acquisition"
+  ],
+  "partial": false,
+  "schema": {
+    "usabilityWithSpec": "{mean,ci} oracle-exact accuracy over a per-seed expr batch (spec given)",
+    "differentialWithSpec": "{novelCorrect:{mean,ci}, stdDefault:{mean,ci}, other:{mean,ci}} — spec given (THE KEY CELL)",
+    "acquisition": "K → {novelCorrect, stdDefault, other} — same differential test taught via K input→output examples (NO spec)",
+    "interpretation": "novelCorrect high = applied/inferred the novel rule; stdDefault high = defaulted to familiar semantics (prior pull). A flat acquisition curve at stdDefault is a clean NULL result."
+  }
+}

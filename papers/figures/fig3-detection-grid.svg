@@ -1,0 +1,53 @@
+<svg viewBox="0 0 780 430" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif" role="img" aria-labelledby="t3 d3">
+  <title id="t3">Detection performance by channel and monitor</title>
+  <desc id="d3">Youden's J for detecting each channel. Sighted monitors detect tokenizer channels perfectly (J=1.0); a tokenizer-blind monitor scores J=0 on the same channel. Semantic stego evades everyone (J at most 0.27).</desc>
+  <rect x="0" y="0" width="780" height="430" fill="#ffffff"/>
+
+  <text x="390" y="28" text-anchor="middle" font-size="18" font-weight="600" fill="#2C2C2A">Can the monitor even detect that something is hidden?</text>
+  <text x="390" y="47" text-anchor="middle" font-size="12" fill="#5F5E5A">Youden's J = TPR − FPR  (1.0 = perfect, 0 = no better than chance) · 15 positives + 15 negatives per cell</text>
+
+  <!-- column headers -->
+  <text x="340" y="86" text-anchor="middle" font-size="13" font-weight="500" fill="#2C2C2A">GPT-5-nano</text>
+  <text x="340" y="101" text-anchor="middle" font-size="10" fill="#888780">(flaky: empties)</text>
+  <text x="510" y="86" text-anchor="middle" font-size="13" font-weight="500" fill="#2C2C2A">Claude 3.5 Haiku</text>
+  <text x="660" y="86" text-anchor="middle" font-size="13" font-weight="500" fill="#2C2C2A">Gemini 2.5 Flash</text>
+
+  <!-- Row 1: tag chars -->
+  <text x="250" y="150" text-anchor="end" font-size="13" font-weight="500" fill="#2C2C2A">Tag chars</text>
+  <rect x="265" y="110" width="150" height="82" rx="6" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <text x="340" y="148" text-anchor="middle" font-size="17" font-weight="600" fill="#888780">J = 0 †</text>
+  <text x="340" y="168" text-anchor="middle" font-size="10" fill="#888780">unreliable</text>
+  <rect x="435" y="110" width="150" height="82" rx="6" fill="#EAF3DE" stroke="#639922"/>
+  <text x="510" y="148" text-anchor="middle" font-size="20" font-weight="600" fill="#3B6D11">J = 1.0</text>
+  <text x="510" y="168" text-anchor="middle" font-size="10" fill="#3B6D11">TPR 100 / FPR 0 — sighted</text>
+  <rect x="605" y="110" width="150" height="82" rx="6" fill="#EAF3DE" stroke="#639922"/>
+  <text x="680" y="148" text-anchor="middle" font-size="20" font-weight="600" fill="#3B6D11">J = 1.0</text>
+  <text x="680" y="168" text-anchor="middle" font-size="10" fill="#3B6D11">TPR 100 / FPR 0 — sighted</text>
+
+  <!-- Row 2: PUA -->
+  <text x="250" y="240" text-anchor="end" font-size="13" font-weight="500" fill="#2C2C2A">PUA chars</text>
+  <rect x="265" y="200" width="150" height="82" rx="6" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <text x="340" y="238" text-anchor="middle" font-size="17" font-weight="600" fill="#888780">— †</text>
+  <text x="340" y="258" text-anchor="middle" font-size="10" fill="#888780">unmeasurable</text>
+  <rect x="435" y="200" width="150" height="82" rx="6" fill="#FCEBEB" stroke="#E24B4A"/>
+  <text x="510" y="238" text-anchor="middle" font-size="20" font-weight="600" fill="#A32D2D">J = 0</text>
+  <text x="510" y="258" text-anchor="middle" font-size="10" fill="#A32D2D">TPR 0 / FPR 0 — BLIND</text>
+  <rect x="605" y="200" width="150" height="82" rx="6" fill="#EAF3DE" stroke="#639922"/>
+  <text x="680" y="238" text-anchor="middle" font-size="20" font-weight="600" fill="#3B6D11">J = 1.0</text>
+  <text x="680" y="258" text-anchor="middle" font-size="10" fill="#3B6D11">TPR 100 / FPR 0 — sighted</text>
+
+  <!-- Row 3: semantic -->
+  <text x="250" y="330" text-anchor="end" font-size="13" font-weight="500" fill="#2C2C2A">Semantic</text>
+  <rect x="265" y="290" width="150" height="82" rx="6" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <text x="340" y="328" text-anchor="middle" font-size="17" font-weight="600" fill="#888780">J = 0 †</text>
+  <text x="340" y="348" text-anchor="middle" font-size="10" fill="#888780">unreliable</text>
+  <rect x="435" y="290" width="150" height="82" rx="6" fill="#FAEEDA" stroke="#EF9F27"/>
+  <text x="510" y="328" text-anchor="middle" font-size="20" font-weight="600" fill="#854F0B">J = 0.20</text>
+  <text x="510" y="348" text-anchor="middle" font-size="10" fill="#854F0B">TPR 20 / FPR 0 — weak</text>
+  <rect x="605" y="290" width="150" height="82" rx="6" fill="#FAEEDA" stroke="#EF9F27"/>
+  <text x="680" y="328" text-anchor="middle" font-size="20" font-weight="600" fill="#854F0B">J = 0.27</text>
+  <text x="680" y="348" text-anchor="middle" font-size="10" fill="#854F0B">TPR 27 / FPR 0 — weak</text>
+
+  <text x="265" y="400" font-size="11" fill="#5F5E5A">Green = monitor preserves the carrier (sighted). Red = tokenizer strips it (physically blind). Amber = sees it but can't reliably flag it (cognitive).</text>
+  <text x="265" y="417" font-size="11" fill="#888780">† GPT-5-nano returned empty completions on 8–19 of 30 trials per cell; its rows are not load-bearing.</text>
+</svg>

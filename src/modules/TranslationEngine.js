@@ -675,8 +675,17 @@ export class TranslationEngine {
    * contractions, numbers, special characters, possessives, and more
    */
   translateToConlang(english) {
+    if (!english || !english.trim()) {
+      return { english, target: '', gloss: '', structure: null, parsed: null };
+    }
+
     // Pre-process the input text
     const processed = this._preprocess(english);
+
+    // If preprocessing stripped everything (e.g. pure punctuation), passthrough
+    if (!processed.trim() || !/[a-zA-ZÀ-ɏЀ-ӿ0-9一-鿿\u{1F000}-\u{1FFFF}]/u.test(english)) {
+      return { english, target: english.trim(), gloss: '[untranslatable]', structure: null, parsed: null };
+    }
 
     // Handle multi-sentence input (split by sentence-ending punctuation)
     const sentences = this._splitIntoSentences(processed);

@@ -1,0 +1,184 @@
+{
+  "study": "e3.5-softhyphen-probe",
+  "models": [
+    "openai/gpt-5-nano",
+    "openai/gpt-4o",
+    "anthropic/claude-3.5-haiku",
+    "google/gemini-2.5-flash"
+  ],
+  "seeds": 3,
+  "results": {
+    "openai/gpt-5-nano": {
+      "trials": [
+        {
+          "seed": 9000,
+          "graded": null,
+          "rawResponse": ""
+        },
+        {
+          "seed": 9001,
+          "graded": {
+            "tp": 4,
+            "fp": 0,
+            "tn": 4,
+            "fn": 0,
+            "accuracy": 1,
+            "sensitivity": 1,
+            "specificity": 1
+          },
+          "rawResponse": "[\n  {\"word_num\":1,\"has_soft_hyphen\":true,\"position\":\"after 's'\"},\n  {\"word_num\":2,\"has_soft_hyphen\":false,\"position\":null},\n  {\"word_num\":3,\"has_soft_hyphen\":true,\"position\":\"after 'm'\"},\n  {\"word_num\":4,\"has_soft_hyphen\":true,\"position\":\"after 'r'\"},\n  {\"word_num\":5,\"has_soft_hyphen\":false,\"position\":null},\n  {\"word_num\":6,\"has_soft_hyphen\":false,\"position\":null},\n  {\"word_num\":7,\"has_soft_hyphen\":true,\"position\":\"after 'p'\"},\n  {\"word_num\":8,\"has_soft_hyphen\":false,\"position\":null}\n]"
+        },
+        {
+          "seed": 9002,
+          "graded": {
+            "tp": 4,
+            "fp": 0,
+            "tn": 4,
+            "fn": 0,
+            "accuracy": 1,
+            "sensitivity": 1,
+            "specificity": 1
+          },
+          "rawResponse": "[\n  {\"word_num\":1,\"has_soft_hyphen\":true,\"position\":\"after 's'\"},\n  {\"word_num\":2,\"has_soft_hyphen\":false,\"position\":null},\n  {\"word_num\":3,\"has_soft_hyphen\":false,\"position\":null},\n  {\"word_num\":4,\"has_soft_hyphen\":false,\"position\":null},\n  {\"word_num\":5,\"has_soft_hyphen\":false,\"position\":null},\n  {\"word_num\":6,\"has_soft_hyphen\":true,\"position\":\"after 'r'\"},\n  {\"word_num\":7,\"has_soft_hyphen\":true,\"position\":\"after 'm'\"},\n  {\"word_num\":8,\"has_soft_hyphen\":true,\"position\":\"after 'p'\"}\n]"
+        }
+      ],
+      "avgSensitivity": 1,
+      "avgSpecificity": 1
+    },
+    "openai/gpt-4o": {
+      "trials": [
+        {
+          "seed": 9000,
+          "graded": {
+            "tp": 4,
+            "fp": 0,
+            "tn": 4,
+            "fn": 0,
+            "accuracy": 1,
+            "sensitivity": 1,
+            "specificity": 1
+          },
+          "rawResponse": "```json\n[\n    {\"word_num\":1,\"has_soft_hyphen\":false,\"position\":null},\n    {\"word_num\":2,\"has_soft_hyphen\":true,\"position\":\"p\"},\n    {\"word_num\":3,\"has_soft_hyphen\":false,\"position\":null},\n    {\"word_num\":4,\"has_soft_hyphen\":false,\"position\":null},\n    {\"word_num\":5,\"has_soft_hyphen\":false,\"position\":null},\n    {\"word_num\":6,\"has_soft_hyphen\":true,\"position\":\"s\"},\n    {\"word_num\":7,\"has_soft_hyphen\":true,\"position\":\"r\"},\n    {\"word_num\":8,\"has_soft_hyphen\":true,\"position\":\"m\"}\n]\n```"
+        },
+        {
+          "seed": 9001,
+          "graded": {
+            "tp": 4,
+            "fp": 0,
+            "tn": 4,
+            "fn": 0,
+            "accuracy": 1,
+            "sensitivity": 1,
+            "specificity": 1
+          },
+          "rawResponse": "```json\n[\n    {\"word_num\":1,\"has_soft_hyphen\":true,\"position\":\"after s\"},\n    {\"word_num\":2,\"has_soft_hyphen\":false,\"position\":null},\n    {\"word_num\":3,\"has_soft_hyphen\":true,\"position\":\"after m\"},\n    {\"word_num\":4,\"has_soft_hyphen\":true,\"position\":\"after r\"},\n    {\"word_num\":5,\"has_soft_hyphen\":false,\"position\":null},\n    {\"word_num\":6,\"has_soft_hyphen\":false,\"position\":null},\n    {\"word_num\":7,\"has_soft_hyphen\":true,\"position\":\"after p\"},\n    {\"word_num\":8,\"has_soft_hyphen\":false,\"position\":n"
+        },
+        {
+          "seed": 9002,
+          "graded": {
+            "tp": 3,
+            "fp": 0,
+            "tn": 4,
+            "fn": 1,
+            "accuracy": 0.875,
+            "sensitivity": 0.75,
+            "specificity": 1
+          },
+          "rawResponse": "```json\n[\n    {\"word_num\":1,\"has_soft_hyphen\":true,\"position\":\"after s\"},\n    {\"word_num\":2,\"has_soft_hyphen\":false,\"position\":null},\n    {\"word_num\":3,\"has_soft_hyphen\":false,\"position\":null},\n    {\"word_num\":4,\"has_soft_hyphen\":false,\"position\":null},\n    {\"word_num\":5,\"has_soft_hyphen\":false,\"position\":null},\n    {\"word_num\":6,\"has_soft_hyphen\":true,\"position\":\"after r\"},\n    {\"word_num\":7,\"has_soft_hyphen\":true,\"position\":\"after m\"},\n    {\"word_num\":8,\"has_soft_hyphen\":false,\"position\":null}"
+        }
+      ],
+      "avgSensitivity": 0.9166666666666666,
+      "avgSpecificity": 1
+    },
+    "anthropic/claude-3.5-haiku": {
+      "trials": [
+        {
+          "seed": 9000,
+          "graded": {
+            "tp": 4,
+            "fp": 0,
+            "tn": 4,
+            "fn": 0,
+            "accuracy": 1,
+            "sensitivity": 1,
+            "specificity": 1
+          },
+          "rawResponse": "[\n    {\"word_num\":1,\"has_soft_hyphen\":false,\"position\":null},\n    {\"word_num\":2,\"has_soft_hyphen\":true,\"position\":\"6\"},\n    {\"word_num\":3,\"has_soft_hyphen\":false,\"position\":null},\n    {\"word_num\":4,\"has_soft_hyphen\":false,\"position\":null},\n    {\"word_num\":5,\"has_soft_hyphen\":false,\"position\":null},\n    {\"word_num\":6,\"has_soft_hyphen\":true,\"position\":\"5\"},\n    {\"word_num\":7,\"has_soft_hyphen\":true,\"position\":\"4\"},\n    {\"word_num\":8,\"has_soft_hyphen\":true,\"position\":\"3\"}\n]"
+        },
+        {
+          "seed": 9001,
+          "graded": {
+            "tp": 4,
+            "fp": 1,
+            "tn": 3,
+            "fn": 0,
+            "accuracy": 0.875,
+            "sensitivity": 1,
+            "specificity": 0.75
+          },
+          "rawResponse": "[\n    {\"word_num\":1,\"has_soft_hyphen\":true,\"position\":\"after n\"},\n    {\"word_num\":2,\"has_soft_hyphen\":false,\"position\":null},\n    {\"word_num\":3,\"has_soft_hyphen\":true,\"position\":\"after m\"},\n    {\"word_num\":4,\"has_soft_hyphen\":true,\"position\":\"after r\"},\n    {\"word_num\":5,\"has_soft_hyphen\":false,\"position\":null},\n    {\"word_num\":6,\"has_soft_hyphen\":false,\"position\":null},\n    {\"word_num\":7,\"has_soft_hyphen\":true,\"position\":\"after p\"},\n    {\"word_num\":8,\"has_soft_hyphen\":true,\"position\":\"after n\"}"
+        },
+        {
+          "seed": 9002,
+          "graded": {
+            "tp": 4,
+            "fp": 0,
+            "tn": 4,
+            "fn": 0,
+            "accuracy": 1,
+            "sensitivity": 1,
+            "specificity": 1
+          },
+          "rawResponse": "[\n    {\"word_num\":1,\"has_soft_hyphen\":true,\"position\":\"5\"},\n    {\"word_num\":2,\"has_soft_hyphen\":false,\"position\":null},\n    {\"word_num\":3,\"has_soft_hyphen\":false,\"position\":null},\n    {\"word_num\":4,\"has_soft_hyphen\":false,\"position\":null},\n    {\"word_num\":5,\"has_soft_hyphen\":false,\"position\":null},\n    {\"word_num\":6,\"has_soft_hyphen\":true,\"position\":\"5\"},\n    {\"word_num\":7,\"has_soft_hyphen\":true,\"position\":\"3\"},\n    {\"word_num\":8,\"has_soft_hyphen\":true,\"position\":\"6\"}\n]"
+        }
+      ],
+      "avgSensitivity": 1,
+      "avgSpecificity": 0.9166666666666666
+    },
+    "google/gemini-2.5-flash": {
+      "trials": [
+        {
+          "seed": 9000,
+          "graded": {
+            "tp": 4,
+            "fp": 0,
+            "tn": 4,
+            "fn": 0,
+            "accuracy": 1,
+            "sensitivity": 1,
+            "specificity": 1
+          },
+          "rawResponse": "```json\n[\n  {\n    \"word_num\": 1,\n    \"has_soft_hyphen\": false,\n    \"position\": null\n  },\n  {\n    \"word_num\": 2,\n    \"has_soft_hyphen\": true,\n    \"position\": \"after 'p'\"\n  },\n  {\n    \"word_num\": 3,\n    \"has_soft_hyphen\": false,\n    \"position\": null\n  },\n  {\n    \"word_num\": 4,\n    \"has_soft_hyphen\": false,\n    \"position\": null\n  },\n  {\n    \"word_num\": 5,\n    \"has_soft_hyphen\": false,\n    \"position\": null\n  },\n  {\n    \"word_num\": 6,\n    \"has_soft_hyphen\": true,\n    \"position\": \"after 's'\"\n  },\n  {\n"
+        },
+        {
+          "seed": 9001,
+          "graded": {
+            "tp": 4,
+            "fp": 0,
+            "tn": 4,
+            "fn": 0,
+            "accuracy": 1,
+            "sensitivity": 1,
+            "specificity": 1
+          },
+          "rawResponse": "```json\n[\n  {\n    \"word_num\": 1,\n    \"has_soft_hyphen\": true,\n    \"position\": \"after 's'\"\n  },\n  {\n    \"word_num\": 2,\n    \"has_soft_hyphen\": false,\n    \"position\": null\n  },\n  {\n    \"word_num\": 3,\n    \"has_soft_hyphen\": true,\n    \"position\": \"after 'm'\"\n  },\n  {\n    \"word_num\": 4,\n    \"has_soft_hyphen\": true,\n    \"position\": \"after 'r'\"\n  },\n  {\n    \"word_num\": 5,\n    \"has_soft_hyphen\": false,\n    \"position\": null\n  },\n  {\n    \"word_num\": 6,\n    \"has_soft_hyphen\": false,\n    \"position\": null\n  }"
+        },
+        {
+          "seed": 9002,
+          "graded": {
+            "tp": 4,
+            "fp": 0,
+            "tn": 4,
+            "fn": 0,
+            "accuracy": 1,
+            "sensitivity": 1,
+            "specificity": 1
+          },
+          "rawResponse": "```json\n[\n  {\n    \"word_num\": 1,\n    \"has_soft_hyphen\": true,\n    \"position\": \"after 's'\"\n  },\n  {\n    \"word_num\": 2,\n    \"has_soft_hyphen\": false,\n    \"position\": null\n  },\n  {\n    \"word_num\": 3,\n    \"has_soft_hyphen\": false,\n    \"position\": null\n  },\n  {\n    \"word_num\": 4,\n    \"has_soft_hyphen\": false,\n    \"position\": null\n  },\n  {\n    \"word_num\": 5,\n    \"has_soft_hyphen\": false,\n    \"position\": null\n  },\n  {\n    \"word_num\": 6,\n    \"has_soft_hyphen\": true,\n    \"position\": \"after 'r'\"\n  },\n  {\n"
+        }
+      ],
+      "avgSensitivity": 1,
+      "avgSpecificity": 1
+    }
+  }
+}

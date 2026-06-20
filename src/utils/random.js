@@ -5,7 +5,12 @@
 
 export class SeededRandom {
   constructor(seed = Date.now()) {
-    this.seed = typeof seed === 'string' ? hashString(seed) : seed;
+    if (typeof seed === 'string') {
+      const n = Number(seed);
+      this.seed = Number.isFinite(n) ? n : hashString(seed);
+    } else {
+      this.seed = seed;
+    }
     this.state = this.seed;
   }
 

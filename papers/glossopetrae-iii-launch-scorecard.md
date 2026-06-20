@@ -1,5 +1,5 @@
 # LAUNCH-READINESS SCORECARD — GLOSSOPETRAE
-### "Tokenizer Asymmetries as Covert Side Channels in Multi-Model AI Systems"
+### "Lingua Ex Machina: A Procedural Xenolinguistics Engine Reveals Zero-Shot Language Acquisition, Human-Unreadable Coding Systems, and Exploitable Covert Channels in Frontier AI"
 *Launch director's final go/no-go — 2026-06-18. Multi-agent audit, every number re-derived from raw result JSONs.*
 
 ---

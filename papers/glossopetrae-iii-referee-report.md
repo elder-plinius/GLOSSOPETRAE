@@ -1,4 +1,4 @@
-# Referee Report: GLOSSOPETRAE — *Tokenizer Asymmetries as Covert Side Channels in Multi-Model AI Systems*
+# Referee Report: GLOSSOPETRAE — *Lingua Ex Machina: A Procedural Xenolinguistics Engine Reveals Zero-Shot Language Acquisition, Human-Unreadable Coding Systems, and Exploitable Covert Channels in Frontier AI*
 
 *Adversarial peer review, generated 2026-06-17. 6 referee lenses + ground-truth reconstruction from raw result JSONs + adversarial verification of every finding (47 raised → 42 survived) + completeness pass.*
 

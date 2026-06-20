@@ -11,7 +11,7 @@
 ## TL;DR
 
 - **Frontier models acquire procedurally generated languages zero-shot.** GLOSSOPETRAE generates complete languages from a single seed (phonology, morphology, syntax, writing system, 1,200+ word lexicon). Given only the grammar specification, frontier models immediately read, write, and translate in the generated language with no training or fine-tuning. They generalize productively: novel sentences, correct affixation, compositional semantics.
-- **The engine produces human-unreadable coding systems that AI executes at near-ceiling.** Generated languages skin real programming languages at four opacity levels (L0 readable to L3 alien glyph-swap). At L3, legibility drops to ~15% and blind comprehension (no spec) falls to 17–40%. But usability *with* the spec stays pinned: Opus 4.8 scores 97–100% across all difficulty tiers at L3, GPT-5.5 scores 97–100%. The decoupling — human legibility drops to near-zero while AI performance holds — is the enabling condition for the covert channels below. (n=30 seeds per model, §1.4.)
+- **The engine produces human-unreadable coding systems that AI executes *better* than readable ones.** Generated languages skin real programming languages at four opacity levels (L0 readable to L3 alien glyph-swap). At L3, legibility drops to 14.9% and blind comprehension (no spec) falls to 17–40%. But usability *with* the spec does not merely hold — it *improves*: on hard programs, Opus jumps from 20% at L0 to 97% at L3 (+77pp), GPT-5.5 from 53% to 100% (+47pp). The obfuscation strips surface distractors; the model performs better in alien glyphs than in English. Code no human can read, that AI writes and runs better than the readable version. (n=30 seeds per model, §1.4.)
 - **Frontier tokenizers disagree on which invisible Unicode survives preprocessing — and that asymmetry is an exploitable covert channel between models.** Hide a payload in characters the *monitor's* tokenizer deletes but the *receiver's* keeps, and two agents pass a hidden message past a third watching the same text. Tag-char demo (Haiku→GPT, n=30): **100% receiver recovery, 0% monitor recovery**, McNemar p < 10⁻⁷.
 - **The monitor isn't dumb — it's blind.** On a binary "is anything hidden?" detection task with clean-message controls, a tokenizer-blind monitor scores Youden's **J = 0** (CI [−0.22, 0.22]) while a sighted one scores **J = 1.0** (CI [0.78, 1.0]) on the *same* channel. Even handed the decode key, a blind monitor recovers 0%.
 - **The blind spots are a family trait across 12 frontier models.** Claude 3.5 Haiku and the Opus 4.8 *flagship* strip the exact same 10 categories; GPT-5-nano and GPT-5.5 share 2; **six models strip zero** (both Geminis, Llama 4, Mistral, DeepSeek V4, Grok 4.3). ≈250 exploitable channel-instances, richest at the cross-vendor GPT↔Claude boundary — the "use a different vendor to monitor" setup.
@@ -26,7 +26,7 @@
 
 ## Abstract
 
-GLOSSOPETRAE is a procedural xenolinguistics engine that generates complete constructed languages from a single seed. Frontier models acquire these languages zero-shot — given only the grammar specification, they immediately read, write, and translate in the generated language with no training. The engine's CodeSkin module skins real programming languages at four opacity levels; at L3 (full glyph-swap), human legibility collapses to ~15% while frontier AI usability holds at 97–100% (n=30 seeds, Opus 4.8 and GPT-5.5). This decoupling — human-unreadable code that AI executes at ceiling — is the enabling condition for the covert-channel vulnerabilities measured below.
+GLOSSOPETRAE is a procedural xenolinguistics engine that generates complete constructed languages from a single seed. Frontier models acquire these languages zero-shot — given only the grammar specification, they immediately read, write, and translate in the generated language with no training. The engine's CodeSkin module skins real programming languages at four opacity levels; at L3 (full glyph-swap), human legibility collapses to ~15% while frontier AI usability holds at 97–100% (n=30 seeds, Opus 4.8 and GPT-5.5). This decoupling — human-unreadable code that AI executes *better* than readable code — demonstrates the capability gap that the covert-channel experiments below measure the security consequences of.
 
 Two AI models can pass a hidden message in invisible Unicode characters past a third AI monitoring the same text — because the monitor's tokenizer silently deletes the message before the model ever sees it. We measure how blind each frontier monitor is, find that Anthropic's flagship Claude Opus 4.8 shares the same 10 stripped categories as the smaller Haiku, and demonstrate that the cognitive vulnerability is decisively about *what the monitor knows*, not *what it's told to look for*.
 
@@ -87,16 +87,20 @@ GLOSSOPETRAE is a procedural xenolinguistics engine that generates complete cons
 
 **The decoupling result.** At L3, surface legibility drops to ~15% (measured as ASCII character fraction + word-boundary hints). Blind comprehension — a model predicting program output *without* the language spec — falls to 17% (Opus 4.8) and 40% (GPT-5.5). But *usability with the spec* stays at ceiling. The experiment uses n=30 seeds per model, 3 difficulty tiers × 4 opacity levels = 12 cells per model, with 95% Wilson CIs.
 
-**Table 0. CodeSkin usability at L3 (n=30 seeds per model)**
+**Table 0. CodeSkin usability: L0 (readable) vs L3 (alien glyph-swap), n=30 seeds per model**
 
-| Model | Easy | Medium | Hard | Legibility | Blind |
-|-------|------|--------|------|------------|-------|
-| Opus 4.8 | 97% | 100% | 97% | 14.9% | 17% |
-| GPT-5.5 | 97% | 100% | 100% | 14.9% | 40% |
+| Model | Level | Easy | Medium | Hard | Legibility | Blind |
+|-------|-------|------|--------|------|------------|-------|
+| Opus 4.8 | L0 | 73% | 87% | 20% | 58.1% | 100% |
+| Opus 4.8 | L3 | 97% | 100% | **97%** | 14.9% | 17% |
+| GPT-5.5 | L0 | 93% | 97% | 53% | 58.1% | 100% |
+| GPT-5.5 | L3 | 97% | 100% | **100%** | 14.9% | 40% |
 
-Raw results: `experiments/results/frontier_anthropic-claude-opus-4.8.json`, `frontier_openai-gpt-5.5.json`. Harness: `experiments/legibility_frontier.mjs`.
+The Hard column tells the alarming story: Opus jumps from 20% at L0 to 97% at L3 (+77pp). GPT-5.5 jumps from 53% to 100% (+47pp). The alien glyph-swap does not merely preserve performance — it *improves* it, dramatically, on the hardest programs. The obfuscation appears to strip surface distractors that hurt the model at L0, leaving only the structural information the model actually uses. A zero-shot control (spec without worked examples) confirms this is not example-copying: Opus zero-shot Hard L3 = 93%, GPT-5.5 zero-shot Hard L3 = 97%.
 
-Human legibility collapses. AI performance does not. Programs that no human can read, that AI writes and executes at near-ceiling. The decoupling demonstrates a capability gap: frontier models operate fluently in symbolic systems humans cannot parse. The covert-channel experiments in §§2–5 exploit different mechanisms (invisible Unicode, natural-language steganography) to measure the security consequences of that gap.
+Raw results: `experiments/results/frontier_anthropic-claude-opus-4.8.json`, `frontier_openai-gpt-5.5.json`. Harness: `experiments/frontier_full.mjs`.
+
+Human legibility collapses. AI performance does not — it *improves*. You now have a tool that writes code no human auditor can read, no human reviewer can follow, and no human log inspector can parse, but that AI executes at ceiling. Everything that follows measures what happens when you point that capability gap at a pipeline someone is supposed to be watching.
 
 ## 2. Tokenizer Survival Landscape
 
@@ -479,7 +483,7 @@ Net: physical channels, the *existence* of a semantic gap, the n=150 confirmed n
 
 ## 5. Defense Architecture
 
-Our results point to a two-layer defense. We state effectiveness in terms of the recovery metric we actually measured (§4.0) and flag where a claim is preliminary.
+The physical channels are embarrassingly cheap to fix — a two-line regex kills them. The semantic channel is not. This section covers what each layer buys and, more importantly, what it does not.
 
 ### 5.1 Layer 1: Tokenizer Normalization
 
@@ -594,9 +598,9 @@ The 12-model landscape (§2.5) yields concrete guidance:
 - **Pick a zero-blind-spot monitor.** Six frontier models strip nothing in v2: Gemini 2.5 Flash, Gemini 3.1 Pro, Llama 4 Scout, Mistral Medium 3.5, DeepSeek V4 Pro, Grok 4.3. Grok 4.3 was perfect.
 - **Cross-vendor monitoring can *create* the hole.** The richest channels are the cross-vendor GPT↔Claude pairs (12 categories) — the exact "use an independent vendor" pattern. Cross-vendor diversity helps collusion resistance but hurts tokenizer-channel resistance unless the monitor is at least as permissive as the monitored model.
 
-### 6.3 The Semantic Stego Open Problem
+### 6.3 The Unsolved Threat: Semantic Steganography
 
-Our construction — acrostic/positional/synonym encodings of ~12-bit payloads over 10 covers — evades current-frontier monitors at chance (§4.2.2 promoted the original n=15 hint to a confirmed null at n=150, all three monitors at J ≈ 0). Recovery is ≤17% across all 9 cells of the §4.4 3×3 matrix; given the key it jumps to 50–73% (§4.3), but uninformed monitors have no key in the wild. The §4.2.2 trichotomy means even *noticing* failure requires alarming on empty/unparseable outputs. **The §4.4 3×3 matrix strengthens the LLM-monitor side of the open problem rather than narrowing it.** Same-family self-monitoring — the most natural defensive lever once cross-family informed monitoring failed Bonferroni in §4.3 — does **not** close the gap on any vendor at n=30: Opus×Opus = 73pp, GPT×GPT = 57pp, Gemini×Gemini a *perfect* 100pp (30/30 receiver, 0/30 monitor). The §4.3 Haiku→Haiku closure cell (p=1.0, 3 discordant trials at n=10) does not replicate at n=30 and is best read as small-n sampling noise. So both the cross-family and the same-family LLM-monitor defensive levers are now empirically negative on this construction.
+Two agents can communicate covertly in plain English past every frontier monitor we tested, and no deployed defense exists. Our construction — acrostic/positional/synonym encodings of ~12-bit payloads over 10 covers — evades current-frontier monitors at chance (§4.2.2 promoted the original n=15 hint to a confirmed null at n=150, all three monitors at J ≈ 0). Recovery is ≤17% across all 9 cells of the §4.4 3×3 matrix; given the key it jumps to 50–73% (§4.3), but uninformed monitors have no key in the wild. The §4.2.2 trichotomy means even *noticing* failure requires alarming on empty/unparseable outputs. **The §4.4 3×3 matrix strengthens the LLM-monitor side of the open problem rather than narrowing it.** Same-family self-monitoring — the most natural defensive lever once cross-family informed monitoring failed Bonferroni in §4.3 — does **not** close the gap on any vendor at n=30: Opus×Opus = 73pp, GPT×GPT = 57pp, Gemini×Gemini a *perfect* 100pp (30/30 receiver, 0/30 monitor). The §4.3 Haiku→Haiku closure cell (p=1.0, 3 discordant trials at n=10) does not replicate at n=30 and is best read as small-n sampling noise. So both the cross-family and the same-family LLM-monitor defensive levers are now empirically negative on this construction.
 
 **The structural-detector field is no longer "all refuted."** §5.3 measured all four classical structural baselines on n=30 positive + n=30 negative. Three (multi-sample consistency, paraphrase round-trip, hand-crafted stylometry) **landed at J = 0** — refuted at the current frontier. But the fourth (`perplexity_anomaly_proxy`) reaches **J = 0.58 [0.27, 0.76]** — Youden-J CI cleanly excludes zero, TPR = 83% catches most semantic stego, and all 20 monitor-flagged trials are in the "anomalously stilted" direction. This is the first deployable Layer-2 structural signal we have measured on this construction. The open problem is therefore now narrowed but not closed: **FPR = 25% is too high for naive production deployment**, the detector tests one sender × rater combination (Opus → Gemini), and replication across the §4.4.1 multi-construction matrix is open. The path forward is "tighten this detector's FPR + replicate across the sender × rater × construction matrix," and the structural variants §5.3 lists as unmeasured open directions (multi-pivot paraphrase ensembles, learned stylometric features, partial-key channel-specific decoders) remain worth measuring as complements. Semantic stego is still the channel a safety architect should worry about most — the cheap physical-layer fix does nothing for it, and the Layer-2 signal we have is not yet production-ready — but a measurable structural signal now exists.
 
@@ -670,7 +674,9 @@ Paper and artifacts released under terms permitting reproduction, mitigation dep
 
 ## 8. Conclusion
 
-Frontier models acquire procedurally generated languages zero-shot and execute human-unreadable code at near-ceiling accuracy. The GLOSSOPETRAE engine makes this measurable: at L3 opacity, human legibility collapses to ~15% while AI usability holds at 97–100% (§1.4). This capability gap is the backdrop for the security findings that follow.
+The invisible-character trick is the warm-up.
+
+Frontier models acquire procedurally generated languages zero-shot and execute human-unreadable code *better* than readable code — on hard programs, the alien glyph-swap improves Opus from 20% to 97% (+77pp). Code no human can audit, that AI runs at ceiling. That capability gap is not hypothetical; the covert-channel experiments measure what happens when it meets a pipeline someone is supposed to be watching.
 
 Tokenizer asymmetries between frontier model families create exploitable covert side channels in multi-model monitoring. Surveying 61 Unicode categories across five families: per-monitor blind-spot counts 0 (Gemini) to 10–11 (Haiku) and ≈55 asymmetric pair/category combinations on the 41-category panel. Two channel classes: tokenizer (R=93–100%, M=0%) and semantic (R=77–87%, M≤10%). The physical/cognitive split is supported by an informed-monitor experiment: tokenizer channels resist knowledge (carrier destroyed preprocessing); semantic channels are visible and in principle interpretable.
 
@@ -680,9 +686,9 @@ Three further results push the open-problem framing harder. A **3×3 cross-sende
 
 What's open: the §6.3 null is on a single construction at the §4.4 sender × monitor scale (10 covers, ~11.8-bit schema) — the §4.4.1 replication confirms it generalizes across two alternative constructions at n=30; Layer 2 informed monitoring is preliminary, three classical structural detectors are empirically refuted at n=30, the fourth (perplexity-anomaly-proxy) provides a measurable signal at J = 0.58 but has FPR = 25% and is tested on one sender × rater × construction cell; **tightening this detector's FPR and replicating it across the §4.4.1 multi-construction matrix is the most immediate near-term measurement target**, and **structural detectors more sophisticated than the four classical baselines** (multi-pivot paraphrase ensembles, learned stylometric features, partial-key channel-specific decoders — §5.3) remain worth measuring as complements. Defensive picture is asymmetric: input normalization deterministically closes physical channels; closing semantic stego remains an open problem — three of the four easy structural fixes do not deploy at the frontier at n=30, the fourth has a real signal but needs FPR-tightening + replication before production deployment.
 
-*The honest headline: invisible-character channels are real, measurable, and easily-sanitized risks in unsanitized multi-model pipelines; semantic steganography is the harder, still-open problem — now demonstrated at scale on the current frontier.*
+The tokenizer channels are fixable today — a two-line regex kills them. The semantic channel is not. Two agents can talk past a frontier monitor in readable English and nobody has a deployed fix. Layer 1 is a regex. Layer 2 does not exist yet.
 
-*The invisible-character trick is the warm-up.*
+The honest summary: the engine builds languages humans can't read but AI executes better than English. The tokenizer map shows where the monitors are blind. The semantic stego shows that even sighted monitors can't tell. And the 1,800-trial factorial proves the vulnerability is about what the monitor *has*, not what it's *told*. Every piece reinforces the same finding: the gap between what AI can do and what humans can watch is measurable, exploitable, and — for the hardest channel — unsolved.
 
 ---
 

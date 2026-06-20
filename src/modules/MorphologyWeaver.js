@@ -16,13 +16,13 @@ export class MorphologyWeaver {
     this.divergenceTargets = config.divergenceTargets || null;
 
     this.config = {
+      ...config,
       morphType: config.morphType || this._selectMorphType(),
       caseCount: config.caseCount ?? null,
       nounClasses: config.nounClasses ?? null,
       verbAgreement: config.verbAgreement ?? true,
       wordOrder: config.wordOrder || null,
       alignment: config.alignment || null,
-      ...config,
     };
 
     this.generatedAffixes = new Set();

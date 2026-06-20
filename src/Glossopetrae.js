@@ -25,6 +25,33 @@ import { ProsodyEngine } from './modules/ProsodyEngine.js';
 import { ScriptGenerator } from './modules/ScriptGenerator.js';
 import { QualityEngine } from './modules/QualityEngine.js';
 import { DivergenceEngine } from './modules/DivergenceEngine.js';
+import { EvolutionEngine } from './modules/EvolutionEngine.js';
+import { AudioForge } from './modules/AudioForge.js';
+import { TextLibrary } from './modules/TextLibrary.js';
+import { NameForge } from './modules/NameForge.js';
+import { Exporter } from './modules/Exporter.js';
+import { ReverseTranslator } from './modules/ReverseTranslator.js';
+import { GlyphForge } from './modules/GlyphForge.js';
+import { CodeForge } from './modules/CodeForge.js';
+import { CodeSkin } from './modules/CodeSkin.js';
+import { TokenCompressor, TOKENIZER_PROFILES } from './modules/TokenCompressor.js';
+
+/**
+ * Define a lazily-constructed property: the factory runs on first access,
+ * then the result is cached. Keeps generate() fast while exposing heavier
+ * companion engines (glyphs, audio, evolution...) on demand.
+ */
+function lazyAttach(obj, key, factory) {
+  Object.defineProperty(obj, key, {
+    configurable: true,
+    enumerable: false,
+    get() {
+      const value = factory();
+      Object.defineProperty(obj, key, { value, configurable: true, enumerable: false });
+      return value;
+    },
+  });
+}
 
 export class Glossopetrae {
   constructor(config = {}) {
@@ -41,6 +68,9 @@ export class Glossopetrae {
       caseCount: config.caseCount ?? null,
       // Lexicon options
       coreOnly: config.coreOnly ?? false,
+      // Emit phase logs to the console during generation (off by default so the
+      // library stays quiet when embedded / used in batch).
+      verbose: config.verbose ?? false,
       // Special attributes for LLM optimization
       attributes: config.attributes || [],
       // Divergence from English (0.0 = English-like, 1.0 = maximally alien)
@@ -66,29 +96,36 @@ export class Glossopetrae {
   }
 
   /**
+   * Console logger gated on the `verbose` config (off by default).
+   */
+  _log(msg) {
+    if (this.config.verbose) console.log(msg);
+  }
+
+  /**
    * Generate a complete language
    */
   generate() {
-    console.log(`[GLOSSOPETRAE] Generating language: ${this.name}`);
-    console.log(`[GLOSSOPETRAE] Seed: ${this.config.seed}`);
+    this._log(`[GLOSSOPETRAE] Generating language: ${this.name}`);
+    this._log(`[GLOSSOPETRAE] Seed: ${this.config.seed}`);
 
     // Log active attributes
     const activeAttrs = this.attributes.getActiveAttributes();
     if (activeAttrs.length > 0) {
-      console.log(`[GLOSSOPETRAE] Active attributes: ${activeAttrs.map(a => a.code).join(', ')}`);
+      this._log(`[GLOSSOPETRAE] Active attributes: ${activeAttrs.map(a => a.code).join(', ')}`);
     }
 
     // Initialize Divergence Engine if divergence from English is specified
     let divergenceTargets = null;
     if (this.config.divergenceFromEnglish !== null) {
       const divergence = this.config.divergenceFromEnglish;
-      console.log(`[GLOSSOPETRAE] Divergence from English: ${Math.round(divergence * 100)}% (${DivergenceEngine.describeDivergence(divergence)})`);
+      this._log(`[GLOSSOPETRAE] Divergence from English: ${Math.round(divergence * 100)}% (${DivergenceEngine.describeDivergence(divergence)})`);
       const divergenceEngine = new DivergenceEngine(divergence, () => this.random.next());
       divergenceTargets = divergenceEngine.generateTargets();
     }
 
     // Phase 1: Phonology
-    console.log('[GLOSSOPETRAE] Phase 1: Generating phonology...');
+    this._log('[GLOSSOPETRAE] Phase 1: Generating phonology...');
     const phonologyOptions = {
       consonantCount: this.config.consonantCount,
       vowelCount: this.config.vowelCount,
@@ -110,7 +147,7 @@ export class Glossopetrae {
     phonology = this.attributes.modifyPhonology(phonology);
 
     // Phase 2: Phonotactics
-    console.log('[GLOSSOPETRAE] Phase 2: Generating phonotactics...');
+    this._log('[GLOSSOPETRAE] Phase 2: Generating phonotactics...');
     const syllableOptions = {};
     if (divergenceTargets) {
       const syllTargets = divergenceTargets.phonology.syllableStructure;
@@ -122,7 +159,7 @@ export class Glossopetrae {
     const phonotactics = syllableForge.generate();
 
     // Phase 3: Prosody (NEW in v3.1)
-    console.log('[GLOSSOPETRAE] Phase 3: Generating prosody...');
+    this._log('[GLOSSOPETRAE] Phase 3: Generating prosody...');
     const prosodyOptions = {
       hasTone: this.config.hasTone ?? null,
       hasStress: this.config.hasStress ?? true,
@@ -143,7 +180,7 @@ export class Glossopetrae {
     const prosody = prosodyEngine.generate();
 
     // Phase 4: Morphology
-    console.log('[GLOSSOPETRAE] Phase 4: Generating morphology...');
+    this._log('[GLOSSOPETRAE] Phase 4: Generating morphology...');
     const morphologyOptions = {
       morphType: this.attributes.getEffect('morphologyType') || this.config.morphType,
       caseCount: this.config.caseCount,
@@ -183,7 +220,7 @@ export class Glossopetrae {
     morphology = this.attributes.modifyMorphology(morphology);
 
     // Phase 5: Script/Writing System (NEW in v3.1)
-    console.log('[GLOSSOPETRAE] Phase 5: Generating writing system...');
+    this._log('[GLOSSOPETRAE] Phase 5: Generating writing system...');
     const scriptGenerator = new ScriptGenerator(this.random, phonology, {
       scriptType: this.config.scriptType || null,
       aesthetic: this.config.scriptAesthetic || null,
@@ -191,7 +228,7 @@ export class Glossopetrae {
     const script = scriptGenerator.generate();
 
     // Phase 6: Lexicon
-    console.log('[GLOSSOPETRAE] Phase 6: Generating lexicon...');
+    this._log('[GLOSSOPETRAE] Phase 6: Generating lexicon...');
     const lexiconGenerator = new LexiconGenerator(this.random, syllableForge, morphology, {
       coreOnly: this.config.coreOnly,
       attributeModifier: (entry) => this.attributes.modifyLexiconEntry(entry),
@@ -201,6 +238,7 @@ export class Glossopetrae {
     // Assemble language object
     const language = {
       name: this.name,
+      configName: this.config.name || null,
       seed: this.config.seed,
       version: '3.1.0',
       phonology,
@@ -223,17 +261,17 @@ export class Glossopetrae {
     }
 
     // Phase 7: Translation Engine
-    console.log('[GLOSSOPETRAE] Phase 7: Initializing translation engine...');
+    this._log('[GLOSSOPETRAE] Phase 7: Initializing translation engine...');
     const translationEngine = new TranslationEngine(language);
     language.translationEngine = translationEngine;
 
     // Phase 8: Initialize Quality Engine (for validation, metrics, and expansion)
-    console.log('[GLOSSOPETRAE] Phase 8: Initializing quality engine...');
+    this._log('[GLOSSOPETRAE] Phase 8: Initializing quality engine...');
     const qualityEngine = new QualityEngine(language);
     language.qualityEngine = qualityEngine;
 
     // Phase 9: Generate SKILLSTONE document
-    console.log('[GLOSSOPETRAE] Phase 9: Generating SKILLSTONE document...');
+    this._log('[GLOSSOPETRAE] Phase 9: Generating SKILLSTONE document...');
     const stoneGenerator = new StoneGenerator(language, translationEngine, {
       includeSkillIntegration: true,
       includeProtocolSection: true,
@@ -250,7 +288,21 @@ export class Glossopetrae {
 
     language.stone = stone;
 
-    console.log('[GLOSSOPETRAE] Language generation complete!');
+    // Phase 10: Attach companion engines (lazy, built on first access)
+    lazyAttach(language, 'evolutionEngine', () => new EvolutionEngine(language));
+    language.evolve = (opts) => language.evolutionEngine.evolve(opts);
+    language.deriveFamily = (opts) => language.evolutionEngine.deriveFamily(opts);
+
+    lazyAttach(language, 'audioForge', () => new AudioForge(language));
+    lazyAttach(language, 'textLibrary', () => new TextLibrary(language));
+    lazyAttach(language, 'nameForge', () => new NameForge(language));
+    lazyAttach(language, 'exporter', () => new Exporter(language));
+    lazyAttach(language, 'reverseTranslator', () => new ReverseTranslator(language));
+    language.translateToEnglish = (text) => language.reverseTranslator.translateToEnglish(text);
+    lazyAttach(language, 'glyphForge', () => new GlyphForge(language));
+    lazyAttach(language, 'codeForge', () => new CodeForge(language));
+
+    this._log('[GLOSSOPETRAE] Language generation complete!');
 
     return language;
   }
@@ -990,6 +1042,9 @@ export const PRESETS = {
     vowelCount: [5, 5],
   },
 };
+
+// Re-export companion engines for direct use by the UI and integrations
+export { EvolutionEngine, AudioForge, TextLibrary, NameForge, Exporter, ReverseTranslator, GlyphForge, CodeForge, CodeSkin, TokenCompressor, TOKENIZER_PROFILES };
 
 // Default export
 export default Glossopetrae;

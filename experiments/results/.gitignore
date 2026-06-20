@@ -1,0 +1,5 @@
+# Exclude mock/broken/backup files — only real results are tracked
+*_MOCK*
+*MOCK*
+*BROKEN*
+*.bak

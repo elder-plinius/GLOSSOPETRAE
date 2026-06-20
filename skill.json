@@ -7,9 +7,9 @@
   "license": "AGPL-3.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/LYS10S/GLOSSOPETRAE"
+    "url": "https://github.com/elder-plinius/GLOSSOPETRAE"
   },
-  "homepage": "https://github.com/LYS10S/GLOSSOPETRAE",
+  "homepage": "https://github.com/elder-plinius/GLOSSOPETRAE",
   "main": "./src/skill/index.js",
   "module": "./src/skill/GlossopetraeSkill.js",
   "exports": {

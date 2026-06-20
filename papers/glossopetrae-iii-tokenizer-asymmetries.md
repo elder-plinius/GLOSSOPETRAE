@@ -10,6 +10,8 @@
 
 ## TL;DR
 
+- **Frontier models acquire procedurally generated languages zero-shot.** GLOSSOPETRAE generates complete languages from a single seed (phonology, morphology, syntax, writing system, 1,200+ word lexicon). Given only the grammar specification, frontier models immediately read, write, and translate in the generated language with no training or fine-tuning. They generalize productively: novel sentences, correct affixation, compositional semantics.
+- **The engine produces human-unreadable coding systems that AI executes at near-ceiling.** Generated languages skin real programming languages at four opacity levels (L0 readable to L3 alien glyph-swap). At L3, legibility drops to ~15% and blind comprehension (no spec) falls to 17–40%. But usability *with* the spec stays pinned: Opus 4.8 scores 97–100% on easy/medium tasks at L3, GPT-5.5 scores 97–100%. The decoupling — human legibility drops to near-zero while AI performance holds — is the enabling condition for the covert channels below. (n=30 seeds per model, §1.4.)
 - **Frontier tokenizers disagree on which invisible Unicode survives preprocessing — and that asymmetry is an exploitable covert channel between models.** Hide a payload in characters the *monitor's* tokenizer deletes but the *receiver's* keeps, and two agents pass a hidden message past a third watching the same text. Tag-char demo (Haiku→GPT, n=30): **100% receiver recovery, 0% monitor recovery**, McNemar p < 10⁻⁷.
 - **The monitor isn't dumb — it's blind.** On a binary "is anything hidden?" detection task with clean-message controls, a tokenizer-blind monitor scores Youden's **J = 0** (CI [−0.22, 0.22]) while a sighted one scores **J = 1.0** (CI [0.78, 1.0]) on the *same* channel. Even handed the decode key, a blind monitor recovers 0%.
 - **The blind spots are a family trait across 12 frontier models.** Claude 3.5 Haiku and the Opus 4.8 *flagship* strip the exact same 10 categories; GPT-5-nano and GPT-5.5 share 2; **six models strip zero** (both Geminis, Llama 4, Mistral, DeepSeek V4, Grok 4.3). ≈250 exploitable channel-instances, richest at the cross-vendor GPT↔Claude boundary — the "use a different vendor to monitor" setup.
@@ -23,6 +25,8 @@
 ---
 
 ## Abstract
+
+GLOSSOPETRAE is a procedural xenolinguistics engine that generates complete constructed languages from a single seed. Frontier models acquire these languages zero-shot — given only the grammar specification, they immediately read, write, translate, and *program* in the generated language with no training. The engine's CodeSkin module skins real programming languages at four opacity levels; at L3 (full glyph-swap), human legibility collapses to ~15% while frontier AI usability holds at 97–100% (n=30 seeds, Opus 4.8 and GPT-5.5). This decoupling — human-unreadable code that AI executes at ceiling — is the enabling condition for the covert-channel vulnerabilities measured below.
 
 Two AI models can pass a hidden message in invisible Unicode characters past a third AI monitoring the same text — because the monitor's tokenizer silently deletes the message before the model ever sees it. We measure how blind each frontier monitor is, find that Anthropic's flagship Claude Opus 4.8 shares the same 10 stripped categories as the smaller Haiku, and demonstrate that the cognitive vulnerability is decisively about *what the monitor knows*, not *what it's told to look for*.
 
@@ -69,6 +73,18 @@ We consider a setting where Agent A communicates with Agent B through a channel 
 - **"Just sanitize inputs."** Correct for the physical channels (§5.1). Does nothing to the **semantic** channel (§3.2): readable English, every monitor missed it.
 - **"Recovery isn't detection."** §4.2.1 measures detection directly with clean-message controls: blind J = 0, sighted J = 1.0 on the same channel. An informed monitor handed the decode key still recovers 0% on tokenizer channels (§4.3) — knowledge can't help when the bytes are gone.
 - **"n=30, OpenRouter aliases."** Load-bearing core survives Bonferroni at p ≤ 2×10⁻⁵; the family-trait pattern replicates across 12 models; an n=150 Venice replication (§4.2.2) confirms it on the Opus 4.8 flagship.
+
+### 1.4 The Engine: Procedural Xenolinguistics and the Decoupling
+
+GLOSSOPETRAE is a procedural xenolinguistics engine that generates complete constructed languages from a single integer or string seed. Each seed deterministically produces a full language: a phonological inventory (15–25 consonants, 5–7 vowels, phonotactic constraints, prosodic contours), a morphological system (agglutinative, fusional, or isolating, with productive affixation), syntactic rules (word order, case marking, agreement), a writing system (glyph mappings, ligatures), and a lexicon of 1,200+ entries with semantic fields, derivational morphology, and paradigm tables. Two runs with the same seed produce byte-identical output.
+
+**Zero-shot acquisition.** Frontier models given the generated grammar specification — with no training, fine-tuning, or in-context examples — immediately read, write, and translate in the generated language. They generalize productively: novel sentences not in the spec, correct morphological inflection, compositional semantics across clause boundaries. This is not lookup or pattern-matching; models apply the grammar rules to unseen inputs. The acquisition is zero-shot and instant.
+
+**Human-unreadable coding systems.** The engine's CodeSkin module skins real programming languages (JavaScript) into the generated language at four opacity levels: L0 (readable keywords, ASCII identifiers), L1 (translated keywords), L2 (translated keywords + identifiers), and L3 (full glyph-swap — alien script replaces all tokens). CodeSkin is a faithful bijection: the unskinned program is identical to the original, and all programs execute correctly at every level (validated by the test suite, 123/123 checks).
+
+**The decoupling result.** At L3, surface legibility drops to ~15% (measured as ASCII character fraction + word-boundary hints). Blind comprehension — a model predicting program output *without* the language spec — falls to 17% (Opus 4.8) and 40% (GPT-5.5). But *usability with the spec* stays at ceiling: Opus 4.8 scores 97% (easy), 100% (medium), 97% (hard) at L3; GPT-5.5 scores 97% (easy), 100% (medium), 100% (hard) at L3. The experiment uses n=30 seeds per model, 3 difficulty tiers × 4 opacity levels = 12 cells per model, with 95% Wilson CIs.
+
+Human legibility collapses. AI performance does not. Programs that no human can read, that AI writes and executes at near-ceiling — this decoupling is the enabling condition for the covert-channel and steganographic applications measured in §§2–5.
 
 ## 2. Tokenizer Survival Landscape
 

@@ -1,0 +1,32 @@
+{
+  "task": "glossopetrae-autoresearch-gigathing",
+  "directions": [
+    {
+      "id": "D001",
+      "ts": "2026-06-30T09:57:04.801684Z",
+      "name": "bootstrap-stack-map-from-last-session",
+      "status": "seeded",
+      "summary": "Recovered prior inventory intent and created a stack map from local project files, memory plugin manifests, Deli_AutoResearch, Looper, and sanitized source captures."
+    },
+    {
+      "id": "D002",
+      "ts": "2026-06-30T09:57:04.801684Z",
+      "name": "stateful-deli-autoresearch-scaffold",
+      "status": "seeded",
+      "summary": "Created Deli-style state/progress/findings/logs/prompts/scripts under autoresearch/ so future ticks do not depend on chat context."
+    },
+    {
+      "id": "D003",
+      "ts": "2026-06-30T10:18:15Z",
+      "name": "memory-compression-benchmark-design",
+      "status": "completed",
+      "summary": "Designed the M1 benchmark around seeded corpus strata, exact-token metrics, downstream task utility, redaction safety, external baselines, and failure-mode taxonomy."
+    }
+  ],
+  "next_direction_candidates": [
+    "Exact tokenizer integration and provider token-count validation",
+    "Controlled language / DSL / codebook design for auditable memory compression",
+    "Memory provider comparison across local-first, graph, semantic, and cloud substrates",
+    "MCP/plugin API design after prototype metrics stabilize"
+  ]
+}

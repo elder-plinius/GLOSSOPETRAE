@@ -4,6 +4,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "test": "node test-smoke-edge-cases.mjs && node test-bench-integrity.mjs && node test-enthusiast.mjs"
+    "test": "node test-smoke-edge-cases.mjs && node test-bench-integrity.mjs && node test-enthusiast.mjs",
+    "autoresearch:validate": "node autoresearch/scripts/validate-autoresearch.mjs"
   }
 }

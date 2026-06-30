@@ -1,0 +1,44 @@
+{
+  "task": "glossopetrae-autoresearch-gigathing",
+  "framework": "Deli_AutoResearch",
+  "artifact_root": "/Users/filipdam/projects/parseltongue/GLOSSOPETRAE-worktrees/main-continue-20260630-084226/autoresearch",
+  "worktree": "/Users/filipdam/projects/parseltongue/GLOSSOPETRAE-worktrees/main-continue-20260630-084226",
+  "status": "ready",
+  "iteration": 1,
+  "current_milestone": "M2",
+  "total_findings": 10,
+  "stale_count": 0,
+  "last_seen": "2026-06-30T10:18:40Z",
+  "created_at": "2026-06-30T09:57:04.801684Z",
+  "milestones": {
+    "M0": "completed",
+    "M1": "completed",
+    "M2": "pending",
+    "M3": "pending",
+    "M4": "pending",
+    "M5": "pending",
+    "M6": "pending",
+    "M7": "pending",
+    "M8": "pending",
+    "M9": "pending"
+  },
+  "verification": {
+    "last_autoresearch_validate": {
+      "ts": "2026-06-30T10:18:40Z",
+      "command": "node autoresearch/scripts/validate-autoresearch.mjs",
+      "status": "passed",
+      "summary": "OK autoresearch scaffold valid: 10 findings, 3 directions, 7 source captures"
+    },
+    "last_repo_tests": {
+      "ts": "2026-06-30T10:12:29Z",
+      "command": "npm run test",
+      "status": "passed",
+      "summary": "123 PASS/0 FAIL smoke checks; bench integrity 14 passed/0 failed; enthusiast modules 82 passed/0 failed"
+    },
+    "note": "Initialized from last-session inventory and verified locally. A first 300s test run timed out while still running; rerun with 600s completed successfully."
+  },
+  "cron_job_ids": {
+    "orchestrator": "c7e2a0b3a47d",
+    "heartbeat": "d660549795d0"
+  }
+}

@@ -1,0 +1,219 @@
+[
+  {
+    "capture_file": "text_Anthropic_effective_context_engineering_for_AI_agents_memory_2025_20260630_045655.json",
+    "topic": "Anthropic_effective_conengineering_for_AI_agents_memory_2025",
+    "entries": [
+      {
+        "title": "Effective context engineering for AI agents \\ Anthropic",
+        "url": "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
+        "snippet": "Agents can assemble understanding layer by layer, maintaining only what's necessary in working memory and leveraging note-taking strategies for additional persistence. This self-managed context window keeps the agent focused on relevant subsets ..."
+      },
+      {
+        "title": "Context Engineering - Claude-Mem",
+        "url": "https://docs.claude-mem.ai/context-engineering",
+        "snippet": "Based on Anthropic’s “Effective context engineering for AI agents” (September 2025)"
+      },
+      {
+        "title": "Context engineering: memory, compaction, and tool clearing | Claude Cookbook",
+        "url": "https://platform.claude.com/cookbook/tool-use-context-engineering-context-engineering-tools",
+        "snippet": "Our engineering blog on effective ... problem: context is finite with diminishing marginal returns, and the core discipline is finding the smallest set of high-signal tokens that maximize the likelihood of your desired outcome..."
+      },
+      {
+        "title": "GitHub - bonigarcia/context-engineering: Context Engineering: Build Consistent, Accurate, Predictable AI Systems · GitHub",
+        "url": "https://github.com/bonigarcia/context-engineering",
+        "snippet": "1 week ago - Basic interaction (Anthropic): Python · Jupyter · JavaScript · Java · Basic interaction (Google): Python · Jupyter · JavaScript · Java · Basic interaction (Ollama): Python · Jupyter · JavaScript · Java · This chapter covers the definition and usage of instructions (system prompts, agent skills, instructions artifacts) as a foundation layer to shape the model behavior:"
+      },
+      {
+        "title": "Effective harnesses for long-running agents \\ Anthropic",
+        "url": "https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents",
+        "snippet": "As AI agents become more capable, developers are increasingly asking them to take on complex tasks requiring work that spans hours, or even days. However, getting agents to make consistent progress across multiple context windows remains an open problem. The core challenge of long-running agents is that they must work in discrete sessions, and each new session begins with no memory of what came before. Imagine a software project staffed by engineers working in shifts, where each new engineer arrives with no memory of what happened on the previous shift."
+      }
+    ]
+  },
+  {
+    "capture_file": "text_LLMLingua_GitHub_prompt_compression_2024_20260630_045642.json",
+    "topic": "LLMLingua_GitHub_prompt_compression_2024",
+    "entries": [
+      {
+        "title": "GitHub - microsoft/LLMLingua: [EMNLP'23, ACL'24] To speed up...",
+        "url": "https://github.com/microsoft/LLMLingua",
+        "snippet": "LLMLingua-2, a small-size yet powerful prompt compression method trained via data distillation from GPT-4 for token classification with a BERT-level encoder, excels in task-agnostic compression. It surpasses LLMLingua in handling out-of-domain data, offering 3x-6x faster performance."
+      },
+      {
+        "title": "Paper page - LLMLingua-2: Data Distillation for Efficient and Faithful...",
+        "url": "https://huggingface.co/papers/2403.12968",
+        "snippet": "A task-agnostic prompt compression method uses data distillation and a Transformer encoder to achieve efficient compression with minimal information loss and improved generalization.It surpasses LLMLingua in handling out-of-domain data, offering 3x-6x faster performance."
+      },
+      {
+        "title": "https://github.com/microsoft/LLMLingua | Ecosyste.ms: Awesome",
+        "url": "https://awesome.ecosyste.ms/projects/github.com/microsoft/LLMLingua",
+        "snippet": "LLMLingua-2, a small-size yet powerful prompt compression method trained via data distillation from GPT-4 for token classification with a BERT-level encoder, excels in task-agnostic compression. It surpasses LLMLingua in handling out-of-domain data, offering 3x-6x faster performance."
+      },
+      {
+        "title": "LLMLingua-2: Data Distillation for Efficient and... - ACL Anthology",
+        "url": "https://aclanthology.org/2024.findings-acl.57/",
+        "snippet": "This paper focuses on task-agnostic prompt compression for better generalizability and efficiency. Considering the redundancy in natural language, existing approaches compress prompts by removing tokens or lexical units according to their information entropy obtained from a causal..."
+      },
+      {
+        "title": "LLMLingua Series | Effectively Deliver Information to LLMs via Prompt...",
+        "url": "https://llmlingua.com/",
+        "snippet": "LLMLingua-2, a small-size yet powerful prompt compression method trained via data distillation from GPT-4 for token classification with a BERT-level encoder, excels in task-agnostic compression. It surpasses LLMLingua in handling out-of-domain data, offering 3x-6x faster performance."
+      }
+    ]
+  },
+  {
+    "capture_file": "text_Letta_MemGPT_memory_management_agents_docs_20260630_045650.json",
+    "topic": "Letta_MemGPT_memory_management_agents_docs",
+    "entries": [
+      {
+        "title": "MemGPT | Letta Docs",
+        "url": "https://docs.letta.com/concepts/memgpt/",
+        "snippet": "Letta Platform Letta Docs. Search CtrlK.If the LLM requests a heartbeat, the LLM OS continues execution in a loop, allowing the LLM to “think” again. You can read more about the MemGPT memory hierarchy and memory management system in our memory concepts guide."
+      },
+      {
+        "title": "letta-ai/letta: Platform for stateful agents: AI with advanced memory...",
+        "url": "https://github.com/letta-ai/letta",
+        "snippet": "Letta (formerly MemGPT). Build AI with advanced memory that can learn and self-improve over time.Use the Letta API to integrate stateful agents into your own applications. Letta has a full-featured agents API, and a Python and Typescript SDK (view our API reference)."
+      },
+      {
+        "title": "Memory & state management | Masst Docs",
+        "url": "https://docs.masst.dev/ai/agents/memory-state",
+        "snippet": "Working, episodic, and semantic memory for LLM agents. Summarization, fact extraction, vector store memory (Mem0, MemGPT/Letta), user profiles, checkpointing, and privacy."
+      },
+      {
+        "title": "Mem0 vs Letta vs MemGPT 2026: AI Agent Memory... - TokenMix Blog",
+        "url": "https://tokenmix.ai/blog/ai-agent-memory-mem0-vs-letta-vs-memgpt-2026",
+        "snippet": "Letta: Full Agent Runtime with OS-Inspired Memory. Letta started as MemGPT in 2023 and evolved into a commercial platform.Letta lock-in: high. Letta owns your agent loop. Switching means rebuilding the loop, tool execution, state management, and memory logic elsewhere."
+      },
+      {
+        "title": "Mem0 vs Letta (MemGPT): AI Agent Memory Compared (2026)",
+        "url": "https://vectorize.io/articles/mem0-vs-letta",
+        "snippet": "Mem0 vs Letta (MemGPT) — compare passive memory extraction with self-editing agent runtime for AI agent memory. Architecture, lock-in, SDKs, and pricing."
+      }
+    ]
+  },
+  {
+    "capture_file": "text_Mem0_AI_memory_open_source_agent_memory_docs_20260630_045645.json",
+    "topic": "Mem0_AI_memory_open_source_agent_memory_docs",
+    "entries": [
+      {
+        "title": "GitHub - mem0ai/mem0: Universal memory layer for AI Agents",
+        "url": "https://github.com/mem0ai/mem0",
+        "snippet": "Mem0 (\"mem-zero\") enhances AI assistants and agents with an intelligent memory layer, enabling personalized AI interactions. It remembers user preferences, adapts to individual needs, and continuously learns over time—ideal for customer support chatbots, AI assistants, and autonomous systems."
+      },
+      {
+        "title": "Mem0 - AI Memory Layer for your Agents & Apps | Persistent ...",
+        "url": "https://mem0.ai/",
+        "snippet": "Mem0 enables AI agents & apps to continuously learn from past user interactions, enhancing their intelligence and personalization."
+      },
+      {
+        "title": "Welcome to Mem0 - Mem0 - docs.mem0.ai",
+        "url": "https://docs.mem0.ai/introduction",
+        "snippet": "Universal, self-improving memory layer for LLM applications. Managed memory with production-scale infrastructure, ready in minutes. Self-host the Mem0 stack for full control over data, deployment, and customization. Production-ready tutorials that show how to ship memorable AI experiences."
+      },
+      {
+        "title": "GitHub - AutomatosAI/automatos-mem0: Universal memory layer ...",
+        "url": "https://github.com/AutomatosAI/automatos-mem0",
+        "snippet": "Mem0 (\"mem-zero\") enhances AI assistants and agents with an intelligent memory layer, enabling personalized AI interactions. It remembers user preferences, adapts to individual needs, and continuously learns over time—ideal for customer support chatbots, AI assistants, and autonomous systems."
+      },
+      {
+        "title": "mem0ai/mem0 | DeepWiki",
+        "url": "https://deepwiki.com/mem0ai/mem0",
+        "snippet": "4 days ago · Mem0 (\"mem-zero\") is a universal, self-improving memory layer for AI applications that enables personalized, context-aware interactions. It functions by intelligently storing and retrieving conversational history, user preferences, and domain knowledge across sessions."
+      }
+    ]
+  },
+  {
+    "capture_file": "text_OpenAI_Agents_SDK_memory_retrieval_evals_best_practices_20260630_045657.json",
+    "topic": "OpenAI_Agents_SDK_memory_retrieval_evals_best_practices",
+    "entries": [
+      {
+        "title": "Context Engineering for Personalization - State Management with Long-Term Memory Notes",
+        "url": "https://developers.openai.com/cookbook/examples/agents_sdk/context_personalization",
+        "snippet": "January 5, 2026 - As a result, you should evaluate the end-to-end memory pipeline—distillation, consolidation, and injection—rather than the model in isolation. Once you collect tasks with full agent traces, you can run controlled comparisons (with vs."
+      },
+      {
+        "title": "Context Engineering - Short-Term Memory Management with Sessions",
+        "url": "https://developers.openai.com/cookbook/examples/agents_sdk/session_memory",
+        "snippet": "You need predictability, easy evals, and low latency (ops automations, CRM/API actions). The conversation’s useful context is local (recent steps matter far more than distant history)."
+      },
+      {
+        "title": "OpenAI Agents Forget Everything Between Runs. Here's the Fix. | Hindsight",
+        "url": "https://hindsight.vectorize.io/blog/2026/04/17/openai-agents-persistent-memory",
+        "snippet": "April 17, 2026 - Hindsight runs four parallel retrieval strategies (semantic, BM25, graph traversal, temporal) with cross-encoder reranking, plus entity resolution and a knowledge graph. It's a memory engine, not a database. See benchmark results. vs. other framework integrations: If you're using AutoGen, LlamaIndex, LangGraph, CrewAI, or Pydantic AI instead of OpenAI Agents SDK, Hindsight has dedicated integrations for each — see AutoGen, LlamaIndex, and others."
+      },
+      {
+        "title": "Evaluation best practices | OpenAI API",
+        "url": "https://developers.openai.com/api/docs/guides/evaluation-best-practices",
+        "snippet": "Learn best practices for designing evals to test and improve model performance in production."
+      },
+      {
+        "title": "Agents SDK | OpenAI API",
+        "url": "https://developers.openai.com/api/docs/guides/agents",
+        "snippet": "April 25, 2026 - Evaluate agent workflows · Voice agents · ChatKit · Overview · Customize · Widgets · Actions · Advanced integrations · Web search · MCP and Connectors · Secure MCP Tunnel · Skills · Shell · Computer use · File search and retrieval · File search ·"
+      }
+    ]
+  },
+  {
+    "capture_file": "text_Selective_Context_compressing_context_large_language_models_paper_20260630_045639.json",
+    "topic": "Selective_Concompressing_conlarge_language_models_paper",
+    "entries": [
+      {
+        "title": "selective-context · PyPI",
+        "url": "https://pypi.org/project/selective-context/",
+        "snippet": "Selective Context compresses your prompt and context to allows LLMs (such as ChatGPT) to process 2x more content. It is especially useful in dealing with long documents and maintaining long conversations without compromising their performance ..."
+      },
+      {
+        "title": "[2310.06201] Compressing Context to Enhance Inference Efficiency of Large Language Models",
+        "url": "https://arxiv.org/abs/2310.06201",
+        "snippet": "October 9, 2023 - This paper proposes a method called Selective Context that enhances the inference efficiency of LLMs by identifying and pruning redundancy in the input context to make the input more compact."
+      },
+      {
+        "title": "GitHub - liyucheng09/Selective_Context: Compress your input to ChatGPT or other LLMs, to let them process 2x more content and save 40% memory and GPU time. · GitHub",
+        "url": "https://github.com/liyucheng09/Selective_Context",
+        "snippet": "Selective Context compresses your prompt and context to allows LLMs (such as ChatGPT) to process 2x more content. It is especially useful in dealing with long documents and maintaining long conversations without compromising their performance ..."
+      },
+      {
+        "title": "Compressing Context to Enhance Inference Efficiency of Large Language Models - ACL Anthology",
+        "url": "https://aclanthology.org/2023.emnlp-main.391/",
+        "snippet": "This paper proposes a method called Selective Context that enhances the inference efficiency of LLMs by identifying and pruning redundancy in the input context to make the input more compact."
+      },
+      {
+        "title": "Compressing Context to Enhance Inference Efficiency of ...",
+        "url": "https://aclanthology.org/2023.emnlp-main.391.pdf",
+        "snippet": "Compressing Context to Enhance Inference Efficiency of ... LLMs. Selective Context evaluates informativeness · of lexical units (i.e., tokens, phrases, or sentences) ... across different environments over their lifetime [To uniform the language and enhance the readability · of the paper we adopt the unique term continual learning ( CL ) . ] . Ideal CL models ..."
+      }
+    ]
+  },
+  {
+    "capture_file": "text_Zep_Graphiti_agent_memory_knowledge_graph_GitHub_20260630_045648.json",
+    "topic": "Zep_Graphiti_agent_memory_knowledge_graph_GitHub",
+    "entries": [
+      {
+        "title": "GitHub - getzep/graphiti: Build Real-Time Knowledge Graphs for AI...",
+        "url": "https://github.com/getzep/graphiti",
+        "snippet": "Zep: A Temporal Knowledge Graph Architecture for Agent Memory. Zep vs Graphiti. Aspect."
+      },
+      {
+        "title": "Zep: A Temporal Knowledge Graph Architecture for Agent Memory",
+        "url": "https://arxiv.org/abs/2501.13956",
+        "snippet": "We introduce Zep, a novel memory layer service for AI agents that outperforms the current state-of-the-art system, MemGPT, in the Deep Memory Retrieval (DMR) benchmark."
+      },
+      {
+        "title": "Agent memory at enterprise scale — Zep",
+        "url": "https://www.getzep.com/",
+        "snippet": "Agent Memory Context Lake Context Graph Engine Graphiti.Zep analyses the structure of the graph to surface Observations: patterns, recurrences, and co-occurrences in memory. Your agent gains a global perspective, beyond facts and summaries. Learn about agent memory→."
+      },
+      {
+        "title": "Open Source Project of the Day (Part 28): Graphiti... - DEV Community",
+        "url": "https://dev.to/wonderlab/open-source-project-of-the-day-part-28-graphiti-building-real-time-knowledge-graphs-for-ai-5g61",
+        "snippet": "Paper: Zep: A Temporal Knowledge Graph Architecture for Agent Memory (arXiv 2501.13956). Documentation and support: help.getzep.com/graphiti, Discord #Graphiti. Project Stats. GitHub Stars: 22.9k+."
+      },
+      {
+        "title": "Graphiti: Knowledge graph memory for an agentic world",
+        "url": "https://neo4j.com/blog/developer/graphiti-knowledge-graph-memory/",
+        "snippet": "Graph memory powering an agentic future. Graphiti represents a meaningful departure from traditional RAG methods, specifically because it was built from the ground up as a memory infrastructure for dynamic agentic systems."
+      }
+    ]
+  }
+]

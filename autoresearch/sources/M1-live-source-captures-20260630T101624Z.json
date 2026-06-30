@@ -1,0 +1,94 @@
+[
+  {
+    "label": "LLMLingua README",
+    "url": "https://raw.githubusercontent.com/microsoft/LLMLingua/main/README.md",
+    "fetched_at": "2026-06-30T10:16:24Z",
+    "status": 200,
+    "content_type": "text/plain; charset=utf-8",
+    "ok": true,
+    "snippets": [
+      {
+        "needle": "LLMLingua-2",
+        "snippet": "LLMLingua Series | Effectively Deliver Information to LLMs via Prompt Compression | Project Page | LLMLingua | LongLLMLingua | LLMLingua-2 | LLMLingua Demo | LLMLingua-2 Demo | https://github.com/microsoft/LLMLingua/assets/30883354/eb0ea70d-6d4c-4aa7-8977-61f94bb87438 ## News - 🍩 [24/12/13] We are excited to announce the release of our KV cache-centric analysis work, [SCBench](https://aka.ms/SCBench), which evaluates long-context methods from a KV cache perspective. - 👘 [24/09/16] W"
+      },
+      {
+        "needle": "compress",
+        "snippet": "LLMLingua Series | Effectively Deliver Information to LLMs via Prompt Compression | Project Page | LLMLingua | LongLLMLingua | LLMLingua-2 | LLMLingua Demo | LLMLingua-2 Demo | https://github.com/microsoft/LLMLingua/assets/30883354/eb0ea70d-6d4c-4aa7-8977-61f94bb87438 ## News - 🍩 [24/12/13] We are excited to announce the release of our KV cache-centric analysis work, [SCBench](https://aka.ms/SCBench), which evaluates long-cont"
+      },
+      {
+        "needle": "LongLLMLingua",
+        "snippet": "LLMLingua Series | Effectively Deliver Information to LLMs via Prompt Compression | Project Page | LLMLingua | LongLLMLingua | LLMLingua-2 | LLMLingua Demo | LLMLingua-2 Demo | https://github.com/microsoft/LLMLingua/assets/30883354/eb0ea70d-6d4c-4aa7-8977-61f94bb87438 ## News - 🍩 [24/12/13] We are excited to announce the release of our KV cache-centric analysis work, [SCBench](https://aka.ms/SCBench), which evaluates long-context methods from a KV cache perspective. "
+      },
+      {
+        "needle": "token",
+        "snippet": "ence](https://aka.ms/MInference) to speed up Long-context LLMs' inference, reduces inference latency by up to **10X** for pre-filling on an A100 while maintaining accuracy in **1M tokens prompt**! For more information, check out our [paper](https://arxiv.org/abs/2407.02490), visit the [project page](https://aka.ms/MInference). - 🧩 LLMLingua has been integrated into [Prompt flow](https://microsoft.github.io/promptflow/integrations/tools/llmlingua-prompt-compression-tool.html), a streamlined tool framework for LLM-based AI applications."
+      }
+    ],
+    "text_head": "LLMLingua Series | Effectively Deliver Information to LLMs via Prompt Compression | Project Page | LLMLingua | LongLLMLingua | LLMLingua-2 | LLMLingua Demo | LLMLingua-2 Demo | https://github.com/microsoft/LLMLingua/assets/30883354/eb0ea70d-6d4c-4aa7-8977-61f94bb87438 ## News - 🍩 [24/12/13] We are excited to announce the release of our KV cache-centric analysis work, [SCBench](https://aka.ms/SCBench), which evaluates long-context methods from a KV cache perspective. - 👘 [24/09/16] We are pleased to announce the release of our KV cache offloading work, [RetrievalAttention](https://aka.ms/RetrievalAttention), which accelerates long-context LLM inference via vector retrieval. - 🌀 [24/07/03] We're excited to announce the release of [MInference](https://aka.ms/MInference) to speed up Long-context LLMs' inference, reduces inference latency by up to **10X** for pre-filling on an A100 while maintaining accuracy in **1M tokens prompt**! For more information, check out our [paper](https://arxiv."
+  },
+  {
+    "label": "Selective Context ACL",
+    "url": "https://aclanthology.org/2023.emnlp-main.391/",
+    "fetched_at": "2026-06-30T10:16:24Z",
+    "status": 200,
+    "content_type": "text/html; charset=utf-8",
+    "ok": true,
+    "snippets": [
+      {
+        "needle": "Compressing Context",
+        "snippet": "Compressing Context to Enhance Inference Efficiency of Large Language Models - ACL Anthology ACL Anthology News (current) FAQ (current) Corrections (current) Submissions (current) GitHub Compressing Context to Enhance Inference Efficiency of Large Language Models Yucheng Li , Bo Dong , Frank Guerin , Chenghua Lin Correct Metadata for Use this form to create "
+      },
+      {
+        "needle": "Selective Context",
+        "snippet": "tional requirements, both in memory and inference time, and potential context truncation when the input exceeds the LLM’s fixed context length. This paper proposes a method called Selective Context that enhances the inference efficiency of LLMs by identifying and pruning redundancy in the input context to make the input more compact. We test our approach using common data sources requiring long context processing: arXiv papers, news articles, and long conversations, on tasks of summarisation, question answering, and response generatio"
+      },
+      {
+        "needle": "inference efficiency",
+        "snippet": "Compressing Context to Enhance Inference Efficiency of Large Language Models - ACL Anthology ACL Anthology News (current) FAQ (current) Corrections (current) Submissions (current) GitHub Compressing Context to Enhance Inference Efficiency of Large Language Models Yucheng Li , Bo Dong , Frank Guerin , Chenghua Lin Correct Metadata for Use this form to create a GitHub issue with structured "
+      }
+    ],
+    "text_head": "Compressing Context to Enhance Inference Efficiency of Large Language Models - ACL Anthology ACL Anthology News (current) FAQ (current) Corrections (current) Submissions (current) GitHub Compressing Context to Enhance Inference Efficiency of Large Language Models Yucheng Li , Bo Dong , Frank Guerin , Chenghua Lin Correct Metadata for Use this form to create a GitHub issue with structured data describing the correction. You will need a GitHub account. Once you create that issue, the correction will be reviewed by a staff member. ⚠️ Mobile Users: Submitting this form to create a new issue will only work with github.com, not the GitHub Mobile app. Important : The Anthology treat PDFs as authoritative. Please use this form only to correct data that is out of line with the PDF. See our corrections guidelines if you need to change the PDF. Title Adjust the title. Retain tags such as &lt;fixed-case>. Authors Adjust author names and order to match the PDF. Add Author Abstract Correct abstract "
+  },
+  {
+    "label": "OpenAI eval best practices",
+    "url": "https://developers.openai.com/api/docs/guides/evaluation-best-practices",
+    "fetched_at": "2026-06-30T10:16:24Z",
+    "status": 200,
+    "content_type": "text/html; charset=utf-8",
+    "ok": true,
+    "snippets": [
+      {
+        "needle": "evals",
+        "snippet": "n Safety Safety best practices Safety checks Cybersecurity checks Under 18 API Guidance Legacy APIs Agent Builder Overview Migration guide Node reference Safety in building agents Evals Getting started Working with evals Prompt optimizer External models Best practices Graders Fine-tuning Optimization cycle Supervised fine-tuning Vision fine-tuning Direct preference optimization Reinforcement fine-tuning RFT use cases Best practices Assistants API Migration guide Deep dive Tools Resources Terms and policies Changelog Your data Permissi"
+      },
+      {
+        "needle": "production",
+        "snippet": " detection Realtime with tools Webhooks and server-side controls Managing costs Specialized models Image generation Video generation Deep research Embeddings Moderation Going live Production best practices Workload identity federation Overview Kubernetes AWS Microsoft Azure Google Cloud GitHub Actions SPIFFE Deployment checklist Amazon Bedrock Latency optimization Overview Predicted Outputs Priority processing Cost optimization Overview Batch Flex processing Accuracy optimization Safety Safety best practices Safety checks Cybersecurit"
+      }
+    ],
+    "text_head": "Evaluation best practices | OpenAI API Home API Docs Guides and concepts for the OpenAI API API reference Endpoints, parameters, and responses Codex Docs Guides, concepts, and product docs for Codex Use cases Example workflows and tasks teams hand to Codex ChatGPT Apps SDK Build apps to extend ChatGPT Workspace Agents Trigger published ChatGPT workspace agents Commerce Build commerce flows in ChatGPT Ads Publish and measure ads in ChatGPT Resources Showcase Demo apps to get inspired Blog Learnings and experiences from developers Cookbook Notebook examples for building with OpenAI models Learn Docs, videos, and demo apps for building with OpenAI Community Programs, meetups, and support for builders Start searching API Dashboard Search the API docs Search docs Suggested responses create reasoning_effort realtime prompt caching Primary navigation API API Reference Codex ChatGPT Resources Search docs Suggested responses create reasoning_effort realtime prompt caching Get started Overview Q"
+  },
+  {
+    "label": "Anthropic context engineering",
+    "url": "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
+    "fetched_at": "2026-06-30T10:16:24Z",
+    "status": 200,
+    "content_type": "text/html; charset=utf-8",
+    "ok": true,
+    "snippets": [
+      {
+        "needle": "context engineering",
+        "snippet": "Effective context engineering for AI agents \\ Anthropic Skip to main content Skip to footer Research Policy Commitments Learn News Try Claude Engineering at Anthropic Effective context engineering for AI agents Published Sep 29, 2025 Context is a critical but finite resource for AI agents. In this post, we explore strategies for effectively curating and managing the c"
+      },
+      {
+        "needle": "memory",
+        "snippet": "s, this characteristic emerges across all models. Context, therefore, must be treated as a finite resource with diminishing marginal returns. Like humans, who have limited working memory capacity , LLMs have an “attention budget” that they draw on when parsing large volumes of context. Every new token introduced depletes this budget by some amount, increasing the need to carefully curate the tokens available to the LLM. This attention scarcity stems from architectural constraints of LLMs. LLMs are based on the transformer architecture"
+      },
+      {
+        "needle": "tokens",
+        "snippet": "rompts, and more about answering the broader question of “what configuration of context is most likely to generate our model’s desired behavior?&quot; Context refers to the set of tokens included when sampling from a large-language model (LLM). The engineering problem at hand is optimizing the utility of those tokens against the inherent constraints of LLMs in order to consistently achieve a desired outcome. Effectively wrangling LLMs often requires thinking in context — in other words: considering the holistic state available to the "
+      }
+    ],
+    "text_head": "Effective context engineering for AI agents \\ Anthropic Skip to main content Skip to footer Research Policy Commitments Learn News Try Claude Engineering at Anthropic Effective context engineering for AI agents Published Sep 29, 2025 Context is a critical but finite resource for AI agents. In this post, we explore strategies for effectively curating and managing the context that powers them. After a few years of prompt engineering being the focus of attention in applied AI, a new term has come to prominence: context engineering . Building with language models is becoming less about finding the right words and phrases for your prompts, and more about answering the broader question of “what configuration of context is most likely to generate our model’s desired behavior?&quot; Context refers to the set of tokens included when sampling from a large-language model (LLM). The engineering problem at hand is optimizing the utility of those tokens against the inherent constraints of LLMs in or"
+  }
+]

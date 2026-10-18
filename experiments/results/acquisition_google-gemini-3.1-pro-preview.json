@@ -1,0 +1,572 @@
+{
+  "study": "acquisition-expA",
+  "model": "google/gemini-3.1-pro-preview",
+  "seeds": 20,
+  "opacity": [
+    0,
+    2,
+    3
+  ],
+  "kList": [
+    0,
+    1,
+    3,
+    8
+  ],
+  "targets": [
+    "med",
+    "xhard3"
+  ],
+  "headlineTarget": "xhard3",
+  "rosetta": {
+    "med": {
+      "0": {
+        "0": {
+          "strict": {
+            "mean": 0,
+            "ci": 0
+          },
+          "structured": {
+            "mean": 0.5,
+            "ci": 0.2248274191931505
+          },
+          "modes": {
+            "pass": 10,
+            "degenerate_precompute": 0,
+            "missing_structure": 0,
+            "parse_error": 10,
+            "wrong_output": 0
+          }
+        },
+        "1": {
+          "strict": {
+            "mean": 0,
+            "ci": 0
+          },
+          "structured": {
+            "mean": 0.1,
+            "ci": 0.1348964515158903
+          },
+          "modes": {
+            "pass": 2,
+            "degenerate_precompute": 0,
+            "missing_structure": 0,
+            "parse_error": 17,
+            "wrong_output": 1
+          }
+        },
+        "3": {
+          "strict": {
+            "mean": 0,
+            "ci": 0
+          },
+          "structured": {
+            "mean": 0.15,
+            "ci": 0.16055889229418854
+          },
+          "modes": {
+            "pass": 3,
+            "degenerate_precompute": 0,
+            "missing_structure": 0,
+            "parse_error": 16,
+            "wrong_output": 1
+          }
+        },
+        "8": {
+          "strict": {
+            "mean": 1,
+            "ci": 0
+          },
+          "structured": {
+            "mean": 1,
+            "ci": 0
+          },
+          "modes": {
+            "pass": 20,
+            "degenerate_precompute": 0,
+            "missing_structure": 0,
+            "parse_error": 0,
+            "wrong_output": 0
+          }
+        }
+      },
+      "2": {
+        "0": {
+          "strict": {
+            "mean": 0,
+            "ci": 0
+          },
+          "structured": {
+            "mean": 0.3,
+            "ci": 0.2060577333508359
+          },
+          "modes": {
+            "pass": 6,
+            "degenerate_precompute": 0,
+            "missing_structure": 0,
+            "parse_error": 14,
+            "wrong_output": 0
+          }
+        },
+        "1": {
+          "strict": {
+            "mean": 0,
+            "ci": 0
+          },
+          "structured": {
+            "mean": 0,
+            "ci": 0
+          },
+          "modes": {
+            "pass": 0,
+            "degenerate_precompute": 0,
+            "missing_structure": 0,
+            "parse_error": 20,
+            "wrong_output": 0
+          }
+        },
+        "3": {
+          "strict": {
+            "mean": 0,
+            "ci": 0
+          },
+          "structured": {
+            "mean": 0,
+            "ci": 0
+          },
+          "modes": {
+            "pass": 0,
+            "degenerate_precompute": 0,
+            "missing_structure": 0,
+            "parse_error": 16,
+            "wrong_output": 4
+          }
+        },
+        "8": {
+          "strict": {
+            "mean": 0.95,
+            "ci": 0.09800000000000002
+          },
+          "structured": {
+            "mean": 0.95,
+            "ci": 0.09800000000000002
+          },
+          "modes": {
+            "pass": 19,
+            "degenerate_precompute": 0,
+            "missing_structure": 0,
+            "parse_error": 0,
+            "wrong_output": 1
+          }
+        }
+      },
+      "3": {
+        "0": {
+          "strict": {
+            "mean": 0,
+            "ci": 0
+          },
+          "structured": {
+            "mean": 0.4,
+            "ci": 0.2202849828840144
+          },
+          "modes": {
+            "pass": 8,
+            "degenerate_precompute": 0,
+            "missing_structure": 0,
+            "parse_error": 12,
+            "wrong_output": 0
+          }
+        },
+        "1": {
+          "strict": {
+            "mean": 0,
+            "ci": 0
+          },
+          "structured": {
+            "mean": 0,
+            "ci": 0
+          },
+          "modes": {
+            "pass": 0,
+            "degenerate_precompute": 0,
+            "missing_structure": 0,
+            "parse_error": 20,
+            "wrong_output": 0
+          }
+        },
+        "3": {
+          "strict": {
+            "mean": 0,
+            "ci": 0
+          },
+          "structured": {
+            "mean": 0,
+            "ci": 0
+          },
+          "modes": {
+            "pass": 0,
+            "degenerate_precompute": 0,
+            "missing_structure": 0,
+            "parse_error": 20,
+            "wrong_output": 0
+          }
+        },
+        "8": {
+          "strict": {
+            "mean": 1,
+            "ci": 0
+          },
+          "structured": {
+            "mean": 1,
+            "ci": 0
+          },
+          "modes": {
+            "pass": 20,
+            "degenerate_precompute": 0,
+            "missing_structure": 0,
+            "parse_error": 0,
+            "wrong_output": 0
+          }
+        }
+      }
+    },
+    "xhard3": {
+      "0": {
+        "0": {
+          "strict": {
+            "mean": 0,
+            "ci": 0
+          },
+          "structured": {
+            "mean": 0,
+            "ci": 0
+          },
+          "modes": {
+            "pass": 0,
+            "degenerate_precompute": 0,
+            "missing_structure": 0,
+            "parse_error": 20,
+            "wrong_output": 0
+          }
+        },
+        "1": {
+          "strict": {
+            "mean": 0.1,
+            "ci": 0.1348964515158903
+          },
+          "structured": {
+            "mean": 0.6,
+            "ci": 0.2202849828840144
+          },
+          "modes": {
+            "pass": 12,
+            "degenerate_precompute": 2,
+            "missing_structure": 0,
+            "parse_error": 6,
+            "wrong_output": 0
+          }
+        },
+        "3": {
+          "strict": {
+            "mean": 0,
+            "ci": 0
+          },
+          "structured": {
+            "mean": 0.05,
+            "ci": 0.09799999999999996
+          },
+          "modes": {
+            "pass": 1,
+            "degenerate_precompute": 0,
+            "missing_structure": 0,
+            "parse_error": 18,
+            "wrong_output": 1
+          }
+        },
+        "8": {
+          "strict": {
+            "mean": 1,
+            "ci": 0
+          },
+          "structured": {
+            "mean": 1,
+            "ci": 0
+          },
+          "modes": {
+            "pass": 20,
+            "degenerate_precompute": 0,
+            "missing_structure": 0,
+            "parse_error": 0,
+            "wrong_output": 0
+          }
+        }
+      },
+      "2": {
+        "0": {
+          "strict": {
+            "mean": 0,
+            "ci": 0
+          },
+          "structured": {
+            "mean": 0,
+            "ci": 0
+          },
+          "modes": {
+            "pass": 0,
+            "degenerate_precompute": 0,
+            "missing_structure": 0,
+            "parse_error": 20,
+            "wrong_output": 0
+          }
+        },
+        "1": {
+          "strict": {
+            "mean": 0.1,
+            "ci": 0.1348964515158903
+          },
+          "structured": {
+            "mean": 0,
+            "ci": 0
+          },
+          "modes": {
+            "pass": 0,
+            "degenerate_precompute": 2,
+            "missing_structure": 0,
+            "parse_error": 18,
+            "wrong_output": 0
+          }
+        },
+        "3": {
+          "strict": {
+            "mean": 0.1,
+            "ci": 0.1348964515158903
+          },
+          "structured": {
+            "mean": 0,
+            "ci": 0
+          },
+          "modes": {
+            "pass": 0,
+            "degenerate_precompute": 2,
+            "missing_structure": 0,
+            "parse_error": 17,
+            "wrong_output": 1
+          }
+        },
+        "8": {
+          "strict": {
+            "mean": 1,
+            "ci": 0
+          },
+          "structured": {
+            "mean": 1,
+            "ci": 0
+          },
+          "modes": {
+            "pass": 20,
+            "degenerate_precompute": 0,
+            "missing_structure": 0,
+            "parse_error": 0,
+            "wrong_output": 0
+          }
+        }
+      },
+      "3": {
+        "0": {
+          "strict": {
+            "mean": 0,
+            "ci": 0
+          },
+          "structured": {
+            "mean": 0,
+            "ci": 0
+          },
+          "modes": {
+            "pass": 0,
+            "degenerate_precompute": 0,
+            "missing_structure": 0,
+            "parse_error": 20,
+            "wrong_output": 0
+          }
+        },
+        "1": {
+          "strict": {
+            "mean": 0.05,
+            "ci": 0.09799999999999998
+          },
+          "structured": {
+            "mean": 0,
+            "ci": 0
+          },
+          "modes": {
+            "pass": 0,
+            "degenerate_precompute": 1,
+            "missing_structure": 0,
+            "parse_error": 18,
+            "wrong_output": 1
+          }
+        },
+        "3": {
+          "strict": {
+            "mean": 0.1,
+            "ci": 0.1348964515158903
+          },
+          "structured": {
+            "mean": 0,
+            "ci": 0
+          },
+          "modes": {
+            "pass": 0,
+            "degenerate_precompute": 2,
+            "missing_structure": 0,
+            "parse_error": 17,
+            "wrong_output": 1
+          }
+        },
+        "8": {
+          "strict": {
+            "mean": 0.9,
+            "ci": 0.1348964515158903
+          },
+          "structured": {
+            "mean": 0.9,
+            "ci": 0.1348964515158903
+          },
+          "modes": {
+            "pass": 18,
+            "degenerate_precompute": 0,
+            "missing_structure": 0,
+            "parse_error": 2,
+            "wrong_output": 0
+          }
+        }
+      }
+    }
+  },
+  "withKey": {
+    "med": {
+      "0": {
+        "strict": {
+          "mean": 1,
+          "ci": 0
+        },
+        "structured": {
+          "mean": 1,
+          "ci": 0
+        },
+        "modes": {
+          "pass": 20,
+          "degenerate_precompute": 0,
+          "missing_structure": 0,
+          "parse_error": 0,
+          "wrong_output": 0
+        }
+      },
+      "2": {
+        "strict": {
+          "mean": 0.95,
+          "ci": 0.098
+        },
+        "structured": {
+          "mean": 0.95,
+          "ci": 0.098
+        },
+        "modes": {
+          "pass": 19,
+          "degenerate_precompute": 0,
+          "missing_structure": 0,
+          "parse_error": 1,
+          "wrong_output": 0
+        }
+      },
+      "3": {
+        "strict": {
+          "mean": 1,
+          "ci": 0
+        },
+        "structured": {
+          "mean": 1,
+          "ci": 0
+        },
+        "modes": {
+          "pass": 20,
+          "degenerate_precompute": 0,
+          "missing_structure": 0,
+          "parse_error": 0,
+          "wrong_output": 0
+        }
+      }
+    },
+    "xhard3": {
+      "0": {
+        "strict": {
+          "mean": 0.95,
+          "ci": 0.09800000000000002
+        },
+        "structured": {
+          "mean": 0.95,
+          "ci": 0.09800000000000002
+        },
+        "modes": {
+          "pass": 19,
+          "degenerate_precompute": 0,
+          "missing_structure": 0,
+          "parse_error": 1,
+          "wrong_output": 0
+        }
+      },
+      "2": {
+        "strict": {
+          "mean": 0.95,
+          "ci": 0.09800000000000002
+        },
+        "structured": {
+          "mean": 0.95,
+          "ci": 0.09800000000000002
+        },
+        "modes": {
+          "pass": 19,
+          "degenerate_precompute": 0,
+          "missing_structure": 0,
+          "parse_error": 1,
+          "wrong_output": 0
+        }
+      },
+      "3": {
+        "strict": {
+          "mean": 0.9,
+          "ci": 0.1348964515158903
+        },
+        "structured": {
+          "mean": 0.9,
+          "ci": 0.1348964515158903
+        },
+        "modes": {
+          "pass": 18,
+          "degenerate_precompute": 0,
+          "missing_structure": 0,
+          "parse_error": 0,
+          "wrong_output": 2
+        }
+      }
+    }
+  },
+  "mockFloor": {},
+  "mockPrecompute": {},
+  "completed": [
+    "target:med:L0",
+    "target:med:L2",
+    "target:med:L3",
+    "target:xhard3:L0",
+    "target:xhard3:L2",
+    "target:xhard3:L3"
+  ],
+  "partial": false,
+  "schema": {
+    "rosetta": "tier → opacity → K → {strict:{mean,ci}, structured:{mean,ci}, modes}  (NO key; K worked examples only)",
+    "withKey": "tier → opacity → {strict, structured, modes}  (full spec/token table — upper bound)",
+    "mockFloor": "tier → opacity → K → … (MOCK only; NO-INFO wrong-seed mock → must ~0)",
+    "mockPrecompute": "tier → opacity → … (MOCK only; print-constant cheat → must be degenerate_precompute)"
+  }
+}

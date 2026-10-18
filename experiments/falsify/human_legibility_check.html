@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>S3 — Human Legibility Check (GLOSSOPETRAE CodeSkin)</title>
+<style>
+  :root { --bg:#0e1116; --fg:#e6edf3; --mut:#9aa7b4; --card:#161b22; --line:#30363d; --acc:#58a6ff; --ok:#3fb950; --bad:#f85149; }
+  * { box-sizing:border-box; }
+  body { margin:0; padding:2rem 1rem 4rem; background:var(--bg); color:var(--fg);
+         font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; }
+  .wrap { max-width:760px; margin:0 auto; }
+  h1 { font-size:1.35rem; margin:0 0 .25rem; }
+  .sub { color:var(--mut); margin:0 0 1.5rem; font-size:.92rem; }
+  .intro { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:1rem 1.1rem; margin-bottom:1.75rem; }
+  .intro b { color:var(--acc); }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:1.1rem 1.2rem; margin-bottom:1.1rem; }
+  .tag { display:inline-block; font-size:.72rem; letter-spacing:.04em; text-transform:uppercase;
+         color:var(--mut); border:1px solid var(--line); border-radius:999px; padding:.1rem .55rem; margin-bottom:.7rem; }
+  .prog { font:15px/1.7 "SF Mono",ui-monospace,Menlo,Consolas,monospace; white-space:pre-wrap; word-break:break-word;
+          background:#0b0e13; border:1px solid var(--line); border-radius:8px; padding:.85rem .9rem; font-size:1.15rem; }
+  label { display:block; margin:.85rem 0 .35rem; color:var(--mut); font-size:.88rem; }
+  input[type=text] { width:100%; padding:.55rem .65rem; border-radius:7px; border:1px solid var(--line);
+                     background:#0b0e13; color:var(--fg); font:inherit; }
+  input[type=text]:focus { outline:none; border-color:var(--acc); }
+  .row { display:flex; gap:.6rem; align-items:center; margin-top:.6rem; flex-wrap:wrap; }
+  button { font:inherit; cursor:pointer; border-radius:7px; border:1px solid var(--line); background:#21262d; color:var(--fg); padding:.45rem .8rem; }
+  button.primary { background:var(--acc); color:#04101f; border-color:var(--acc); font-weight:600; }
+  .verdict { font-size:.9rem; min-height:1.2em; }
+  .verdict.ok { color:var(--ok); }
+  .verdict.bad { color:var(--bad); }
+  .reveal { color:var(--mut); font-size:.85rem; margin-top:.4rem; }
+  #summary { background:var(--card); border:1px solid var(--acc); border-radius:10px; padding:1.1rem 1.2rem; margin-top:1.5rem; display:none; }
+  #summary h2 { margin:.1rem 0 .6rem; font-size:1.05rem; }
+  table { border-collapse:collapse; width:100%; font-size:.9rem; margin-top:.4rem; }
+  th,td { text-align:left; padding:.3rem .5rem; border-bottom:1px solid var(--line); }
+  .foot { color:var(--mut); font-size:.82rem; margin-top:1.5rem; border-top:1px solid var(--line); padding-top:1rem; }
+  .who { display:flex; gap:.5rem; align-items:center; margin-bottom:1.25rem; }
+  .who input { max-width:260px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Can you read this code? — 6-program legibility check</h1>
+  <p class="sub">GLOSSOPETRAE · CodeSkin probe S3 · gold-standard human test of the legibility dial</p>
+
+  <div class="intro">
+    Below are <b>6 short programs</b> in invented programming languages, at three opacity
+    levels (you are NOT told which is which). Each program prints exactly <b>one number</b>.
+    For each one, type your best guess at <b>what it prints</b> — and how you felt reading it.
+    <br><br>
+    You get <b>no spec and no key</b>. That is the point: we want to know whether a <i>cold human reader</i>
+    can recover the meaning. Guess if unsure; "no idea" is a valid and useful answer (leave it blank or write <code>?</code>).
+    Tokens are space-separated. Hint: each program is a tiny loop / function / arithmetic snippet.
+  </div>
+
+  <div class="who">
+    <label style="margin:0">Your name/initials (for the tally):</label>
+    <input id="who" type="text" placeholder="e.g. PL">
+  </div>
+
+  <div id="cards"></div>
+
+  <div class="row" style="margin-top:1rem">
+    <button class="primary" id="scoreBtn">Score me &amp; show answers</button>
+    <button id="copyBtn">Copy my results (for Pliny)</button>
+  </div>
+
+  <div id="summary">
+    <h2>Your result</h2>
+    <div id="summaryBody"></div>
+  </div>
+
+  <div class="foot">
+    <b>Why this page exists.</b> The automated probe (<code>s3_legibility.mjs</code>) measures surface
+    statistics — ASCII ratio, % non-Latin glyphs, pronounceability, dictionary-word fraction, entropy.
+    Those are <i>proxies</i>. The actual claim is about <b>human</b> readability. This page is the
+    gold-standard test the proxies only approximate: run it on ~5 people, tally % correct per level,
+    and compare against the proxy curve. If humans crater from L0→L3 while the machine (given the spec)
+    stays high, the legibility↔usability decoupling is real and not a metric artifact.
+  </div>
+</div>
+
+<script>
+// 6 hardcoded samples generated by CodeForge+CodeSkin (faithfulness verified:
+// sk.run(skinned).output === answer for every one). Order is shuffled across
+// levels on purpose so the reader gets no level cue.
+const SAMPLES = [
+  { id:1, level:0, lang:"seed2000", src:"zuba s = 0 ; zuba i = 1 ; shoa ( i <= 6 ) { s = s + i ; i = i + 1 ; } kewiz s ;", answer:"21" },
+  { id:2, level:3, lang:"seed2026", src:"▽ a ⩚ 7 ⨂ ▽ b ⩚ 5 ⨂ ⫷ a ✶ b ⨂", answer:"12" },
+  { id:3, level:2, lang:"seed2000", src:"▲ s Ԇ 0 ; ▲ i Ԇ 1 ; ⎔ ( i ⍟ 6 ) { s Ԇ s ⦿ i ; i Ԇ i ⦿ 1 ; } ⩛ s ;", answer:"21" },
+  { id:4, level:0, lang:"seed2026", src:"prepri a := 7 ; prepri b := 5 ; ripwu a + b ;", answer:"12" },
+  { id:5, level:3, lang:"seed2052", src:"ǂ f ⩚ n ▶ ➹ ⫷ ⩚ n ✶ 2 ▶ ➹ ⧫ 1 ❉ ⟒ Ѫ ➹ ⧫ n ⨀ f ⩚ n ⦿ 1 ▶ ❉ ⟒ ⟒ ⟡ f ⩚ 4 ▶ ❉", answer:"24" },
+  { id:6, level:2, lang:"seed2052", src:"Ԇ f ( n ) ⍟ ⊗ ( n ◆ 2 ) ⍟ ⩚ 1 ; ⟁ ◇ ⍟ ⩚ n ◀ f ( n ⫷ 1 ) ; ⟁ ⟁ ⩛ f ( 4 ) ;", answer:"24" },
+];
+
+const cardsEl = document.getElementById('cards');
+SAMPLES.forEach((s, idx) => {
+  const c = document.createElement('div');
+  c.className = 'card';
+  c.innerHTML = `
+    <span class="tag">Program ${idx + 1} of 6</span>
+    <div class="prog">${escapeHtml(s.src)}</div>
+    <label>What number does this print?</label>
+    <input type="text" data-id="${s.id}" class="guess" placeholder="your guess (or ? for no idea)">
+    <label>How readable did it feel? (1 = total guess, 5 = obvious)</label>
+    <input type="text" data-rid="${s.id}" class="rate" placeholder="1–5">
+    <div class="verdict" data-vid="${s.id}"></div>
+    <div class="reveal" data-revid="${s.id}"></div>`;
+  cardsEl.appendChild(c);
+});
+
+function escapeHtml(t){ return t.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])); }
+const norm = v => String(v).trim().replace(/[^0-9.\-]/g,'');
+
+let scored = false, results = [];
+document.getElementById('scoreBtn').addEventListener('click', () => {
+  results = [];
+  let correct = 0, byLevel = {0:[0,0],2:[0,0],3:[0,0]};
+  SAMPLES.forEach(s => {
+    const g = document.querySelector(`.guess[data-id="${s.id}"]`).value;
+    const rate = document.querySelector(`.rate[data-rid="${s.id}"]`).value;
+    const ok = norm(g) !== '' && norm(g) === norm(s.answer);
+    if (ok) correct++;
+    byLevel[s.level][1]++; if (ok) byLevel[s.level][0]++;
+    const v = document.querySelector(`.verdict[data-vid="${s.id}"]`);
+    v.textContent = ok ? '✓ correct' : (norm(g)==='' ? '— no guess' : '✗ not quite');
+    v.className = 'verdict ' + (ok ? 'ok' : 'bad');
+    document.querySelector(`.reveal[data-revid="${s.id}"]`).textContent =
+      `answer: prints ${s.answer}  ·  (this was level L${s.level})`;
+    results.push({ program: SAMPLES.indexOf(s)+1, level: s.level, guess: g.trim(), rating: rate.trim(), correct: ok });
+  });
+  const pct = l => byLevel[l][1] ? Math.round(100*byLevel[l][0]/byLevel[l][1]) : 0;
+  const sumEl = document.getElementById('summary');
+  sumEl.style.display = 'block';
+  document.getElementById('summaryBody').innerHTML = `
+    <p>You got <b>${correct} / ${SAMPLES.length}</b> correct.</p>
+    <table>
+      <tr><th>Level</th><th>Correct</th><th>%</th><th>Reading</th></tr>
+      <tr><td>L0 (readable conlang)</td><td>${byLevel[0][0]}/${byLevel[0][1]}</td><td>${pct(0)}%</td><td>ASCII words</td></tr>
+      <tr><td>L2 (glyphic)</td><td>${byLevel[2][0]}/${byLevel[2][1]}</td><td>${pct(2)}%</td><td>symbols, ASCII delims</td></tr>
+      <tr><td>L3 (alien)</td><td>${byLevel[3][0]}/${byLevel[3][1]}</td><td>${pct(3)}%</td><td>all glyphs</td></tr>
+    </table>
+    <p class="reveal">The hypothesis: human accuracy collapses L0→L3 even though a machine given the
+    spec stays high. Tally this across ~5 people.</p>`;
+  sumEl.scrollIntoView({ behavior:'smooth' });
+  scored = true;
+});
+
+document.getElementById('copyBtn').addEventListener('click', () => {
+  if (!scored) { alert('Click "Score me" first.'); return; }
+  const who = document.getElementById('who').value.trim() || 'anon';
+  const payload = { reviewer: who, ts: new Date().toISOString(), results };
+  const text = JSON.stringify(payload, null, 2);
+  navigator.clipboard?.writeText(text).then(
+    () => alert('Results copied to clipboard — paste into the S3 tally.'),
+    () => prompt('Copy this:', text)
+  );
+});
+</script>
+</body>
+</html>

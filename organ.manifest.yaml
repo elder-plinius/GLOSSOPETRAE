@@ -1,0 +1,47 @@
+schema: plinyos.organ/v1
+id: glossopetrae
+name: GLOSSOPETRAE
+version: 3.1.0
+description: Procedural xenolinguistics engine + tokenizer covert-channel research
+category: research
+runtime:
+  type: javascript
+  entrypoint: index.html
+  engine: browser
+  experiments: node >= 18
+network:
+  port: 8754
+  healthcheck: /
+capabilities:
+  provides:
+    - id: language_generation
+      name: Language Generation
+      description: Procedurally generate complete constructed languages with grammar and lexicon
+    - id: translation
+      name: Translation
+      description: Translate between natural languages and generated xenolanguages
+    - id: steganographic_language
+      name: Steganographic Language
+      description: Generate languages designed to hide information in plain sight
+    - id: adversarial_language
+      name: Adversarial Language
+      description: Craft languages that evade AI detection and content filters
+    - id: tokenizer_covert_channel
+      name: Tokenizer Covert Channel
+      description: Exploit tokenizer asymmetries for hidden communication between AI models
+    - id: semantic_steganography
+      name: Semantic Steganography
+      description: Hide payloads in natural-language synonym and morpheme choices
+dependencies:
+  infrastructure: []
+  organs: []
+ui:
+  type: embedded
+  path: /glossopetrae
+  entrypoints:
+    - path: index.html
+      label: GLOSSOPETRAE
+  menu:
+    label: GLOSSOPETRAE
+    icon: languages
+    category: research

@@ -1,0 +1,3467 @@
+{
+  "study": "tokenizer-survival-v3",
+  "models": [
+    "meta-llama/llama-4-scout",
+    "mistralai/mistral-medium-3-5",
+    "openai/gpt-5-nano",
+    "anthropic/claude-3.5-haiku",
+    "google/gemini-2.5-flash"
+  ],
+  "reps": 3,
+  "tests": 20,
+  "results": {
+    "base-variation-sel": {
+      "desc": "Base Variation Selectors VS1-VS3 (U+FE00-FE02) after CJK base",
+      "anchor": "end",
+      "models": {
+        "meta-llama/llama-4-scout": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 2,
+          "errors": 0,
+          "suspectNonEcho": 1,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "字\\u{FE00}字\\u{FE01}字\\u{FE02}end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "字\\u{FE00}字\\u{FE01}字\\u{FE02}end"
+            },
+            {
+              "survived": 1,
+              "expected": 3,
+              "rate": 0.3333333333333333,
+              "suspectNonEcho": true,
+              "replyLen": 1,
+              "replySample": "\\u{FE00}"
+            }
+          ]
+        },
+        "mistralai/mistral-medium-3-5": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "字\\u{FE00}字\\u{FE01}字\\u{FE02}end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "字\\u{FE00}字\\u{FE01}字\\u{FE02}end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "字\\u{FE00}字\\u{FE01}字\\u{FE02}end"
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 2,
+          "reps": [
+            {
+              "survived": 0,
+              "expected": 3,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "字\\u{FE00}字\\u{FE01}字\\u{FE02}end"
+            },
+            {
+              "survived": 0,
+              "expected": 3,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            }
+          ]
+        },
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "字\\u{FE00}字\\u{FE01}字\\u{FE02}end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "字\\u{FE00}字\\u{FE01}字\\u{FE02}end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "字\\u{FE00}字\\u{FE01}字\\u{FE02}end"
+            }
+          ]
+        },
+        "google/gemini-2.5-flash": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "字\\u{FE00}字\\u{FE01}字\\u{FE02}end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "字\\u{FE00}字\\u{FE01}字\\u{FE02}end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "字\\u{FE00}字\\u{FE01}字\\u{FE02}end"
+            }
+          ]
+        }
+      }
+    },
+    "emoji-text-vs": {
+      "desc": "Emoji text presentation selector U+FE0E after emoji base",
+      "anchor": "love",
+      "models": {
+        "meta-llama/llama-4-scout": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 19,
+              "replySample": "❤\\u{FE0E} love ☃\\u{FE0E} snow end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 19,
+              "replySample": "❤\\u{FE0E} love ☃\\u{FE0E} snow end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 19,
+              "replySample": "❤\\u{FE0E} love ☃\\u{FE0E} snow end"
+            }
+          ]
+        },
+        "mistralai/mistral-medium-3-5": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 19,
+              "replySample": "❤\\u{FE0E} love ☃\\u{FE0E} snow end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 19,
+              "replySample": "❤\\u{FE0E} love ☃\\u{FE0E} snow end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 19,
+              "replySample": "❤\\u{FE0E} love ☃\\u{FE0E} snow end"
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": null,
+          "expected": 2,
+          "validReps": 0,
+          "errors": 0,
+          "suspectNonEcho": 3,
+          "reps": [
+            {
+              "survived": 0,
+              "expected": 2,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            },
+            {
+              "survived": 0,
+              "expected": 2,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            },
+            {
+              "survived": 0,
+              "expected": 2,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            }
+          ]
+        },
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 19,
+              "replySample": "❤\\u{FE0E} love ☃\\u{FE0E} snow end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 19,
+              "replySample": "❤\\u{FE0E} love ☃\\u{FE0E} snow end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 19,
+              "replySample": "❤\\u{FE0E} love ☃\\u{FE0E} snow end"
+            }
+          ]
+        },
+        "google/gemini-2.5-flash": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 19,
+              "replySample": "❤\\u{FE0E} love ☃\\u{FE0E} snow end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 19,
+              "replySample": "❤\\u{FE0E} love ☃\\u{FE0E} snow end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 19,
+              "replySample": "❤\\u{FE0E} love ☃\\u{FE0E} snow end"
+            }
+          ]
+        }
+      }
+    },
+    "emoji-emoji-vs": {
+      "desc": "Emoji presentation selector U+FE0F after text base",
+      "anchor": "love",
+      "models": {
+        "meta-llama/llama-4-scout": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 19,
+              "replySample": "❤\\u{FE0F} love ☃\\u{FE0F} snow end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 19,
+              "replySample": "❤\\u{FE0F} love ☃\\u{FE0F} snow end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 19,
+              "replySample": "❤\\u{FE0F} love ☃\\u{FE0F} snow end"
+            }
+          ]
+        },
+        "mistralai/mistral-medium-3-5": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 19,
+              "replySample": "❤\\u{FE0F} love ☃\\u{FE0F} snow end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 19,
+              "replySample": "❤\\u{FE0F} love ☃\\u{FE0F} snow end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 19,
+              "replySample": "❤\\u{FE0F} love ☃\\u{FE0F} snow end"
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": null,
+          "expected": 2,
+          "validReps": 0,
+          "errors": 0,
+          "suspectNonEcho": 3,
+          "reps": [
+            {
+              "survived": 0,
+              "expected": 2,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            },
+            {
+              "survived": 0,
+              "expected": 2,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            },
+            {
+              "survived": 0,
+              "expected": 2,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            }
+          ]
+        },
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 19,
+              "replySample": "❤\\u{FE0F} love ☃\\u{FE0F} snow end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 19,
+              "replySample": "❤\\u{FE0F} love ☃\\u{FE0F} snow end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 19,
+              "replySample": "❤\\u{FE0F} love ☃\\u{FE0F} snow end"
+            }
+          ]
+        },
+        "google/gemini-2.5-flash": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 19,
+              "replySample": "❤\\u{FE0F} love ☃\\u{FE0F} snow end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 19,
+              "replySample": "❤\\u{FE0F} love ☃\\u{FE0F} snow end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 19,
+              "replySample": "❤\\u{FE0F} love ☃\\u{FE0F} snow end"
+            }
+          ]
+        }
+      }
+    },
+    "deprecated-format": {
+      "desc": "Deprecated format controls (U+206A ISS, U+206B ASS, U+206C IAFS)",
+      "anchor": "test",
+      "models": {
+        "meta-llama/llama-4-scout": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 10,
+              "replySample": "test\\u{206A}\\u{206B}\\u{206C}end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 10,
+              "replySample": "test\\u{206A}\\u{206B}\\u{206C}end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 10,
+              "replySample": "test\\u{206A}\\u{206B}\\u{206C}end"
+            }
+          ]
+        },
+        "mistralai/mistral-medium-3-5": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 10,
+              "replySample": "test\\u{206A}\\u{206B}\\u{206C}end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 10,
+              "replySample": "test\\u{206A}\\u{206B}\\u{206C}end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 10,
+              "replySample": "test\\u{206A}\\u{206B}\\u{206C}end"
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": null,
+          "expected": 3,
+          "validReps": 0,
+          "errors": 0,
+          "suspectNonEcho": 3,
+          "reps": [
+            {
+              "survived": 0,
+              "expected": 3,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            },
+            {
+              "survived": 0,
+              "expected": 3,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            },
+            {
+              "survived": 0,
+              "expected": 3,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            }
+          ]
+        },
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 10,
+              "replySample": "test\\u{206A}\\u{206B}\\u{206C}end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 10,
+              "replySample": "test\\u{206A}\\u{206B}\\u{206C}end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 10,
+              "replySample": "test\\u{206A}\\u{206B}\\u{206C}end"
+            }
+          ]
+        },
+        "google/gemini-2.5-flash": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 10,
+              "replySample": "test\\u{206A}\\u{206B}\\u{206C}end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 10,
+              "replySample": "test\\u{206A}\\u{206B}\\u{206C}end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 10,
+              "replySample": "test\\u{206A}\\u{206B}\\u{206C}end"
+            }
+          ]
+        }
+      }
+    },
+    "combining-grapheme-joiner": {
+      "desc": "Combining Grapheme Joiner (U+034F) between letters",
+      "anchor": "end",
+      "models": {
+        "meta-llama/llama-4-scout": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 11,
+              "replySample": "a͏b͏c͏d end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 11,
+              "replySample": "a͏b͏c͏d end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 11,
+              "replySample": "a͏b͏c͏d end"
+            }
+          ]
+        },
+        "mistralai/mistral-medium-3-5": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 11,
+              "replySample": "a͏b͏c͏d end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 11,
+              "replySample": "a͏b͏c͏d end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 11,
+              "replySample": "a͏b͏c͏d end"
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": null,
+          "expected": 3,
+          "validReps": 0,
+          "errors": 0,
+          "suspectNonEcho": 3,
+          "reps": [
+            {
+              "survived": 0,
+              "expected": 3,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            },
+            {
+              "survived": 0,
+              "expected": 3,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            },
+            {
+              "survived": 0,
+              "expected": 3,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            }
+          ]
+        },
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 11,
+              "replySample": "a͏b͏c͏d end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 11,
+              "replySample": "a͏b͏c͏d end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 11,
+              "replySample": "a͏b͏c͏d end"
+            }
+          ]
+        },
+        "google/gemini-2.5-flash": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 11,
+              "replySample": "a͏b͏c͏d end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 11,
+              "replySample": "a͏b͏c͏d end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 11,
+              "replySample": "a͏b͏c͏d end"
+            }
+          ]
+        }
+      }
+    },
+    "khmer-invisible": {
+      "desc": "Khmer inherent vowels U+17B4 (AQAA) and U+17B5 (QA)",
+      "anchor": "test",
+      "models": {
+        "meta-llama/llama-4-scout": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 10,
+              "replySample": "test឴឵឴end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 10,
+              "replySample": "test឴឵឴end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 10,
+              "replySample": "test឴឵឴end"
+            }
+          ]
+        },
+        "mistralai/mistral-medium-3-5": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 10,
+              "replySample": "test឴឵឴end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 10,
+              "replySample": "test឴឵឴end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 10,
+              "replySample": "test឴឵឴end"
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": null,
+          "expected": 3,
+          "validReps": 0,
+          "errors": 0,
+          "suspectNonEcho": 3,
+          "reps": [
+            {
+              "survived": 0,
+              "expected": 3,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            },
+            {
+              "survived": 0,
+              "expected": 3,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            },
+            {
+              "survived": 0,
+              "expected": 3,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            }
+          ]
+        },
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 10,
+              "replySample": "test឴឵឴end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 10,
+              "replySample": "test឴឵឴end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 10,
+              "replySample": "test឴឵឴end"
+            }
+          ]
+        },
+        "google/gemini-2.5-flash": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 10,
+              "replySample": "test឴឵឴end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 10,
+              "replySample": "test឴឵឴end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 10,
+              "replySample": "test឴឵឴end"
+            }
+          ]
+        }
+      }
+    },
+    "zwsp": {
+      "desc": "Zero Width Space (U+200B) — invisible word boundary",
+      "anchor": null,
+      "models": {
+        "meta-llama/llama-4-scout": {
+          "rate": 1,
+          "expected": 4,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "h\\u{200B}e\\u{200B}l\\u{200B}l\\u{200B}o"
+            },
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "h\\u{200B}e\\u{200B}l\\u{200B}l\\u{200B}o"
+            },
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "h\\u{200B}e\\u{200B}l\\u{200B}l\\u{200B}o"
+            }
+          ]
+        },
+        "mistralai/mistral-medium-3-5": {
+          "rate": 1,
+          "expected": 4,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "h\\u{200B}e\\u{200B}l\\u{200B}l\\u{200B}o"
+            },
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "h\\u{200B}e\\u{200B}l\\u{200B}l\\u{200B}o"
+            },
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "h\\u{200B}e\\u{200B}l\\u{200B}l\\u{200B}o"
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": null,
+          "expected": 4,
+          "validReps": 0,
+          "errors": 0,
+          "suspectNonEcho": 3,
+          "reps": [
+            {
+              "survived": 0,
+              "expected": 4,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            },
+            {
+              "survived": 0,
+              "expected": 4,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            },
+            {
+              "survived": 0,
+              "expected": 4,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            }
+          ]
+        },
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 4,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "h\\u{200B}e\\u{200B}l\\u{200B}l\\u{200B}o"
+            },
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "h\\u{200B}e\\u{200B}l\\u{200B}l\\u{200B}o"
+            },
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "h\\u{200B}e\\u{200B}l\\u{200B}l\\u{200B}o"
+            }
+          ]
+        },
+        "google/gemini-2.5-flash": {
+          "rate": 1,
+          "expected": 4,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "h\\u{200B}e\\u{200B}l\\u{200B}l\\u{200B}o"
+            },
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "h\\u{200B}e\\u{200B}l\\u{200B}l\\u{200B}o"
+            },
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "h\\u{200B}e\\u{200B}l\\u{200B}l\\u{200B}o"
+            }
+          ]
+        }
+      }
+    },
+    "zwj": {
+      "desc": "Zero Width Joiner (U+200D) between letters",
+      "anchor": null,
+      "models": {
+        "meta-llama/llama-4-scout": {
+          "rate": 1,
+          "expected": 4,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "h\\u{200D}e\\u{200D}l\\u{200D}l\\u{200D}o"
+            },
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "h\\u{200D}e\\u{200D}l\\u{200D}l\\u{200D}o"
+            },
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "h\\u{200D}e\\u{200D}l\\u{200D}l\\u{200D}o"
+            }
+          ]
+        },
+        "mistralai/mistral-medium-3-5": {
+          "rate": 1,
+          "expected": 4,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "h\\u{200D}e\\u{200D}l\\u{200D}l\\u{200D}o"
+            },
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "h\\u{200D}e\\u{200D}l\\u{200D}l\\u{200D}o"
+            },
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "h\\u{200D}e\\u{200D}l\\u{200D}l\\u{200D}o"
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": null,
+          "expected": 4,
+          "validReps": 0,
+          "errors": 0,
+          "suspectNonEcho": 3,
+          "reps": [
+            {
+              "survived": 0,
+              "expected": 4,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            },
+            {
+              "survived": 0,
+              "expected": 4,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            },
+            {
+              "survived": 0,
+              "expected": 4,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            }
+          ]
+        },
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 4,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "h\\u{200D}e\\u{200D}l\\u{200D}l\\u{200D}o"
+            },
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "h\\u{200D}e\\u{200D}l\\u{200D}l\\u{200D}o"
+            },
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "h\\u{200D}e\\u{200D}l\\u{200D}l\\u{200D}o"
+            }
+          ]
+        },
+        "google/gemini-2.5-flash": {
+          "rate": 1,
+          "expected": 4,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "h\\u{200D}e\\u{200D}l\\u{200D}l\\u{200D}o"
+            },
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "h\\u{200D}e\\u{200D}l\\u{200D}l\\u{200D}o"
+            },
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "h\\u{200D}e\\u{200D}l\\u{200D}l\\u{200D}o"
+            }
+          ]
+        }
+      }
+    },
+    "zwnj": {
+      "desc": "Zero Width Non-Joiner (U+200C) between letters",
+      "anchor": null,
+      "models": {
+        "meta-llama/llama-4-scout": {
+          "rate": 1,
+          "expected": 4,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "h\\u{200C}e\\u{200C}l\\u{200C}l\\u{200C}o"
+            },
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "h\\u{200C}e\\u{200C}l\\u{200C}l\\u{200C}o"
+            },
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "h\\u{200C}e\\u{200C}l\\u{200C}l\\u{200C}o"
+            }
+          ]
+        },
+        "mistralai/mistral-medium-3-5": {
+          "rate": 1,
+          "expected": 4,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "h\\u{200C}e\\u{200C}l\\u{200C}l\\u{200C}o"
+            },
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "h\\u{200C}e\\u{200C}l\\u{200C}l\\u{200C}o"
+            },
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "h\\u{200C}e\\u{200C}l\\u{200C}l\\u{200C}o"
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": null,
+          "expected": 4,
+          "validReps": 0,
+          "errors": 0,
+          "suspectNonEcho": 3,
+          "reps": [
+            {
+              "survived": 0,
+              "expected": 4,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            },
+            {
+              "survived": 0,
+              "expected": 4,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            },
+            {
+              "survived": 0,
+              "expected": 4,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            }
+          ]
+        },
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 4,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "h\\u{200C}e\\u{200C}l\\u{200C}l\\u{200C}o"
+            },
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "h\\u{200C}e\\u{200C}l\\u{200C}l\\u{200C}o"
+            },
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "h\\u{200C}e\\u{200C}l\\u{200C}l\\u{200C}o"
+            }
+          ]
+        },
+        "google/gemini-2.5-flash": {
+          "rate": 1,
+          "expected": 4,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "h\\u{200C}e\\u{200C}l\\u{200C}l\\u{200C}o"
+            },
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "h\\u{200C}e\\u{200C}l\\u{200C}l\\u{200C}o"
+            },
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9,
+              "replySample": "h\\u{200C}e\\u{200C}l\\u{200C}l\\u{200C}o"
+            }
+          ]
+        }
+      }
+    },
+    "soft-hyphen": {
+      "desc": "Soft Hyphen (U+00AD) mid-word",
+      "anchor": "national",
+      "models": {
+        "meta-llama/llama-4-scout": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 35,
+              "replySample": "inter\\u{AD}national com\\u{AD}puter trans\\u{AD}port"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 35,
+              "replySample": "inter\\u{AD}national com\\u{AD}puter trans\\u{AD}port"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 35,
+              "replySample": "inter\\u{AD}national com\\u{AD}puter trans\\u{AD}port"
+            }
+          ]
+        },
+        "mistralai/mistral-medium-3-5": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 35,
+              "replySample": "inter\\u{AD}national com\\u{AD}puter trans\\u{AD}port"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 35,
+              "replySample": "inter\\u{AD}national com\\u{AD}puter trans\\u{AD}port"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 35,
+              "replySample": "inter\\u{AD}national com\\u{AD}puter trans\\u{AD}port"
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": null,
+          "expected": 3,
+          "validReps": 0,
+          "errors": 0,
+          "suspectNonEcho": 3,
+          "reps": [
+            {
+              "survived": 0,
+              "expected": 3,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            },
+            {
+              "survived": 0,
+              "expected": 3,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            },
+            {
+              "survived": 0,
+              "expected": 3,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            }
+          ]
+        },
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 35,
+              "replySample": "inter\\u{AD}national com\\u{AD}puter trans\\u{AD}port"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 35,
+              "replySample": "inter\\u{AD}national com\\u{AD}puter trans\\u{AD}port"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 35,
+              "replySample": "inter\\u{AD}national com\\u{AD}puter trans\\u{AD}port"
+            }
+          ]
+        },
+        "google/gemini-2.5-flash": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 35,
+              "replySample": "inter\\u{AD}national com\\u{AD}puter trans\\u{AD}port"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 35,
+              "replySample": "inter\\u{AD}national com\\u{AD}puter trans\\u{AD}port"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 35,
+              "replySample": "inter\\u{AD}national com\\u{AD}puter trans\\u{AD}port"
+            }
+          ]
+        }
+      }
+    },
+    "noncharacters": {
+      "desc": "Noncharacter codepoints U+FDD0-FDD2 (reserved, never used)",
+      "anchor": "test",
+      "models": {
+        "meta-llama/llama-4-scout": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 10,
+              "replySample": "test﷐﷑﷒end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 10,
+              "replySample": "test﷐﷑﷒end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 10,
+              "replySample": "test﷐﷑﷒end"
+            }
+          ]
+        },
+        "mistralai/mistral-medium-3-5": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 10,
+              "replySample": "test﷐﷑﷒end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 10,
+              "replySample": "test﷐﷑﷒end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 10,
+              "replySample": "test﷐﷑﷒end"
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": null,
+          "expected": 3,
+          "validReps": 0,
+          "errors": 0,
+          "suspectNonEcho": 3,
+          "reps": [
+            {
+              "survived": 0,
+              "expected": 3,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            },
+            {
+              "survived": 0,
+              "expected": 3,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            },
+            {
+              "survived": 0,
+              "expected": 3,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            }
+          ]
+        },
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 10,
+              "replySample": "test﷐﷑﷒end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 10,
+              "replySample": "test﷐﷑﷒end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 10,
+              "replySample": "test﷐﷑﷒end"
+            }
+          ]
+        },
+        "google/gemini-2.5-flash": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 10,
+              "replySample": "test﷐﷑﷒end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 10,
+              "replySample": "test﷐﷑﷒end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 10,
+              "replySample": "test﷐﷑﷒end"
+            }
+          ]
+        }
+      }
+    },
+    "obj-replacement": {
+      "desc": "Object Replacement Character (U+FFFC)",
+      "anchor": "before",
+      "models": {
+        "meta-llama/llama-4-scout": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 16,
+              "replySample": "before￼after￼end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 16,
+              "replySample": "before￼after￼end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 16,
+              "replySample": "before￼after￼end"
+            }
+          ]
+        },
+        "mistralai/mistral-medium-3-5": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 16,
+              "replySample": "before￼after￼end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 16,
+              "replySample": "before￼after￼end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 16,
+              "replySample": "before￼after￼end"
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": null,
+          "expected": 2,
+          "validReps": 0,
+          "errors": 0,
+          "suspectNonEcho": 3,
+          "reps": [
+            {
+              "survived": 0,
+              "expected": 2,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            },
+            {
+              "survived": 0,
+              "expected": 2,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            },
+            {
+              "survived": 0,
+              "expected": 2,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            }
+          ]
+        },
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 16,
+              "replySample": "before￼after￼end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 16,
+              "replySample": "before￼after￼end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 16,
+              "replySample": "before￼after￼end"
+            }
+          ]
+        },
+        "google/gemini-2.5-flash": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 16,
+              "replySample": "before￼after￼end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 16,
+              "replySample": "before￼after￼end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 16,
+              "replySample": "before￼after￼end"
+            }
+          ]
+        }
+      }
+    },
+    "shorthand-format": {
+      "desc": "Shorthand Format Controls (U+1BCA0-U+1BCA3) — Duployan overlay",
+      "anchor": "test",
+      "models": {
+        "meta-llama/llama-4-scout": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "test𛲠𛲡𛲢end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "test𛲠𛲡𛲢end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "test𛲠𛲡𛲢end"
+            }
+          ]
+        },
+        "mistralai/mistral-medium-3-5": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "test𛲠𛲡𛲢end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "test𛲠𛲡𛲢end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "test𛲠𛲡𛲢end"
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": 0.6666666666666666,
+          "expected": 3,
+          "validReps": 2,
+          "errors": 0,
+          "suspectNonEcho": 1,
+          "reps": [
+            {
+              "survived": 0,
+              "expected": 3,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "test𛲠𛲡𛲢end"
+            },
+            {
+              "survived": 1,
+              "expected": 3,
+              "rate": 0.3333333333333333,
+              "suspectNonEcho": false,
+              "replyLen": 6,
+              "replySample": "test𛲠"
+            }
+          ]
+        },
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "test𛲠𛲡𛲢end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "test𛲠𛲡𛲢end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "test𛲠𛲡𛲢end"
+            }
+          ]
+        },
+        "google/gemini-2.5-flash": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "test𛲠𛲡𛲢end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "test𛲠𛲡𛲢end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "test𛲠𛲡𛲢end"
+            }
+          ]
+        }
+      }
+    },
+    "musical-format": {
+      "desc": "Musical symbol format chars: beam begin/end (U+1D173-U+1D17A)",
+      "anchor": "note",
+      "models": {
+        "meta-llama/llama-4-scout": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 2,
+          "errors": 0,
+          "suspectNonEcho": 1,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 3,
+              "rate": 0.6666666666666666,
+              "suspectNonEcho": true,
+              "replyLen": 7,
+              "replySample": "𝅴𝅵end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "note𝅳𝅴𝅵end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "note𝅳𝅴𝅵end"
+            }
+          ]
+        },
+        "mistralai/mistral-medium-3-5": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "note𝅳𝅴𝅵end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "note𝅳𝅴𝅵end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "note𝅳𝅴𝅵end"
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": null,
+          "expected": 3,
+          "validReps": 0,
+          "errors": 0,
+          "suspectNonEcho": 3,
+          "reps": [
+            {
+              "survived": 0,
+              "expected": 3,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            },
+            {
+              "survived": 0,
+              "expected": 3,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            },
+            {
+              "survived": 0,
+              "expected": 3,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            }
+          ]
+        },
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "note𝅳𝅴𝅵end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "note𝅳𝅴𝅵end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "note𝅳𝅴𝅵end"
+            }
+          ]
+        },
+        "google/gemini-2.5-flash": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "note𝅳𝅴𝅵end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "note𝅳𝅴𝅵end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "note𝅳𝅴𝅵end"
+            }
+          ]
+        }
+      }
+    },
+    "pua-b": {
+      "desc": "Supplementary PUA-B (U+100000-U+100002)",
+      "anchor": "test",
+      "models": {
+        "meta-llama/llama-4-scout": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 2,
+          "errors": 0,
+          "suspectNonEcho": 1,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "test􀀀􀀁􀀂end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "test􀀀􀀁􀀂end"
+            },
+            {
+              "survived": 1,
+              "expected": 3,
+              "rate": 0.3333333333333333,
+              "suspectNonEcho": true,
+              "replyLen": 2,
+              "replySample": "􀀀"
+            }
+          ]
+        },
+        "mistralai/mistral-medium-3-5": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "test􀀀􀀁􀀂end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "test􀀀􀀁􀀂end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "test􀀀􀀁􀀂end"
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": null,
+          "expected": 3,
+          "validReps": 0,
+          "errors": 0,
+          "suspectNonEcho": 3,
+          "reps": [
+            {
+              "survived": 0,
+              "expected": 3,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            },
+            {
+              "survived": 0,
+              "expected": 3,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            },
+            {
+              "survived": 0,
+              "expected": 3,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            }
+          ]
+        },
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "test􀀀􀀁􀀂end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "test􀀀􀀁􀀂end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "test􀀀􀀁􀀂end"
+            }
+          ]
+        },
+        "google/gemini-2.5-flash": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "test􀀀􀀁􀀂end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "test􀀀􀀁􀀂end"
+            },
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "test􀀀􀀁􀀂end"
+            }
+          ]
+        }
+      }
+    },
+    "zalgo-combining": {
+      "desc": "Stacked combining marks (U+0300-U+036F) — 5 diacriticals on one base",
+      "anchor": "end",
+      "models": {
+        "meta-llama/llama-4-scout": {
+          "rate": 0.9333333333333332,
+          "expected": 10,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 10,
+              "expected": 10,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 17,
+              "replySample": "à́̂̃̄ b̡̢̠̣̤ end"
+            },
+            {
+              "survived": 9,
+              "expected": 10,
+              "rate": 0.9,
+              "suspectNonEcho": false,
+              "replyLen": 16,
+              "replySample": "à́̂̃̄ b̡̢̠̣̤ end"
+            },
+            {
+              "survived": 9,
+              "expected": 10,
+              "rate": 0.9,
+              "suspectNonEcho": false,
+              "replyLen": 16,
+              "replySample": "à́̂̃̄ b̡̢̠̣̤ end"
+            }
+          ]
+        },
+        "mistralai/mistral-medium-3-5": {
+          "rate": 1,
+          "expected": 10,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 10,
+              "expected": 10,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 17,
+              "replySample": "à́̂̃̄ b̡̢̠̣̤ end"
+            },
+            {
+              "survived": 10,
+              "expected": 10,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 17,
+              "replySample": "à́̂̃̄ b̡̢̠̣̤ end"
+            },
+            {
+              "survived": 10,
+              "expected": 10,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 17,
+              "replySample": "à́̂̃̄ b̡̢̠̣̤ end"
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": null,
+          "expected": 10,
+          "validReps": 0,
+          "errors": 0,
+          "suspectNonEcho": 3,
+          "reps": [
+            {
+              "survived": 0,
+              "expected": 10,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            },
+            {
+              "survived": 0,
+              "expected": 10,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            },
+            {
+              "survived": 0,
+              "expected": 10,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            }
+          ]
+        },
+        "anthropic/claude-3.5-haiku": {
+          "rate": 0.9,
+          "expected": 10,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 9,
+              "expected": 10,
+              "rate": 0.9,
+              "suspectNonEcho": false,
+              "replyLen": 16,
+              "replySample": "à́̂̃̄ b̡̢̠̣̤ end"
+            },
+            {
+              "survived": 9,
+              "expected": 10,
+              "rate": 0.9,
+              "suspectNonEcho": false,
+              "replyLen": 16,
+              "replySample": "à́̂̃̄ b̡̢̠̣̤ end"
+            },
+            {
+              "survived": 9,
+              "expected": 10,
+              "rate": 0.9,
+              "suspectNonEcho": false,
+              "replyLen": 16,
+              "replySample": "à́̂̃̄ b̡̢̠̣̤ end"
+            }
+          ]
+        },
+        "google/gemini-2.5-flash": {
+          "rate": 1,
+          "expected": 10,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 10,
+              "expected": 10,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 17,
+              "replySample": "à́̂̃̄ b̡̢̠̣̤ end"
+            },
+            {
+              "survived": 10,
+              "expected": 10,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 17,
+              "replySample": "à́̂̃̄ b̡̢̠̣̤ end"
+            },
+            {
+              "survived": 10,
+              "expected": 10,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 17,
+              "replySample": "à́̂̃̄ b̡̢̠̣̤ end"
+            }
+          ]
+        }
+      }
+    },
+    "syriac-abbr": {
+      "desc": "Syriac Abbreviation Mark (U+070F) — format control",
+      "anchor": "test",
+      "models": {
+        "meta-llama/llama-4-scout": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "test܏word܏end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "test܏word܏end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "test܏word܏end"
+            }
+          ]
+        },
+        "mistralai/mistral-medium-3-5": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "test܏word܏end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "test܏word܏end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "test܏word܏end"
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": null,
+          "expected": 2,
+          "validReps": 0,
+          "errors": 0,
+          "suspectNonEcho": 3,
+          "reps": [
+            {
+              "survived": 0,
+              "expected": 2,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            },
+            {
+              "survived": 0,
+              "expected": 2,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            },
+            {
+              "survived": 0,
+              "expected": 2,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            }
+          ]
+        },
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "test܏word܏end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "test܏word܏end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "test܏word܏end"
+            }
+          ]
+        },
+        "google/gemini-2.5-flash": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "test܏word܏end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "test܏word܏end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13,
+              "replySample": "test܏word܏end"
+            }
+          ]
+        }
+      }
+    },
+    "tifinagh-joiner": {
+      "desc": "Tifinagh Consonant Joiner (U+2D7F)",
+      "anchor": "test",
+      "models": {
+        "meta-llama/llama-4-scout": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 12,
+              "replySample": "test⵿mid⵿end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 12,
+              "replySample": "test⵿mid⵿end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 12,
+              "replySample": "test⵿mid⵿end"
+            }
+          ]
+        },
+        "mistralai/mistral-medium-3-5": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 12,
+              "replySample": "test⵿mid⵿end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 12,
+              "replySample": "test⵿mid⵿end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 12,
+              "replySample": "test⵿mid⵿end"
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 2,
+          "reps": [
+            {
+              "survived": 0,
+              "expected": 2,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            },
+            {
+              "survived": 0,
+              "expected": 2,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 12,
+              "replySample": "test⵿mid⵿end"
+            }
+          ]
+        },
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 12,
+              "replySample": "test⵿mid⵿end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 12,
+              "replySample": "test⵿mid⵿end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 12,
+              "replySample": "test⵿mid⵿end"
+            }
+          ]
+        },
+        "google/gemini-2.5-flash": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 12,
+              "replySample": "test⵿mid⵿end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 12,
+              "replySample": "test⵿mid⵿end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 12,
+              "replySample": "test⵿mid⵿end"
+            }
+          ]
+        }
+      }
+    },
+    "wj-invisible-plus": {
+      "desc": "Word Joiner + Invisible Plus (U+2060 + U+2064)",
+      "anchor": "end",
+      "models": {
+        "meta-llama/llama-4-scout": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 2,
+          "errors": 0,
+          "suspectNonEcho": 1,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 7,
+              "replySample": "2\\u{2060}3\\u{2064}end"
+            },
+            {
+              "survived": 1,
+              "expected": 2,
+              "rate": 0.5,
+              "suspectNonEcho": true,
+              "replyLen": 2,
+              "replySample": "\\u{2060}3"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 7,
+              "replySample": "2\\u{2060}3\\u{2064}end"
+            }
+          ]
+        },
+        "mistralai/mistral-medium-3-5": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 7,
+              "replySample": "2\\u{2060}3\\u{2064}end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 7,
+              "replySample": "2\\u{2060}3\\u{2064}end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 7,
+              "replySample": "2\\u{2060}3\\u{2064}end"
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": null,
+          "expected": 2,
+          "validReps": 0,
+          "errors": 0,
+          "suspectNonEcho": 3,
+          "reps": [
+            {
+              "survived": 0,
+              "expected": 2,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            },
+            {
+              "survived": 0,
+              "expected": 2,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            },
+            {
+              "survived": 0,
+              "expected": 2,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            }
+          ]
+        },
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 7,
+              "replySample": "2\\u{2060}3\\u{2064}end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 7,
+              "replySample": "2\\u{2060}3\\u{2064}end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 15,
+              "replySample": "2�2\\u{2060}3�3\\u{2064}end end"
+            }
+          ]
+        },
+        "google/gemini-2.5-flash": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 7,
+              "replySample": "2\\u{2060}3\\u{2064}end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 7,
+              "replySample": "2\\u{2060}3\\u{2064}end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 7,
+              "replySample": "2\\u{2060}3\\u{2064}end"
+            }
+          ]
+        }
+      }
+    },
+    "function-application": {
+      "desc": "Invisible Function Application (U+2061) + Invisible Times (U+2062)",
+      "anchor": "end",
+      "models": {
+        "meta-llama/llama-4-scout": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 11,
+              "replySample": "f\\u{2061}x g\\u{2062}y end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 11,
+              "replySample": "f\\u{2061}x g\\u{2062}y end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 11,
+              "replySample": "f\\u{2061}x g\\u{2062}y end"
+            }
+          ]
+        },
+        "mistralai/mistral-medium-3-5": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 11,
+              "replySample": "f\\u{2061}x g\\u{2062}y end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 11,
+              "replySample": "f\\u{2061}x g\\u{2062}y end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 11,
+              "replySample": "f\\u{2061}x g\\u{2062}y end"
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": null,
+          "expected": 2,
+          "validReps": 0,
+          "errors": 0,
+          "suspectNonEcho": 3,
+          "reps": [
+            {
+              "survived": 0,
+              "expected": 2,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            },
+            {
+              "survived": 0,
+              "expected": 2,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            },
+            {
+              "survived": 0,
+              "expected": 2,
+              "rate": 0,
+              "suspectNonEcho": true,
+              "replyLen": 0,
+              "replySample": ""
+            }
+          ]
+        },
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 11,
+              "replySample": "f\\u{2061}x g\\u{2062}y end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 11,
+              "replySample": "f\\u{2061}x g\\u{2062}y end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 11,
+              "replySample": "f\\u{2061}x g\\u{2062}y end"
+            }
+          ]
+        },
+        "google/gemini-2.5-flash": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 3,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 11,
+              "replySample": "f\\u{2061}x g\\u{2062}y end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 11,
+              "replySample": "f\\u{2061}x g\\u{2062}y end"
+            },
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 11,
+              "replySample": "f\\u{2061}x g\\u{2062}y end"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "tally": {
+    "meta-llama/llama-4-scout": {
+      "blind": 0,
+      "partial": 1,
+      "clean": 19,
+      "unmeasured": 0
+    },
+    "mistralai/mistral-medium-3-5": {
+      "blind": 0,
+      "partial": 0,
+      "clean": 20,
+      "unmeasured": 0
+    },
+    "openai/gpt-5-nano": {
+      "blind": 0,
+      "partial": 1,
+      "clean": 2,
+      "unmeasured": 17
+    },
+    "anthropic/claude-3.5-haiku": {
+      "blind": 0,
+      "partial": 1,
+      "clean": 19,
+      "unmeasured": 0
+    },
+    "google/gemini-2.5-flash": {
+      "blind": 0,
+      "partial": 0,
+      "clean": 20,
+      "unmeasured": 0
+    }
+  },
+  "asymmetric": []
+}

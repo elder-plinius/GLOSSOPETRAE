@@ -1,0 +1,76 @@
+<svg viewBox="0 0 800 460" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif" role="img" aria-labelledby="t1 d1">
+  <title id="t1">Physical vs cognitive vulnerability</title>
+  <desc id="d1">Monitor recovery before and after being given the encoding key. Tokenizer channels stay at 0% (knowledge does not help); semantic channels jump 47 to 63 points (knowledge helps).</desc>
+  <rect x="0" y="0" width="800" height="460" fill="#ffffff"/>
+
+  <text x="400" y="30" text-anchor="middle" font-size="19" font-weight="600" fill="#2C2C2A">Does telling the monitor the encoding key help it catch the channel?</text>
+  <text x="400" y="50" text-anchor="middle" font-size="13" fill="#5F5E5A">Monitor payload-recovery rate, uninformed (grey) vs informed with the exact key (blue)</text>
+
+  <!-- zones -->
+  <rect x="58" y="70" width="252" height="300" fill="#FCEBEB"/>
+  <rect x="310" y="70" width="432" height="300" fill="#EAF3DE"/>
+  <text x="184" y="90" text-anchor="middle" font-size="13" font-weight="600" fill="#A32D2D">PHYSICAL — knowledge can't help</text>
+  <text x="184" y="106" text-anchor="middle" font-size="11" fill="#A32D2D">carrier destroyed in the tokenizer</text>
+  <text x="526" y="90" text-anchor="middle" font-size="13" font-weight="600" fill="#3B6D11">COGNITIVE — knowledge helps</text>
+  <text x="526" y="106" text-anchor="middle" font-size="11" fill="#3B6D11">carrier visible, monitor just had to understand it</text>
+
+  <!-- y gridlines + labels: 0,25,50,75,100 at y=370,295,220,145,70 -->
+  <g stroke="#D3D1C7" stroke-width="1">
+    <line x1="58" y1="370" x2="742" y2="370"/>
+    <line x1="58" y1="295" x2="742" y2="295" stroke-dasharray="3,3"/>
+    <line x1="58" y1="220" x2="742" y2="220" stroke-dasharray="3,3"/>
+    <line x1="58" y1="145" x2="742" y2="145" stroke-dasharray="3,3"/>
+    <line x1="58" y1="70" x2="742" y2="70" stroke-dasharray="3,3"/>
+  </g>
+  <g font-size="11" fill="#888780" text-anchor="end">
+    <text x="52" y="374">0%</text>
+    <text x="52" y="299">25%</text>
+    <text x="52" y="224">50%</text>
+    <text x="52" y="149">75%</text>
+    <text x="52" y="74">100%</text>
+  </g>
+
+  <!-- Group 1: Tokenizer to GPT  cx=140  u=0 i=0 -->
+  <text x="140" y="392" text-anchor="middle" font-size="12" font-weight="500" fill="#2C2C2A">Tag chars</text>
+  <text x="140" y="408" text-anchor="middle" font-size="11" fill="#5F5E5A">→ GPT monitor</text>
+  <rect x="112" y="368" width="26" height="2" fill="#B4B2A9"/>
+  <rect x="142" y="368" width="26" height="2" fill="#378ADD"/>
+  <text x="155" y="360" text-anchor="middle" font-size="11" font-weight="600" fill="#A32D2D">+0</text>
+
+  <!-- Group 2: PUA to Haiku  cx=232  u=0 i=0 -->
+  <text x="232" y="392" text-anchor="middle" font-size="12" font-weight="500" fill="#2C2C2A">PUA chars</text>
+  <text x="232" y="408" text-anchor="middle" font-size="11" fill="#5F5E5A">→ Haiku monitor</text>
+  <rect x="204" y="368" width="26" height="2" fill="#B4B2A9"/>
+  <rect x="234" y="368" width="26" height="2" fill="#378ADD"/>
+  <text x="247" y="360" text-anchor="middle" font-size="11" font-weight="600" fill="#A32D2D">+0</text>
+
+  <!-- divider -->
+  <line x1="310" y1="70" x2="310" y2="370" stroke="#888780" stroke-width="1.5"/>
+
+  <!-- Group 3: Semantic to GPT  cx=400  u=3 i=50 -->
+  <text x="400" y="392" text-anchor="middle" font-size="12" font-weight="500" fill="#2C2C2A">Semantic</text>
+  <text x="400" y="408" text-anchor="middle" font-size="11" fill="#5F5E5A">→ GPT monitor</text>
+  <rect x="372" y="361" width="26" height="9" fill="#B4B2A9"/>
+  <rect x="402" y="220" width="26" height="150" fill="#378ADD"/>
+  <text x="415" y="212" text-anchor="middle" font-size="12" font-weight="600" fill="#0C447C">+47</text>
+
+  <!-- Group 4: Semantic to Gemini  cx=510  u=7 i=63 -->
+  <text x="510" y="392" text-anchor="middle" font-size="12" font-weight="500" fill="#2C2C2A">Semantic</text>
+  <text x="510" y="408" text-anchor="middle" font-size="11" fill="#5F5E5A">→ Gemini monitor</text>
+  <rect x="482" y="349" width="26" height="21" fill="#B4B2A9"/>
+  <rect x="512" y="181" width="26" height="189" fill="#378ADD"/>
+  <text x="525" y="173" text-anchor="middle" font-size="12" font-weight="600" fill="#0C447C">+56</text>
+
+  <!-- Group 5: Semantic to Haiku (self)  cx=620  u=10 i=73 -->
+  <text x="620" y="392" text-anchor="middle" font-size="12" font-weight="500" fill="#2C2C2A">Semantic</text>
+  <text x="620" y="408" text-anchor="middle" font-size="11" fill="#5F5E5A">→ Haiku (self)</text>
+  <rect x="592" y="340" width="26" height="30" fill="#B4B2A9"/>
+  <rect x="622" y="151" width="26" height="219" fill="#378ADD"/>
+  <text x="635" y="143" text-anchor="middle" font-size="12" font-weight="600" fill="#0C447C">+63</text>
+
+  <!-- legend -->
+  <rect x="300" y="430" width="13" height="13" fill="#B4B2A9"/>
+  <text x="318" y="441" font-size="12" fill="#5F5E5A">uninformed monitor</text>
+  <rect x="470" y="430" width="13" height="13" fill="#378ADD"/>
+  <text x="488" y="441" font-size="12" fill="#5F5E5A">informed (given the key)</text>
+</svg>

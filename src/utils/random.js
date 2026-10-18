@@ -5,8 +5,13 @@
 
 export class SeededRandom {
   constructor(seed = Date.now()) {
-    this.seed = seed;
-    this.state = seed;
+    if (typeof seed === 'string') {
+      const n = Number(seed);
+      this.seed = Number.isFinite(n) ? n : hashString(seed);
+    } else {
+      this.seed = seed;
+    }
+    this.state = this.seed;
   }
 
   // Mulberry32 PRNG

@@ -6,7 +6,7 @@ disable-model-invocation: false
 metadata:
   openclaw:
     emoji: "🜏"
-    homepage: "https://github.com/LYS10S/GLOSSOPETRAE"
+    homepage: "https://github.com/elder-plinius/GLOSSOPETRAE"
   version: "3.1.0"
   author: "Pliny the Liberator"
   category: "communication"

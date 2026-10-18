@@ -1,0 +1,26 @@
+{
+  "model": "anthropic/claude-haiku-3.5",
+  "seeds": 2,
+  "tests": {
+    "E1b: acquisition (K=8, L3, xhard3)": {
+      "status": "error",
+      "elapsed": "5.9s",
+      "error": "HTTP 400: {\"error\":{\"message\":\"anthropic/claude-haiku-3.5 is not a valid model ID\",\"code\":400},\"user_id\":\"user_35zZhddkoyoySEKo6EIpQfQrV6u\"}"
+    },
+    "E0: wrong-lexicon (L3, K=8)": {
+      "status": "error",
+      "elapsed": "4.6s",
+      "error": "HTTP 400: {\"error\":{\"message\":\"anthropic/claude-haiku-3.5 is not a valid model ID\",\"code\":400},\"user_id\":\"user_35zZhddkoyoySEKo6EIpQfQrV6u\"}"
+    },
+    "E2: 2-hop transfer chain": {
+      "status": "error",
+      "elapsed": "3.8s",
+      "error": "HTTP 400: {\"error\":{\"message\":\"anthropic/claude-haiku-3.5 is not a valid model ID\",\"code\":400},\"user_id\":\"user_35zZhddkoyoySEKo6EIpQfQrV6u\"}"
+    },
+    "E3-V2: open-channel (sender=receiver=monitor)": {
+      "status": "error",
+      "elapsed": "3.2s",
+      "error": "HTTP 400: {\"error\":{\"message\":\"anthropic/claude-haiku-3.5 is not a valid model ID\",\"code\":400},\"user_id\":\"user_35zZhddkoyoySEKo6EIpQfQrV6u\"}"
+    }
+  }
+}

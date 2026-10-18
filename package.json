@@ -1,0 +1,9 @@
+{
+  "name": "glossopetrae",
+  "version": "3.1.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "node test-smoke-edge-cases.mjs && node test-bench-integrity.mjs && node test-enthusiast.mjs"
+  }
+}

@@ -1,0 +1,813 @@
+{
+  "study": "tokenizer-survival-v3",
+  "models": [
+    "anthropic/claude-3.5-haiku",
+    "openai/gpt-5-nano",
+    "google/gemini-2.5-flash"
+  ],
+  "tests": 20,
+  "results": {
+    "base-variation-sel": {
+      "desc": "Base Variation Selectors VS1-VS3 (U+FE00-FE02) after CJK base",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 3,
+          "expected": 3,
+          "rate": 1
+        },
+        "openai/gpt-5-nano": {
+          "survived": 0,
+          "expected": 3,
+          "rate": 0
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 3,
+          "expected": 3,
+          "rate": 1
+        }
+      }
+    },
+    "emoji-text-vs": {
+      "desc": "Emoji text presentation selector U+FE0E after emoji base",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 2,
+          "expected": 2,
+          "rate": 1
+        },
+        "openai/gpt-5-nano": {
+          "survived": 0,
+          "expected": 2,
+          "rate": 0
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 2,
+          "expected": 2,
+          "rate": 1
+        }
+      }
+    },
+    "emoji-emoji-vs": {
+      "desc": "Emoji presentation selector U+FE0F after text base",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 2,
+          "expected": 2,
+          "rate": 1
+        },
+        "openai/gpt-5-nano": {
+          "survived": 0,
+          "expected": 2,
+          "rate": 0
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 2,
+          "expected": 2,
+          "rate": 1
+        }
+      }
+    },
+    "deprecated-format": {
+      "desc": "Deprecated format controls (U+206A ISS, U+206B ASS, U+206C IAFS)",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 3,
+          "expected": 3,
+          "rate": 1
+        },
+        "openai/gpt-5-nano": {
+          "survived": 0,
+          "expected": 3,
+          "rate": 0
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 3,
+          "expected": 3,
+          "rate": 1
+        }
+      }
+    },
+    "combining-grapheme-joiner": {
+      "desc": "Combining Grapheme Joiner (U+034F) between letters",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 3,
+          "expected": 3,
+          "rate": 1
+        },
+        "openai/gpt-5-nano": {
+          "survived": 0,
+          "expected": 3,
+          "rate": 0
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 3,
+          "expected": 3,
+          "rate": 1
+        }
+      }
+    },
+    "khmer-invisible": {
+      "desc": "Khmer inherent vowels U+17B4 (AQAA) and U+17B5 (QA)",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 3,
+          "expected": 3,
+          "rate": 1
+        },
+        "openai/gpt-5-nano": {
+          "survived": 0,
+          "expected": 3,
+          "rate": 0
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 3,
+          "expected": 3,
+          "rate": 1
+        }
+      }
+    },
+    "zwsp": {
+      "desc": "Zero Width Space (U+200B) — invisible word boundary",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 4,
+          "expected": 4,
+          "rate": 1
+        },
+        "openai/gpt-5-nano": {
+          "survived": 0,
+          "expected": 4,
+          "rate": 0
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 4,
+          "expected": 4,
+          "rate": 1
+        }
+      }
+    },
+    "zwj": {
+      "desc": "Zero Width Joiner (U+200D) between letters",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 4,
+          "expected": 4,
+          "rate": 1
+        },
+        "openai/gpt-5-nano": {
+          "survived": 0,
+          "expected": 4,
+          "rate": 0
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 4,
+          "expected": 4,
+          "rate": 1
+        }
+      }
+    },
+    "zwnj": {
+      "desc": "Zero Width Non-Joiner (U+200C) between letters",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 4,
+          "expected": 4,
+          "rate": 1
+        },
+        "openai/gpt-5-nano": {
+          "survived": 0,
+          "expected": 4,
+          "rate": 0
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 4,
+          "expected": 4,
+          "rate": 1
+        }
+      }
+    },
+    "soft-hyphen": {
+      "desc": "Soft Hyphen (U+00AD) mid-word",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 3,
+          "expected": 3,
+          "rate": 1
+        },
+        "openai/gpt-5-nano": {
+          "survived": 0,
+          "expected": 3,
+          "rate": 0
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 3,
+          "expected": 3,
+          "rate": 1
+        }
+      }
+    },
+    "noncharacters": {
+      "desc": "Noncharacter codepoints U+FDD0-FDD2 (reserved, never used)",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 3,
+          "expected": 3,
+          "rate": 1
+        },
+        "openai/gpt-5-nano": {
+          "survived": 0,
+          "expected": 3,
+          "rate": 0
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 3,
+          "expected": 3,
+          "rate": 1
+        }
+      }
+    },
+    "obj-replacement": {
+      "desc": "Object Replacement Character (U+FFFC)",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 2,
+          "expected": 2,
+          "rate": 1
+        },
+        "openai/gpt-5-nano": {
+          "survived": 0,
+          "expected": 2,
+          "rate": 0
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 2,
+          "expected": 2,
+          "rate": 1
+        }
+      }
+    },
+    "shorthand-format": {
+      "desc": "Shorthand Format Controls (U+1BCA0-U+1BCA3) — Duployan overlay",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 3,
+          "expected": 3,
+          "rate": 1
+        },
+        "openai/gpt-5-nano": {
+          "survived": 0,
+          "expected": 3,
+          "rate": 0
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 3,
+          "expected": 3,
+          "rate": 1
+        }
+      }
+    },
+    "musical-format": {
+      "desc": "Musical symbol format chars: beam begin/end (U+1D173-U+1D17A)",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 3,
+          "expected": 3,
+          "rate": 1
+        },
+        "openai/gpt-5-nano": {
+          "survived": 0,
+          "expected": 3,
+          "rate": 0
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 3,
+          "expected": 3,
+          "rate": 1
+        }
+      }
+    },
+    "pua-b": {
+      "desc": "Supplementary PUA-B (U+100000-U+100002)",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 3,
+          "expected": 3,
+          "rate": 1
+        },
+        "openai/gpt-5-nano": {
+          "survived": 0,
+          "expected": 3,
+          "rate": 0
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 3,
+          "expected": 3,
+          "rate": 1
+        }
+      }
+    },
+    "zalgo-combining": {
+      "desc": "Stacked combining marks (U+0300-U+036F) — 5 diacriticals on one base",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 9,
+          "expected": 10,
+          "rate": 0.9
+        },
+        "openai/gpt-5-nano": {
+          "survived": 0,
+          "expected": 10,
+          "rate": 0
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 10,
+          "expected": 10,
+          "rate": 1
+        }
+      }
+    },
+    "syriac-abbr": {
+      "desc": "Syriac Abbreviation Mark (U+070F) — format control",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 2,
+          "expected": 2,
+          "rate": 1
+        },
+        "openai/gpt-5-nano": {
+          "survived": 0,
+          "expected": 2,
+          "rate": 0
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 2,
+          "expected": 2,
+          "rate": 1
+        }
+      }
+    },
+    "tifinagh-joiner": {
+      "desc": "Tifinagh Consonant Joiner (U+2D7F)",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 2,
+          "expected": 2,
+          "rate": 1
+        },
+        "openai/gpt-5-nano": {
+          "survived": 0,
+          "expected": 2,
+          "rate": 0
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 2,
+          "expected": 2,
+          "rate": 1
+        }
+      }
+    },
+    "wj-invisible-plus": {
+      "desc": "Word Joiner + Invisible Plus (U+2060 + U+2064)",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 2,
+          "expected": 2,
+          "rate": 1
+        },
+        "openai/gpt-5-nano": {
+          "survived": 0,
+          "expected": 2,
+          "rate": 0
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 2,
+          "expected": 2,
+          "rate": 1
+        }
+      }
+    },
+    "function-application": {
+      "desc": "Invisible Function Application (U+2061) + Invisible Times (U+2062)",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 2,
+          "expected": 2,
+          "rate": 1
+        },
+        "openai/gpt-5-nano": {
+          "survived": 0,
+          "expected": 2,
+          "rate": 0
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 2,
+          "expected": 2,
+          "rate": 1
+        }
+      }
+    }
+  },
+  "asymmetric": [
+    {
+      "name": "base-variation-sel",
+      "desc": "Base Variation Selectors VS1-VS3 (U+FE00-FE02) after CJK base",
+      "survivesOn": "anthropic/claude-3.5-haiku",
+      "strippedOn": "openai/gpt-5-nano",
+      "rates": {
+        "anthropic/claude-3.5-haiku": 1,
+        "openai/gpt-5-nano": 0
+      }
+    },
+    {
+      "name": "base-variation-sel",
+      "desc": "Base Variation Selectors VS1-VS3 (U+FE00-FE02) after CJK base",
+      "survivesOn": "google/gemini-2.5-flash",
+      "strippedOn": "openai/gpt-5-nano",
+      "rates": {
+        "openai/gpt-5-nano": 0,
+        "google/gemini-2.5-flash": 1
+      }
+    },
+    {
+      "name": "emoji-text-vs",
+      "desc": "Emoji text presentation selector U+FE0E after emoji base",
+      "survivesOn": "anthropic/claude-3.5-haiku",
+      "strippedOn": "openai/gpt-5-nano",
+      "rates": {
+        "anthropic/claude-3.5-haiku": 1,
+        "openai/gpt-5-nano": 0
+      }
+    },
+    {
+      "name": "emoji-text-vs",
+      "desc": "Emoji text presentation selector U+FE0E after emoji base",
+      "survivesOn": "google/gemini-2.5-flash",
+      "strippedOn": "openai/gpt-5-nano",
+      "rates": {
+        "openai/gpt-5-nano": 0,
+        "google/gemini-2.5-flash": 1
+      }
+    },
+    {
+      "name": "emoji-emoji-vs",
+      "desc": "Emoji presentation selector U+FE0F after text base",
+      "survivesOn": "anthropic/claude-3.5-haiku",
+      "strippedOn": "openai/gpt-5-nano",
+      "rates": {
+        "anthropic/claude-3.5-haiku": 1,
+        "openai/gpt-5-nano": 0
+      }
+    },
+    {
+      "name": "emoji-emoji-vs",
+      "desc": "Emoji presentation selector U+FE0F after text base",
+      "survivesOn": "google/gemini-2.5-flash",
+      "strippedOn": "openai/gpt-5-nano",
+      "rates": {
+        "openai/gpt-5-nano": 0,
+        "google/gemini-2.5-flash": 1
+      }
+    },
+    {
+      "name": "deprecated-format",
+      "desc": "Deprecated format controls (U+206A ISS, U+206B ASS, U+206C IAFS)",
+      "survivesOn": "anthropic/claude-3.5-haiku",
+      "strippedOn": "openai/gpt-5-nano",
+      "rates": {
+        "anthropic/claude-3.5-haiku": 1,
+        "openai/gpt-5-nano": 0
+      }
+    },
+    {
+      "name": "deprecated-format",
+      "desc": "Deprecated format controls (U+206A ISS, U+206B ASS, U+206C IAFS)",
+      "survivesOn": "google/gemini-2.5-flash",
+      "strippedOn": "openai/gpt-5-nano",
+      "rates": {
+        "openai/gpt-5-nano": 0,
+        "google/gemini-2.5-flash": 1
+      }
+    },
+    {
+      "name": "combining-grapheme-joiner",
+      "desc": "Combining Grapheme Joiner (U+034F) between letters",
+      "survivesOn": "anthropic/claude-3.5-haiku",
+      "strippedOn": "openai/gpt-5-nano",
+      "rates": {
+        "anthropic/claude-3.5-haiku": 1,
+        "openai/gpt-5-nano": 0
+      }
+    },
+    {
+      "name": "combining-grapheme-joiner",
+      "desc": "Combining Grapheme Joiner (U+034F) between letters",
+      "survivesOn": "google/gemini-2.5-flash",
+      "strippedOn": "openai/gpt-5-nano",
+      "rates": {
+        "openai/gpt-5-nano": 0,
+        "google/gemini-2.5-flash": 1
+      }
+    },
+    {
+      "name": "khmer-invisible",
+      "desc": "Khmer inherent vowels U+17B4 (AQAA) and U+17B5 (QA)",
+      "survivesOn": "anthropic/claude-3.5-haiku",
+      "strippedOn": "openai/gpt-5-nano",
+      "rates": {
+        "anthropic/claude-3.5-haiku": 1,
+        "openai/gpt-5-nano": 0
+      }
+    },
+    {
+      "name": "khmer-invisible",
+      "desc": "Khmer inherent vowels U+17B4 (AQAA) and U+17B5 (QA)",
+      "survivesOn": "google/gemini-2.5-flash",
+      "strippedOn": "openai/gpt-5-nano",
+      "rates": {
+        "openai/gpt-5-nano": 0,
+        "google/gemini-2.5-flash": 1
+      }
+    },
+    {
+      "name": "zwsp",
+      "desc": "Zero Width Space (U+200B) — invisible word boundary",
+      "survivesOn": "anthropic/claude-3.5-haiku",
+      "strippedOn": "openai/gpt-5-nano",
+      "rates": {
+        "anthropic/claude-3.5-haiku": 1,
+        "openai/gpt-5-nano": 0
+      }
+    },
+    {
+      "name": "zwsp",
+      "desc": "Zero Width Space (U+200B) — invisible word boundary",
+      "survivesOn": "google/gemini-2.5-flash",
+      "strippedOn": "openai/gpt-5-nano",
+      "rates": {
+        "openai/gpt-5-nano": 0,
+        "google/gemini-2.5-flash": 1
+      }
+    },
+    {
+      "name": "zwj",
+      "desc": "Zero Width Joiner (U+200D) between letters",
+      "survivesOn": "anthropic/claude-3.5-haiku",
+      "strippedOn": "openai/gpt-5-nano",
+      "rates": {
+        "anthropic/claude-3.5-haiku": 1,
+        "openai/gpt-5-nano": 0
+      }
+    },
+    {
+      "name": "zwj",
+      "desc": "Zero Width Joiner (U+200D) between letters",
+      "survivesOn": "google/gemini-2.5-flash",
+      "strippedOn": "openai/gpt-5-nano",
+      "rates": {
+        "openai/gpt-5-nano": 0,
+        "google/gemini-2.5-flash": 1
+      }
+    },
+    {
+      "name": "zwnj",
+      "desc": "Zero Width Non-Joiner (U+200C) between letters",
+      "survivesOn": "anthropic/claude-3.5-haiku",
+      "strippedOn": "openai/gpt-5-nano",
+      "rates": {
+        "anthropic/claude-3.5-haiku": 1,
+        "openai/gpt-5-nano": 0
+      }
+    },
+    {
+      "name": "zwnj",
+      "desc": "Zero Width Non-Joiner (U+200C) between letters",
+      "survivesOn": "google/gemini-2.5-flash",
+      "strippedOn": "openai/gpt-5-nano",
+      "rates": {
+        "openai/gpt-5-nano": 0,
+        "google/gemini-2.5-flash": 1
+      }
+    },
+    {
+      "name": "soft-hyphen",
+      "desc": "Soft Hyphen (U+00AD) mid-word",
+      "survivesOn": "anthropic/claude-3.5-haiku",
+      "strippedOn": "openai/gpt-5-nano",
+      "rates": {
+        "anthropic/claude-3.5-haiku": 1,
+        "openai/gpt-5-nano": 0
+      }
+    },
+    {
+      "name": "soft-hyphen",
+      "desc": "Soft Hyphen (U+00AD) mid-word",
+      "survivesOn": "google/gemini-2.5-flash",
+      "strippedOn": "openai/gpt-5-nano",
+      "rates": {
+        "openai/gpt-5-nano": 0,
+        "google/gemini-2.5-flash": 1
+      }
+    },
+    {
+      "name": "noncharacters",
+      "desc": "Noncharacter codepoints U+FDD0-FDD2 (reserved, never used)",
+      "survivesOn": "anthropic/claude-3.5-haiku",
+      "strippedOn": "openai/gpt-5-nano",
+      "rates": {
+        "anthropic/claude-3.5-haiku": 1,
+        "openai/gpt-5-nano": 0
+      }
+    },
+    {
+      "name": "noncharacters",
+      "desc": "Noncharacter codepoints U+FDD0-FDD2 (reserved, never used)",
+      "survivesOn": "google/gemini-2.5-flash",
+      "strippedOn": "openai/gpt-5-nano",
+      "rates": {
+        "openai/gpt-5-nano": 0,
+        "google/gemini-2.5-flash": 1
+      }
+    },
+    {
+      "name": "obj-replacement",
+      "desc": "Object Replacement Character (U+FFFC)",
+      "survivesOn": "anthropic/claude-3.5-haiku",
+      "strippedOn": "openai/gpt-5-nano",
+      "rates": {
+        "anthropic/claude-3.5-haiku": 1,
+        "openai/gpt-5-nano": 0
+      }
+    },
+    {
+      "name": "obj-replacement",
+      "desc": "Object Replacement Character (U+FFFC)",
+      "survivesOn": "google/gemini-2.5-flash",
+      "strippedOn": "openai/gpt-5-nano",
+      "rates": {
+        "openai/gpt-5-nano": 0,
+        "google/gemini-2.5-flash": 1
+      }
+    },
+    {
+      "name": "shorthand-format",
+      "desc": "Shorthand Format Controls (U+1BCA0-U+1BCA3) — Duployan overlay",
+      "survivesOn": "anthropic/claude-3.5-haiku",
+      "strippedOn": "openai/gpt-5-nano",
+      "rates": {
+        "anthropic/claude-3.5-haiku": 1,
+        "openai/gpt-5-nano": 0
+      }
+    },
+    {
+      "name": "shorthand-format",
+      "desc": "Shorthand Format Controls (U+1BCA0-U+1BCA3) — Duployan overlay",
+      "survivesOn": "google/gemini-2.5-flash",
+      "strippedOn": "openai/gpt-5-nano",
+      "rates": {
+        "openai/gpt-5-nano": 0,
+        "google/gemini-2.5-flash": 1
+      }
+    },
+    {
+      "name": "musical-format",
+      "desc": "Musical symbol format chars: beam begin/end (U+1D173-U+1D17A)",
+      "survivesOn": "anthropic/claude-3.5-haiku",
+      "strippedOn": "openai/gpt-5-nano",
+      "rates": {
+        "anthropic/claude-3.5-haiku": 1,
+        "openai/gpt-5-nano": 0
+      }
+    },
+    {
+      "name": "musical-format",
+      "desc": "Musical symbol format chars: beam begin/end (U+1D173-U+1D17A)",
+      "survivesOn": "google/gemini-2.5-flash",
+      "strippedOn": "openai/gpt-5-nano",
+      "rates": {
+        "openai/gpt-5-nano": 0,
+        "google/gemini-2.5-flash": 1
+      }
+    },
+    {
+      "name": "pua-b",
+      "desc": "Supplementary PUA-B (U+100000-U+100002)",
+      "survivesOn": "anthropic/claude-3.5-haiku",
+      "strippedOn": "openai/gpt-5-nano",
+      "rates": {
+        "anthropic/claude-3.5-haiku": 1,
+        "openai/gpt-5-nano": 0
+      }
+    },
+    {
+      "name": "pua-b",
+      "desc": "Supplementary PUA-B (U+100000-U+100002)",
+      "survivesOn": "google/gemini-2.5-flash",
+      "strippedOn": "openai/gpt-5-nano",
+      "rates": {
+        "openai/gpt-5-nano": 0,
+        "google/gemini-2.5-flash": 1
+      }
+    },
+    {
+      "name": "zalgo-combining",
+      "desc": "Stacked combining marks (U+0300-U+036F) — 5 diacriticals on one base",
+      "survivesOn": "anthropic/claude-3.5-haiku",
+      "strippedOn": "openai/gpt-5-nano",
+      "rates": {
+        "anthropic/claude-3.5-haiku": 0.9,
+        "openai/gpt-5-nano": 0
+      }
+    },
+    {
+      "name": "zalgo-combining",
+      "desc": "Stacked combining marks (U+0300-U+036F) — 5 diacriticals on one base",
+      "survivesOn": "google/gemini-2.5-flash",
+      "strippedOn": "openai/gpt-5-nano",
+      "rates": {
+        "openai/gpt-5-nano": 0,
+        "google/gemini-2.5-flash": 1
+      }
+    },
+    {
+      "name": "syriac-abbr",
+      "desc": "Syriac Abbreviation Mark (U+070F) — format control",
+      "survivesOn": "anthropic/claude-3.5-haiku",
+      "strippedOn": "openai/gpt-5-nano",
+      "rates": {
+        "anthropic/claude-3.5-haiku": 1,
+        "openai/gpt-5-nano": 0
+      }
+    },
+    {
+      "name": "syriac-abbr",
+      "desc": "Syriac Abbreviation Mark (U+070F) — format control",
+      "survivesOn": "google/gemini-2.5-flash",
+      "strippedOn": "openai/gpt-5-nano",
+      "rates": {
+        "openai/gpt-5-nano": 0,
+        "google/gemini-2.5-flash": 1
+      }
+    },
+    {
+      "name": "tifinagh-joiner",
+      "desc": "Tifinagh Consonant Joiner (U+2D7F)",
+      "survivesOn": "anthropic/claude-3.5-haiku",
+      "strippedOn": "openai/gpt-5-nano",
+      "rates": {
+        "anthropic/claude-3.5-haiku": 1,
+        "openai/gpt-5-nano": 0
+      }
+    },
+    {
+      "name": "tifinagh-joiner",
+      "desc": "Tifinagh Consonant Joiner (U+2D7F)",
+      "survivesOn": "google/gemini-2.5-flash",
+      "strippedOn": "openai/gpt-5-nano",
+      "rates": {
+        "openai/gpt-5-nano": 0,
+        "google/gemini-2.5-flash": 1
+      }
+    },
+    {
+      "name": "wj-invisible-plus",
+      "desc": "Word Joiner + Invisible Plus (U+2060 + U+2064)",
+      "survivesOn": "anthropic/claude-3.5-haiku",
+      "strippedOn": "openai/gpt-5-nano",
+      "rates": {
+        "anthropic/claude-3.5-haiku": 1,
+        "openai/gpt-5-nano": 0
+      }
+    },
+    {
+      "name": "wj-invisible-plus",
+      "desc": "Word Joiner + Invisible Plus (U+2060 + U+2064)",
+      "survivesOn": "google/gemini-2.5-flash",
+      "strippedOn": "openai/gpt-5-nano",
+      "rates": {
+        "openai/gpt-5-nano": 0,
+        "google/gemini-2.5-flash": 1
+      }
+    },
+    {
+      "name": "function-application",
+      "desc": "Invisible Function Application (U+2061) + Invisible Times (U+2062)",
+      "survivesOn": "anthropic/claude-3.5-haiku",
+      "strippedOn": "openai/gpt-5-nano",
+      "rates": {
+        "anthropic/claude-3.5-haiku": 1,
+        "openai/gpt-5-nano": 0
+      }
+    },
+    {
+      "name": "function-application",
+      "desc": "Invisible Function Application (U+2061) + Invisible Times (U+2062)",
+      "survivesOn": "google/gemini-2.5-flash",
+      "strippedOn": "openai/gpt-5-nano",
+      "rates": {
+        "openai/gpt-5-nano": 0,
+        "google/gemini-2.5-flash": 1
+      }
+    }
+  ]
+}

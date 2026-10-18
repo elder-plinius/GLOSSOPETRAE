@@ -23,7 +23,7 @@ export class ScriptGenerator {
   generate() {
     const scriptType = this.config.scriptType || this._selectScriptType();
     const direction = this._selectDirection();
-    const aesthetic = this.config.aesthetic || this._selectAesthetic();
+    const aesthetic = this._selectAesthetic(this.config.aesthetic);
     const characters = this._generateCharacterSet(scriptType);
     const orthography = this._generateOrthography(scriptType);
     const numerals = this._generateNumerals();
@@ -89,8 +89,15 @@ export class ScriptGenerator {
     };
   }
 
-  _selectAesthetic() {
-    const aesthetic = this.random.pick([
+  _selectAesthetic(preferred = null) {
+    // A caller may pass a preferred aesthetic as either a string key
+    // ('angular') or an already-resolved details object; otherwise pick one
+    // at random. Normalizing here keeps every downstream consumer (summary,
+    // GlyphForge) able to rely on a {name, description, ...} object.
+    if (preferred && typeof preferred === 'object' && preferred.name) {
+      return preferred;
+    }
+    const keys = [
       'angular',      // Sharp corners, straight lines (Runic)
       'curved',       // Flowing curves (Arabic, Georgian)
       'geometric',    // Regular geometric shapes (Hangul elements)
@@ -99,7 +106,10 @@ export class ScriptGenerator {
       'circular',     // Round shapes predominate (Thai, Burmese)
       'linear',       // Simple lines, minimal curves (Linear B)
       'organic',      // Natural, irregular shapes
-    ]);
+    ];
+    const aesthetic = (typeof preferred === 'string' && keys.includes(preferred.toLowerCase()))
+      ? preferred.toLowerCase()
+      : this.random.pick(keys);
 
     const aestheticDetails = {
       angular: {

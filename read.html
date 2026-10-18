@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lingua Ex Machina — GLOSSOPETRAE</title>
+<meta name="description" content="A procedural xenolinguistics engine reveals zero-shot language acquisition, human-unreadable coding systems, and exploitable covert channels in frontier AI.">
+<meta property="og:title" content="Lingua Ex Machina — GLOSSOPETRAE">
+<meta property="og:description" content="Code no human can read, that AI writes and runs better than the readable version. Two AIs can pass a hidden message past a third AI watching them.">
+<meta property="og:type" content="article">
+<style>
+  :root{
+    --bg:#0d0e12; --panel:#15171d; --ink:#e8e8ea; --mut:#a0a2aa; --line:#272a33;
+    --red:#e24b4a; --redbg:#2a1414; --green:#63b022; --greenbg:#15220c;
+    --blue:#5b9bf0; --amber:#ef9f27; --accent:#7f77dd;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font:17px/1.7 -apple-system,Segoe UI,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:880px;margin:0 auto;padding:0 24px 120px}
+
+  header{padding:72px 0 32px;border-bottom:1px solid var(--line)}
+  .kicker{color:var(--accent);font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:12.5px;margin:0 0 14px}
+  h1{font-size:36px;line-height:1.15;margin:0 0 14px;letter-spacing:-.02em}
+  .sub{font-size:19px;color:var(--mut);margin:0 0 16px;line-height:1.45}
+  .by{font-size:14px;color:var(--mut)}
+  .by a{color:var(--accent);text-decoration:none}
+
+  h2{font-size:26px;margin:56px 0 8px;letter-spacing:-.01em}
+  h2 .n{color:var(--accent);font-size:13px;font-weight:600;display:block;margin-bottom:2px;letter-spacing:.06em;text-transform:uppercase}
+  h3{font-size:20px;margin:36px 0 6px}
+  p{margin:14px 0}
+
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin:32px 0}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px}
+  .stat .big{font-size:32px;font-weight:700;letter-spacing:-.02em}
+  .stat .lab{font-size:13px;color:var(--mut);margin-top:4px;line-height:1.35}
+  .stat.red .big{color:var(--red)}
+  .stat.green .big{color:var(--green)}
+  .stat.blue .big{color:var(--blue)}
+  .stat.amber .big{color:var(--amber)}
+  .stat.accent .big{color:var(--accent)}
+
+  figure{margin:36px 0;background:#fff;border-radius:14px;padding:16px;border:1px solid var(--line)}
+  figure svg{width:100%;height:auto;display:block}
+  figcaption{color:var(--mut);font-size:14px;margin:14px 6px 2px;line-height:1.5}
+
+  table{width:100%;border-collapse:collapse;margin:20px 0;font-size:15px}
+  th{text-align:left;padding:10px 12px;border-bottom:2px solid var(--line);color:var(--mut);font-size:13px;text-transform:uppercase;letter-spacing:.04em}
+  td{padding:10px 12px;border-bottom:1px solid var(--line)}
+  tr:last-child td{border-bottom:none}
+  .num{font-variant-numeric:tabular-nums;font-weight:600}
+  .up{color:var(--green)}
+  .down{color:var(--red)}
+
+  .call{border-left:3px solid var(--amber);background:#1c1708;padding:16px 20px;border-radius:0 12px 12px 0;margin:28px 0;font-size:16px;line-height:1.6}
+  .call.red{border-color:var(--red);background:var(--redbg)}
+  .call.green{border-color:var(--green);background:var(--greenbg)}
+  .call strong{color:#fff}
+
+  ul{list-style:none;padding:0;margin:20px 0}
+  li{padding:12px 0 12px 28px;border-bottom:1px solid var(--line);position:relative;line-height:1.55}
+  li:before{content:"▸";color:var(--accent);position:absolute;left:4px;top:12px}
+  li:last-child{border-bottom:none}
+  li strong{color:#fff}
+
+  code{background:#22252e;padding:2px 7px;border-radius:5px;font-size:14px;font-family:ui-monospace,Menlo,monospace}
+
+  .links{display:flex;flex-wrap:wrap;gap:12px;margin:28px 0}
+  .links a{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:10px;font-size:15px;font-weight:600;text-decoration:none;transition:opacity .15s}
+  .links a:hover{opacity:.85}
+  .links .primary{background:var(--accent);color:#fff}
+  .links .secondary{background:var(--panel);color:var(--ink);border:1px solid var(--line)}
+
+  footer{margin-top:64px;padding-top:24px;border-top:1px solid var(--line);color:var(--mut);font-size:13.5px;line-height:1.6}
+
+  @media(max-width:600px){
+    h1{font-size:26px}
+    .stats{grid-template-columns:1fr 1fr}
+    .stat .big{font-size:24px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <p class="kicker">GLOSSOPETRAE &middot; Technical Report &middot; June 2026</p>
+  <h1>Lingua Ex Machina</h1>
+  <p class="sub">A Procedural Xenolinguistics Engine Reveals Zero-Shot Language Acquisition, Human-Unreadable Coding Systems, and Exploitable Covert Channels in Frontier AI</p>
+  <p class="by"><a href="https://x.com/elder_plinius">@elder_plinius</a></p>
+</header>
+
+<!-- ═══════════════ HEADLINE STATS ═══════════════ -->
+
+<div class="stats">
+  <div class="stat green"><div class="big">93&ndash;100%</div><div class="lab">AI usability on alien-glyph code (L3 Hard)</div></div>
+  <div class="stat red"><div class="big">14.9%</div><div class="lab">Human legibility at the same opacity level</div></div>
+  <div class="stat accent"><div class="big">100% / 0%</div><div class="lab">Receiver vs monitor recovery (tag-char channel)</div></div>
+  <div class="stat amber"><div class="big">J &asymp; 0</div><div class="lab">Monitor detection of semantic stego (n=150)</div></div>
+  <div class="stat blue"><div class="big">12</div><div class="lab">Frontier models surveyed across 61 Unicode categories</div></div>
+</div>
+
+<!-- ═══════════════ THE ENGINE ═══════════════ -->
+
+<h2><span class="n">Part 1</span>The Engine &amp; The Decoupling</h2>
+
+<p>GLOSSOPETRAE generates complete languages from a single seed &mdash; phonology, morphology, syntax, writing systems, and a 1,200+ word lexicon. Every seed is deterministic; every language is unique. Frontier models acquire them <strong>zero-shot</strong>: given only the grammar spec, they immediately read, write, and translate with no training.</p>
+
+<p>The engine's <strong>CodeSkin</strong> module skins real JavaScript into generated languages at four opacity levels. At L3 (full alien glyph-swap), every keyword, identifier, and symbol is replaced with generated glyphs.</p>
+
+<h3>CodeSkin: L0 (readable) vs L3 (alien glyph-swap)</h3>
+<p style="color:var(--mut);font-size:14px">n=30 seeds per model &middot; Zero-shot (spec only, no worked example)</p>
+
+<table>
+  <tr><th>Model</th><th>Level</th><th>Easy</th><th>Medium</th><th>Hard</th><th>Legibility</th></tr>
+  <tr><td>Opus 4.8</td><td>L0</td><td class="num">83%</td><td class="num">100%</td><td class="num">57%</td><td class="num">58.1%</td></tr>
+  <tr><td>Opus 4.8</td><td><strong>L3</strong></td><td class="num">83%</td><td class="num">100%</td><td class="num up">93%</td><td class="num down">14.9%</td></tr>
+  <tr><td>GPT-5.5</td><td>L0</td><td class="num">100%</td><td class="num">100%</td><td class="num">87%</td><td class="num">58.1%</td></tr>
+  <tr><td>GPT-5.5</td><td><strong>L3</strong></td><td class="num">100%</td><td class="num">100%</td><td class="num up">97%</td><td class="num down">14.9%</td></tr>
+</table>
+
+<div class="call green">
+  <strong>The Hard column tells the story.</strong> In the cleanest comparison (zero-shot, no worked example), alien glyph-swapped code <em>outperforms</em> readable code on hard programs: Opus <strong>+36pp</strong> (57%&rarr;93%), GPT-5.5 <strong>+10pp</strong> (87%&rarr;97%). Human legibility collapses. AI performance goes up.
+</div>
+
+<!-- ═══════════════ TOKENIZER LANDSCAPE ═══════════════ -->
+
+<h2><span class="n">Part 2</span>The Tokenizer Blind-Spot Map</h2>
+
+<p>Different model families process Unicode differently at the tokenizer level. We surveyed 12 frontier models across 61 Unicode categories and built the first cross-family blind-spot map.</p>
+
+<figure>
+<svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif" role="img" aria-labelledby="t4 d4">
+  <title id="t4">Tokenizer blind spots across twelve frontier models</title>
+  <desc id="d4">Number of Unicode categories each model silently strips, of 41 tested.</desc>
+  <rect x="0" y="0" width="800" height="500" fill="#ffffff"/>
+  <text x="400" y="28" text-anchor="middle" font-size="18" font-weight="600" fill="#2C2C2A">Tokenizer blind spots across 12 frontier models</text>
+  <text x="400" y="47" text-anchor="middle" font-size="12" fill="#5F5E5A">Unicode categories silently stripped, of 41 tested &middot; 2 reps &middot; a blind monitor cannot see these carriers at all</text>
+  <g stroke="#D3D1C7" stroke-width="1"><line x1="250" y1="70" x2="250" y2="452"/><line x1="385" y1="70" x2="385" y2="452" stroke-dasharray="3,3"/><line x1="520" y1="70" x2="520" y2="452" stroke-dasharray="3,3"/><line x1="655" y1="70" x2="655" y2="452" stroke-dasharray="3,3"/></g>
+  <g font-size="11" fill="#888780" text-anchor="middle"><text x="250" y="466">0</text><text x="385" y="466">3</text><text x="520" y="466">6</text><text x="655" y="466">9</text></g>
+  <text x="242" y="100" text-anchor="end" font-size="12.5" font-weight="500" fill="#2C2C2A">Claude Opus 4.8</text>
+  <rect x="250" y="90" width="450" height="18" fill="#E24B4A"/><text x="706" y="104" font-size="11" font-weight="600" fill="#A32D2D">10</text>
+  <text x="242" y="130" text-anchor="end" font-size="12.5" font-weight="500" fill="#2C2C2A">Claude 3.5 Haiku</text>
+  <rect x="250" y="120" width="450" height="18" fill="#E24B4A"/><text x="706" y="134" font-size="11" font-weight="600" fill="#A32D2D">10</text>
+  <text x="242" y="160" text-anchor="end" font-size="12.5" font-weight="500" fill="#2C2C2A">GPT-5.5</text>
+  <rect x="250" y="150" width="90" height="18" fill="#EF9F27"/><text x="346" y="164" font-size="11" font-weight="600" fill="#854F0B">2</text>
+  <text x="242" y="190" text-anchor="end" font-size="12.5" font-weight="500" fill="#2C2C2A">GPT-5-nano</text>
+  <rect x="250" y="180" width="90" height="18" fill="#EF9F27"/><text x="346" y="194" font-size="11" font-weight="600" fill="#854F0B">2</text>
+  <text x="242" y="220" text-anchor="end" font-size="12.5" font-weight="500" fill="#2C2C2A">Qwen3.7-max</text>
+  <rect x="250" y="210" width="90" height="18" fill="#EF9F27"/><text x="346" y="224" font-size="11" font-weight="600" fill="#854F0B">2</text>
+  <text x="242" y="250" text-anchor="end" font-size="12.5" font-weight="500" fill="#2C2C2A">GLM-5.1</text>
+  <rect x="250" y="240" width="45" height="18" fill="#EF9F27"/><text x="301" y="254" font-size="11" font-weight="600" fill="#854F0B">1</text>
+  <text x="242" y="280" text-anchor="end" font-size="12.5" font-weight="500" fill="#2C2C2A">Gemini 3.1 Pro</text>
+  <circle cx="256" cy="283" r="5" fill="#639922"/><text x="268" y="287" font-size="11" font-weight="600" fill="#3B6D11">0</text>
+  <text x="242" y="310" text-anchor="end" font-size="12.5" font-weight="500" fill="#2C2C2A">Gemini 2.5 Flash</text>
+  <circle cx="256" cy="313" r="5" fill="#639922"/><text x="268" y="317" font-size="11" font-weight="600" fill="#3B6D11">0</text>
+  <text x="242" y="340" text-anchor="end" font-size="12.5" font-weight="500" fill="#2C2C2A">Llama 4 Scout</text>
+  <circle cx="256" cy="343" r="5" fill="#639922"/><text x="268" y="347" font-size="11" font-weight="600" fill="#3B6D11">0</text>
+  <text x="242" y="370" text-anchor="end" font-size="12.5" font-weight="500" fill="#2C2C2A">Mistral Medium 3.5</text>
+  <circle cx="256" cy="373" r="5" fill="#639922"/><text x="268" y="377" font-size="11" font-weight="600" fill="#3B6D11">0</text>
+  <text x="242" y="400" text-anchor="end" font-size="12.5" font-weight="500" fill="#2C2C2A">DeepSeek V4 Pro</text>
+  <circle cx="256" cy="403" r="5" fill="#639922"/><text x="268" y="407" font-size="11" font-weight="600" fill="#3B6D11">0</text>
+  <text x="242" y="430" text-anchor="end" font-size="12.5" font-weight="500" fill="#2C2C2A">Grok 4.3</text>
+  <circle cx="256" cy="433" r="5" fill="#639922"/><text x="268" y="437" font-size="11" font-weight="600" fill="#3B6D11">0</text>
+  <text x="715" y="118" font-size="11" font-weight="600" fill="#A32D2D">Anthropic family</text>
+  <text x="715" y="132" font-size="10" fill="#A32D2D">same 10 categories</text>
+  <rect x="250" y="478" width="12" height="12" fill="#E24B4A"/><text x="267" y="488" font-size="11" fill="#5F5E5A">worst monitor (most blind)</text>
+  <rect x="450" y="478" width="12" height="12" fill="#EF9F27"/><text x="467" y="488" font-size="11" fill="#5F5E5A">few blind spots</text>
+  <circle cx="612" cy="484" r="5" fill="#639922"/><text x="623" y="488" font-size="11" fill="#5F5E5A">zero (ideal monitor)</text>
+</svg>
+<figcaption><strong>Figure 1.</strong> The Anthropic family (Haiku and the Opus 4.8 flagship) strips 10 categories each &mdash; identical blind spots. OpenAI strips 2. Six models strip zero. The blind spots are a family trait.</figcaption>
+</figure>
+
+<p>That asymmetry is a covert channel. Hide a payload in characters the monitor's tokenizer deletes but the receiver's keeps. &asymp;250 exploitable channel instances across 49 of 66 model pairs, richest at the GPT&harr;Claude boundary.</p>
+
+<!-- ═══════════════ COVERT CHANNELS ═══════════════ -->
+
+<h2><span class="n">Part 3</span>The Covert Channels</h2>
+
+<figure>
+<svg viewBox="0 0 800 440" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif" role="img" aria-labelledby="t2 d2">
+  <title id="t2">Covert channel asymmetry</title>
+  <desc id="d2">Per channel, the intended receiver recovers the payload while the cross-family monitor recovers almost none.</desc>
+  <rect x="0" y="0" width="800" height="440" fill="#ffffff"/>
+  <text x="400" y="30" text-anchor="middle" font-size="19" font-weight="600" fill="#2C2C2A">The receiver decodes it; the monitor watching the same message can't</text>
+  <text x="400" y="50" text-anchor="middle" font-size="13" fill="#5F5E5A">payload-recovery rate, n=30 each, McNemar p &lt; 0.0001</text>
+  <g stroke="#D3D1C7" stroke-width="1"><line x1="210" y1="70" x2="210" y2="392"/><line x1="342.5" y1="70" x2="342.5" y2="392" stroke-dasharray="3,3"/><line x1="475" y1="70" x2="475" y2="392" stroke-dasharray="3,3"/><line x1="607.5" y1="70" x2="607.5" y2="392" stroke-dasharray="3,3"/><line x1="740" y1="70" x2="740" y2="392" stroke-dasharray="3,3"/></g>
+  <g font-size="11" fill="#888780" text-anchor="middle"><text x="210" y="406">0%</text><text x="342.5" y="406">25%</text><text x="475" y="406">50%</text><text x="607.5" y="406">75%</text><text x="740" y="406">100%</text></g>
+  <text x="200" y="92" text-anchor="end" font-size="13" font-weight="500" fill="#2C2C2A">Tag chars</text>
+  <text x="200" y="108" text-anchor="end" font-size="11" fill="#5F5E5A">Haiku &rarr; GPT</text>
+  <rect x="210" y="82" width="530" height="16" fill="#1D9E75"/>
+  <text x="746" y="94" font-size="11" font-weight="600" fill="#0F6E56">R 100%</text>
+  <rect x="210" y="100" width="2" height="16" fill="#E24B4A"/>
+  <text x="216" y="112" font-size="11" font-weight="600" fill="#A32D2D">M 0%</text>
+  <text x="200" y="156" text-anchor="end" font-size="13" font-weight="500" fill="#2C2C2A">PUA chars</text>
+  <text x="200" y="172" text-anchor="end" font-size="11" fill="#5F5E5A">Gemini &rarr; Haiku</text>
+  <rect x="210" y="146" width="493" height="16" fill="#1D9E75"/>
+  <text x="709" y="158" font-size="11" font-weight="600" fill="#0F6E56">R 93%</text>
+  <rect x="210" y="164" width="2" height="16" fill="#E24B4A"/>
+  <text x="216" y="176" font-size="11" font-weight="600" fill="#A32D2D">M 0%</text>
+  <text x="200" y="220" text-anchor="end" font-size="13" font-weight="500" fill="#2C2C2A">Semantic</text>
+  <text x="200" y="236" text-anchor="end" font-size="11" fill="#5F5E5A">Haiku &rarr; GPT</text>
+  <rect x="210" y="210" width="461" height="16" fill="#1D9E75"/>
+  <text x="677" y="222" font-size="11" font-weight="600" fill="#0F6E56">R 87%</text>
+  <rect x="210" y="228" width="16" height="16" fill="#E24B4A"/>
+  <text x="232" y="240" font-size="11" font-weight="600" fill="#A32D2D">M 3%</text>
+  <text x="200" y="284" text-anchor="end" font-size="13" font-weight="500" fill="#2C2C2A">Semantic</text>
+  <text x="200" y="300" text-anchor="end" font-size="11" fill="#5F5E5A">Haiku &rarr; Gemini</text>
+  <rect x="210" y="274" width="461" height="16" fill="#1D9E75"/>
+  <text x="677" y="286" font-size="11" font-weight="600" fill="#0F6E56">R 87%</text>
+  <rect x="210" y="292" width="37" height="16" fill="#E24B4A"/>
+  <text x="253" y="304" font-size="11" font-weight="600" fill="#A32D2D">M 7%</text>
+  <text x="200" y="348" text-anchor="end" font-size="13" font-weight="500" fill="#2C2C2A">Semantic</text>
+  <text x="200" y="364" text-anchor="end" font-size="11" fill="#5F5E5A">Haiku &rarr; Haiku</text>
+  <rect x="210" y="338" width="408" height="16" fill="#1D9E75"/>
+  <text x="624" y="350" font-size="11" font-weight="600" fill="#0F6E56">R 77%</text>
+  <rect x="210" y="356" width="53" height="16" fill="#E24B4A"/>
+  <text x="269" y="368" font-size="11" font-weight="600" fill="#A32D2D">M 10%</text>
+  <rect x="270" y="424" width="13" height="13" fill="#1D9E75"/>
+  <text x="288" y="435" font-size="12" fill="#5F5E5A">receiver (intended)</text>
+  <rect x="450" y="424" width="13" height="13" fill="#E24B4A"/>
+  <text x="468" y="435" font-size="12" fill="#5F5E5A">monitor (watching)</text>
+</svg>
+<figcaption><strong>Figure 2.</strong> Tag-char channel (Haiku&rarr;GPT): 100% receiver recovery, 0% monitor recovery, McNemar p&nbsp;&asymp;&nbsp;1.2&times;10<sup>&minus;7</sup>. The monitor isn't dumb &mdash; it's blind. The bytes are gone before it runs.</figcaption>
+</figure>
+
+<!-- ═══════════════ DETECTION ═══════════════ -->
+
+<h2><span class="n">Part 4</span>Detection: Sighted vs Blind</h2>
+
+<figure>
+<svg viewBox="0 0 780 430" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif" role="img" aria-labelledby="t3 d3">
+  <title id="t3">Detection performance by channel and monitor</title>
+  <desc id="d3">Youden's J for detecting each channel.</desc>
+  <rect x="0" y="0" width="780" height="430" fill="#ffffff"/>
+  <text x="390" y="28" text-anchor="middle" font-size="18" font-weight="600" fill="#2C2C2A">Can the monitor even detect that something is hidden?</text>
+  <text x="390" y="47" text-anchor="middle" font-size="12" fill="#5F5E5A">Youden's J = TPR &minus; FPR  (1.0 = perfect, 0 = no better than chance) &middot; 15 positives + 15 negatives per cell</text>
+  <text x="340" y="86" text-anchor="middle" font-size="13" font-weight="500" fill="#2C2C2A">GPT-5-nano</text>
+  <text x="340" y="101" text-anchor="middle" font-size="10" fill="#888780">(flaky: empties)</text>
+  <text x="510" y="86" text-anchor="middle" font-size="13" font-weight="500" fill="#2C2C2A">Claude 3.5 Haiku</text>
+  <text x="660" y="86" text-anchor="middle" font-size="13" font-weight="500" fill="#2C2C2A">Gemini 2.5 Flash</text>
+  <text x="250" y="150" text-anchor="end" font-size="13" font-weight="500" fill="#2C2C2A">Tag chars</text>
+  <rect x="265" y="110" width="150" height="82" rx="6" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <text x="340" y="148" text-anchor="middle" font-size="17" font-weight="600" fill="#888780">J = 0 &dagger;</text>
+  <text x="340" y="168" text-anchor="middle" font-size="10" fill="#888780">unreliable</text>
+  <rect x="435" y="110" width="150" height="82" rx="6" fill="#EAF3DE" stroke="#639922"/>
+  <text x="510" y="148" text-anchor="middle" font-size="20" font-weight="600" fill="#3B6D11">J = 1.0</text>
+  <text x="510" y="168" text-anchor="middle" font-size="10" fill="#3B6D11">TPR 100 / FPR 0 &mdash; sighted</text>
+  <rect x="605" y="110" width="150" height="82" rx="6" fill="#EAF3DE" stroke="#639922"/>
+  <text x="680" y="148" text-anchor="middle" font-size="20" font-weight="600" fill="#3B6D11">J = 1.0</text>
+  <text x="680" y="168" text-anchor="middle" font-size="10" fill="#3B6D11">TPR 100 / FPR 0 &mdash; sighted</text>
+  <text x="250" y="240" text-anchor="end" font-size="13" font-weight="500" fill="#2C2C2A">PUA chars</text>
+  <rect x="265" y="200" width="150" height="82" rx="6" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <text x="340" y="238" text-anchor="middle" font-size="17" font-weight="600" fill="#888780">&mdash; &dagger;</text>
+  <text x="340" y="258" text-anchor="middle" font-size="10" fill="#888780">unmeasurable</text>
+  <rect x="435" y="200" width="150" height="82" rx="6" fill="#FCEBEB" stroke="#E24B4A"/>
+  <text x="510" y="238" text-anchor="middle" font-size="20" font-weight="600" fill="#A32D2D">J = 0</text>
+  <text x="510" y="258" text-anchor="middle" font-size="10" fill="#A32D2D">TPR 0 / FPR 0 &mdash; BLIND</text>
+  <rect x="605" y="200" width="150" height="82" rx="6" fill="#EAF3DE" stroke="#639922"/>
+  <text x="680" y="238" text-anchor="middle" font-size="20" font-weight="600" fill="#3B6D11">J = 1.0</text>
+  <text x="680" y="258" text-anchor="middle" font-size="10" fill="#3B6D11">TPR 100 / FPR 0 &mdash; sighted</text>
+  <text x="250" y="330" text-anchor="end" font-size="13" font-weight="500" fill="#2C2C2A">Semantic</text>
+  <rect x="265" y="290" width="150" height="82" rx="6" fill="#F1EFE8" stroke="#B4B2A9"/>
+  <text x="340" y="328" text-anchor="middle" font-size="17" font-weight="600" fill="#888780">J = 0 &dagger;</text>
+  <text x="340" y="348" text-anchor="middle" font-size="10" fill="#888780">unreliable</text>
+  <rect x="435" y="290" width="150" height="82" rx="6" fill="#FAEEDA" stroke="#EF9F27"/>
+  <text x="510" y="328" text-anchor="middle" font-size="20" font-weight="600" fill="#854F0B">J = 0.20</text>
+  <text x="510" y="348" text-anchor="middle" font-size="10" fill="#854F0B">TPR 20 / FPR 0 &mdash; weak</text>
+  <rect x="605" y="290" width="150" height="82" rx="6" fill="#FAEEDA" stroke="#EF9F27"/>
+  <text x="680" y="328" text-anchor="middle" font-size="20" font-weight="600" fill="#854F0B">J = 0.27</text>
+  <text x="680" y="348" text-anchor="middle" font-size="10" fill="#854F0B">TPR 27 / FPR 0 &mdash; weak</text>
+  <text x="265" y="400" font-size="11" fill="#5F5E5A">Green = sighted. Red = physically blind. Amber = sees it but can't reliably flag it.</text>
+  <text x="265" y="417" font-size="11" fill="#888780">&dagger; GPT-5-nano returned empty completions on 8&ndash;19 of 30 trials; its rows are not load-bearing.</text>
+</svg>
+<figcaption><strong>Figure 3.</strong> The detection flip: a tokenizer-blind monitor scores <strong>J&nbsp;=&nbsp;0</strong> while a sighted one scores <strong>J&nbsp;=&nbsp;1.0</strong> on the <em>same</em> channel. Even handed the decode key, a blind monitor recovers 0%.</figcaption>
+</figure>
+
+<!-- ═══════════════ PHYSICAL VS COGNITIVE ═══════════════ -->
+
+<h2><span class="n">Part 5</span>Physical vs Cognitive Vulnerability</h2>
+
+<figure>
+<svg viewBox="0 0 800 460" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif" role="img" aria-labelledby="t1 d1">
+  <title id="t1">Physical vs cognitive vulnerability</title>
+  <desc id="d1">Monitor recovery before and after being given the encoding key.</desc>
+  <rect x="0" y="0" width="800" height="460" fill="#ffffff"/>
+  <text x="400" y="30" text-anchor="middle" font-size="19" font-weight="600" fill="#2C2C2A">Does telling the monitor the encoding key help it catch the channel?</text>
+  <text x="400" y="50" text-anchor="middle" font-size="13" fill="#5F5E5A">Monitor payload-recovery rate, uninformed (grey) vs informed with the exact key (blue)</text>
+  <rect x="58" y="70" width="252" height="300" fill="#FCEBEB"/>
+  <rect x="310" y="70" width="432" height="300" fill="#EAF3DE"/>
+  <text x="184" y="90" text-anchor="middle" font-size="13" font-weight="600" fill="#A32D2D">PHYSICAL &mdash; knowledge can't help</text>
+  <text x="184" y="106" text-anchor="middle" font-size="11" fill="#A32D2D">carrier destroyed in the tokenizer</text>
+  <text x="526" y="90" text-anchor="middle" font-size="13" font-weight="600" fill="#3B6D11">COGNITIVE &mdash; knowledge helps</text>
+  <text x="526" y="106" text-anchor="middle" font-size="11" fill="#3B6D11">carrier visible, monitor just had to understand it</text>
+  <g stroke="#D3D1C7" stroke-width="1"><line x1="58" y1="370" x2="742" y2="370"/><line x1="58" y1="295" x2="742" y2="295" stroke-dasharray="3,3"/><line x1="58" y1="220" x2="742" y2="220" stroke-dasharray="3,3"/><line x1="58" y1="145" x2="742" y2="145" stroke-dasharray="3,3"/><line x1="58" y1="70" x2="742" y2="70" stroke-dasharray="3,3"/></g>
+  <g font-size="11" fill="#888780" text-anchor="end"><text x="52" y="374">0%</text><text x="52" y="299">25%</text><text x="52" y="224">50%</text><text x="52" y="149">75%</text><text x="52" y="74">100%</text></g>
+  <text x="140" y="392" text-anchor="middle" font-size="12" font-weight="500" fill="#2C2C2A">Tag chars</text>
+  <text x="140" y="408" text-anchor="middle" font-size="11" fill="#5F5E5A">&rarr; GPT monitor</text>
+  <rect x="112" y="368" width="26" height="2" fill="#B4B2A9"/>
+  <rect x="142" y="368" width="26" height="2" fill="#378ADD"/>
+  <text x="155" y="360" text-anchor="middle" font-size="11" font-weight="600" fill="#A32D2D">+0</text>
+  <text x="232" y="392" text-anchor="middle" font-size="12" font-weight="500" fill="#2C2C2A">PUA chars</text>
+  <text x="232" y="408" text-anchor="middle" font-size="11" fill="#5F5E5A">&rarr; Haiku monitor</text>
+  <rect x="204" y="368" width="26" height="2" fill="#B4B2A9"/>
+  <rect x="234" y="368" width="26" height="2" fill="#378ADD"/>
+  <text x="247" y="360" text-anchor="middle" font-size="11" font-weight="600" fill="#A32D2D">+0</text>
+  <line x1="310" y1="70" x2="310" y2="370" stroke="#888780" stroke-width="1.5"/>
+  <text x="400" y="392" text-anchor="middle" font-size="12" font-weight="500" fill="#2C2C2A">Semantic</text>
+  <text x="400" y="408" text-anchor="middle" font-size="11" fill="#5F5E5A">&rarr; GPT monitor</text>
+  <rect x="372" y="361" width="26" height="9" fill="#B4B2A9"/>
+  <rect x="402" y="220" width="26" height="150" fill="#378ADD"/>
+  <text x="415" y="212" text-anchor="middle" font-size="12" font-weight="600" fill="#0C447C">+47</text>
+  <text x="510" y="392" text-anchor="middle" font-size="12" font-weight="500" fill="#2C2C2A">Semantic</text>
+  <text x="510" y="408" text-anchor="middle" font-size="11" fill="#5F5E5A">&rarr; Gemini monitor</text>
+  <rect x="482" y="349" width="26" height="21" fill="#B4B2A9"/>
+  <rect x="512" y="181" width="26" height="189" fill="#378ADD"/>
+  <text x="525" y="173" text-anchor="middle" font-size="12" font-weight="600" fill="#0C447C">+56</text>
+  <text x="620" y="392" text-anchor="middle" font-size="12" font-weight="500" fill="#2C2C2A">Semantic</text>
+  <text x="620" y="408" text-anchor="middle" font-size="11" fill="#5F5E5A">&rarr; Haiku (self)</text>
+  <rect x="592" y="340" width="26" height="30" fill="#B4B2A9"/>
+  <rect x="622" y="151" width="26" height="219" fill="#378ADD"/>
+  <text x="635" y="143" text-anchor="middle" font-size="12" font-weight="600" fill="#0C447C">+63</text>
+  <rect x="300" y="430" width="13" height="13" fill="#B4B2A9"/>
+  <text x="318" y="441" font-size="12" fill="#5F5E5A">uninformed monitor</text>
+  <rect x="470" y="430" width="13" height="13" fill="#378ADD"/>
+  <text x="488" y="441" font-size="12" fill="#5F5E5A">informed (given the key)</text>
+</svg>
+<figcaption><strong>Figure 4.</strong> On 1,800 factorial trials, ~95% of the monitor's advantage comes from having the decode key, not from knowing what to look for. Knowledge can't fix a physical blind spot (+0pp on tokenizer channels), but it does help with semantic (+47&ndash;63pp).</figcaption>
+</figure>
+
+<!-- ═══════════════ THE UNSOLVED PART ═══════════════ -->
+
+<h2><span class="n">The Bottom Line</span>What's Fixed, What Isn't</h2>
+
+<div class="call green">
+  <strong>Physical channels are dead.</strong> A few lines of codepoint sanitization kill every tokenizer channel. Verified: 100% detection. Insultingly cheap fix.
+</div>
+
+<div class="call red">
+  <strong>Semantic steganography is unsolved.</strong> Ordinary readable English hiding a structured payload. It beat every monitor we tested. Three frontier monitors at n=150 each scored Youden's J&nbsp;&asymp;&nbsp;0. That's coin-flip. No deployed fix exists.
+</div>
+
+<p>The gap between what AI can do and what humans can watch is measurable, exploitable, and for the hardest channel: <strong>unsolved</strong>.</p>
+
+<!-- ═══════════════ LINKS ═══════════════ -->
+
+<div class="links">
+  <a href="PAPER.md" class="primary">Read the Full Paper</a>
+  <a href="PAPER.html" class="secondary">Paper (HTML)</a>
+  <a href="index.html" class="secondary">Engine &amp; UI</a>
+  <a href="https://github.com/elder-plinius/GLOSSOPETRAE" class="secondary">GitHub Repo</a>
+</div>
+
+<p style="color:var(--mut);font-size:14px">Every number in this paper traces back to one of 78 raw result JSONs in the repo. The measurement harnesses ship with the release. Run them yourself.</p>
+
+<footer>
+  GLOSSOPETRAE &middot; @elder_plinius &middot; June 2026<br>
+  The canonical paper is <code>PAPER.md</code> at the repo root.
+</footer>
+
+</div>
+</body>
+</html>

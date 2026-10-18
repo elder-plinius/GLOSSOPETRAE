@@ -38,7 +38,8 @@ export class ProsodyEngine {
   }
 
   _generateToneSystem() {
-    const numTones = this.random.weightedPick([
+    // Use tone count from divergence targets if specified, otherwise random
+    const numTones = this.config.toneCount ?? this.random.weightedPick([
       [2, 0.25],   // High/Low (like Zulu)
       [3, 0.30],   // High/Mid/Low
       [4, 0.25],   // Common in Asia

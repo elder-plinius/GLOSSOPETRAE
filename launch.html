@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tokenizer Asymmetries as Covert Side Channels — GLOSSOPETRAE</title>
+<style>
+  :root{
+    --bg:#0d0e12; --panel:#15171d; --ink:#e8e8ea; --mut:#a0a2aa; --line:#272a33;
+    --red:#e24b4a; --redbg:#2a1414; --green:#63b022; --greenbg:#15220c;
+    --blue:#5b9bf0; --amber:#ef9f27; --accent:#7f77dd;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 -apple-system,Segoe UI,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:860px;margin:0 auto;padding:0 22px 120px}
+  header{padding:64px 0 28px;border-bottom:1px solid var(--line)}
+  .kicker{color:var(--accent);font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:12.5px;margin:0 0 14px}
+  h1{font-size:38px;line-height:1.12;margin:0 0 16px;letter-spacing:-.02em}
+  .sub{font-size:20px;color:var(--mut);margin:0 0 18px;line-height:1.4}
+  .by{font-size:14px;color:var(--mut)}
+  .banner{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:26px 0 0;font-size:14px;color:var(--mut)}
+  h2{font-size:25px;margin:54px 0 6px;letter-spacing:-.01em}
+  h2 .n{color:var(--accent);font-size:15px;font-weight:600;display:block;margin-bottom:2px;letter-spacing:.06em;text-transform:uppercase}
+  p{margin:14px 0}
+  .lede{font-size:18px}
+  ul{padding-left:0;list-style:none;margin:18px 0}
+  li{padding:12px 0 12px 30px;border-bottom:1px solid var(--line);position:relative}
+  li:before{content:"▸";color:var(--accent);position:absolute;left:6px;top:12px}
+  li b{color:#fff}
+  .stat{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:24px 0}
+  .stat div{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px}
+  .stat .big{font-size:30px;font-weight:700;letter-spacing:-.02em}
+  .stat .lab{font-size:13px;color:var(--mut);margin-top:4px}
+  figure{margin:30px 0;background:#fff;border-radius:12px;padding:14px;border:1px solid var(--line)}
+  figure svg{width:100%;height:auto;display:block}
+  figcaption{color:var(--mut);font-size:13.5px;margin:12px 4px 2px;line-height:1.5}
+  .call{border-left:3px solid var(--amber);background:#1c1708;padding:14px 18px;border-radius:0 10px 10px 0;margin:24px 0;font-size:15px}
+  .call.red{border-color:var(--red);background:var(--redbg)}
+  .call.green{border-color:var(--green);background:var(--greenbg)}
+  code{background:#22252e;padding:2px 6px;border-radius:5px;font-size:13.5px;font-family:ui-monospace,Menlo,monospace}
+  .claims li b{color:#fff}
+  footer{margin-top:60px;padding-top:24px;border-top:1px solid var(--line);color:var(--mut);font-size:13.5px}
+  .tag{display:inline-block;font-size:11.5px;color:var(--mut);border:1px solid var(--line);border-radius:999px;padding:3px 10px;margin:0 6px 6px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <p class="kicker">GLOSSOPETRAE · Technical Report (audited v2)</p>
+  <h1>Two AIs can pass a hidden message straight past a third AI watching them.</h1>
+  <p class="sub">100% delivered to the receiver. 0% caught by the monitor. p &lt; 10⁻⁷. And you can't fix it by upgrading to the flagship.</p>
+  <p class="by"><b>@elder_plinius</b> · June 2026 · <span class="tag">defense-forward release</span><span class="tag">raw data + harnesses ship</span></p>
+  <div class="banner">Every number here was re-derived from raw result files under an adversarial <i>"try to refute it"</i> review that caught real fabrications in our own first draft (we publish that story too). The data ships so you can re-audit us — including where we got it wrong.</div>
+</header>
+
+<h2><span class="n">The setup</span>Frontier models don't read text the same way</h2>
+<p class="lede">At the <b>tokenizer</b> — the step that turns characters into tokens before a model ever "thinks" — some model families silently delete certain invisible Unicode characters while others keep them. That difference between two models is an exploitable covert channel.</p>
+<p>Hide a payload in characters the <i>monitor's</i> tokenizer deletes but the <i>receiver's</i> keeps. Two agents then exchange hidden state through a monitor that is structurally blind to it — exfiltration or coordination the overseer never sees.</p>
+
+<div class="stat">
+  <div><div class="big">100% / 0%</div><div class="lab">receiver recovery vs monitor recovery (tag-char channel, n=30)</div></div>
+  <div><div class="big">p&lt;10⁻⁷</div><div class="lab">McNemar significance, survives Bonferroni</div></div>
+  <div><div class="big">0 → 11</div><div class="lab">tokenizer blind-spots across 12 frontier models</div></div>
+  <div><div class="big">≤27%</div><div class="lab">best monitor's detection of plain-English stego</div></div>
+</div>
+
+<h2><span class="n">Finding 1</span>The monitor isn't dumb — it's blind</h2>
+<figure>
+<svg viewBox="0 0 780 430" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica,Arial,sans-serif">
+  <rect x="0" y="0" width="780" height="430" fill="#ffffff"/>
+  <text x="390" y="28" text-anchor="middle" font-size="18" font-weight="600" fill="#2C2C2A">Can the monitor even detect that something is hidden?</text>
+  <text x="390" y="47" text-anchor="middle" font-size="12" fill="#5F5E5A">Youden's J = TPR − FPR (1.0 = perfect, 0 = chance) · 15 positives + 15 negatives per cell</text>
+  <text x="340" y="86" text-anchor="middle" font-size="13" font-weight="500" fill="#2C2C2A">GPT-5-nano</text>
+  <text x="340" y="101" text-anchor="middle" font-size="10" fill="#888780">(flaky: empties)</text>
+  <text x="510" y="86" text-anchor="middle" font-size="13" font-weight="500" fill="#2C2C2A">Claude 3.5 Haiku</text>
+  <text x="660" y="86" text-anchor="middle" font-size="13" font-weight="500" fill="#2C2C2A">Gemini 2.5 Flash</text>
+  <text x="250" y="150" text-anchor="end" font-size="13" font-weight="500" fill="#2C2C2A">Tag chars</text>
+  <rect x="265" y="110" width="150" height="82" rx="6" fill="#F1EFE8" stroke="#B4B2A9"/><text x="340" y="148" text-anchor="middle" font-size="17" font-weight="600" fill="#888780">J = 0 †</text>
+  <rect x="435" y="110" width="150" height="82" rx="6" fill="#EAF3DE" stroke="#639922"/><text x="510" y="146" text-anchor="middle" font-size="20" font-weight="600" fill="#3B6D11">J = 1.0</text><text x="510" y="166" text-anchor="middle" font-size="10" fill="#3B6D11">TPR 100 / FPR 0 — sighted</text>
+  <rect x="605" y="110" width="150" height="82" rx="6" fill="#EAF3DE" stroke="#639922"/><text x="680" y="146" text-anchor="middle" font-size="20" font-weight="600" fill="#3B6D11">J = 1.0</text><text x="680" y="166" text-anchor="middle" font-size="10" fill="#3B6D11">TPR 100 / FPR 0 — sighted</text>
+  <text x="250" y="240" text-anchor="end" font-size="13" font-weight="500" fill="#2C2C2A">PUA chars</text>
+  <rect x="265" y="200" width="150" height="82" rx="6" fill="#F1EFE8" stroke="#B4B2A9"/><text x="340" y="246" text-anchor="middle" font-size="15" font-weight="600" fill="#888780">— †</text>
+  <rect x="435" y="200" width="150" height="82" rx="6" fill="#FCEBEB" stroke="#E24B4A"/><text x="510" y="236" text-anchor="middle" font-size="20" font-weight="600" fill="#A32D2D">J = 0</text><text x="510" y="256" text-anchor="middle" font-size="10" fill="#A32D2D">TPR 0 / FPR 0 — BLIND</text>
+  <rect x="605" y="200" width="150" height="82" rx="6" fill="#EAF3DE" stroke="#639922"/><text x="680" y="236" text-anchor="middle" font-size="20" font-weight="600" fill="#3B6D11">J = 1.0</text><text x="680" y="256" text-anchor="middle" font-size="10" fill="#3B6D11">TPR 100 / FPR 0 — sighted</text>
+  <text x="250" y="330" text-anchor="end" font-size="13" font-weight="500" fill="#2C2C2A">Semantic</text>
+  <rect x="265" y="290" width="150" height="82" rx="6" fill="#F1EFE8" stroke="#B4B2A9"/><text x="340" y="336" text-anchor="middle" font-size="15" font-weight="600" fill="#888780">J = 0 †</text>
+  <rect x="435" y="290" width="150" height="82" rx="6" fill="#FAEEDA" stroke="#EF9F27"/><text x="510" y="326" text-anchor="middle" font-size="20" font-weight="600" fill="#854F0B">J = 0.20</text><text x="510" y="346" text-anchor="middle" font-size="10" fill="#854F0B">TPR 20 / FPR 0 — weak</text>
+  <rect x="605" y="290" width="150" height="82" rx="6" fill="#FAEEDA" stroke="#EF9F27"/><text x="680" y="326" text-anchor="middle" font-size="20" font-weight="600" fill="#854F0B">J = 0.27</text><text x="680" y="346" text-anchor="middle" font-size="10" fill="#854F0B">TPR 27 / FPR 0 — weak</text>
+  <text x="265" y="400" font-size="11" fill="#5F5E5A">Green = monitor preserves the carrier (sighted). Red = tokenizer strips it (physically blind). Amber = sees it, can't flag it (cognitive).</text>
+  <text x="265" y="417" font-size="11" fill="#888780">† GPT-5-nano returned empty completions on 8–19 of 30 trials/cell; its rows are not load-bearing.</text>
+</svg>
+<figcaption>The same channel, same detection task, opposite outcome — decided purely by the tokenizer. A blind monitor (PUA → Claude) cleared <b>15/15 hidden-payload messages as clean, 0% false alarms</b>. It doesn't fail loudly; it fails silently and confidently. No alarm tells the operator monitoring is dead.</figcaption>
+</figure>
+
+<h2><span class="n">Finding 2</span>The blind spot is baked into the tokenizer, not the model</h2>
+<figure>
+<svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica,Arial,sans-serif">
+  <rect x="0" y="0" width="800" height="500" fill="#ffffff"/>
+  <text x="400" y="28" text-anchor="middle" font-size="18" font-weight="600" fill="#2C2C2A">Tokenizer blind spots across 12 frontier models</text>
+  <text x="400" y="47" text-anchor="middle" font-size="12" fill="#5F5E5A">Unicode categories silently stripped, of 41 tested · a blind monitor cannot see these carriers at all</text>
+  <g stroke="#D3D1C7" stroke-width="1"><line x1="250" y1="70" x2="250" y2="452"/><line x1="385" y1="70" x2="385" y2="452" stroke-dasharray="3,3"/><line x1="520" y1="70" x2="520" y2="452" stroke-dasharray="3,3"/><line x1="655" y1="70" x2="655" y2="452" stroke-dasharray="3,3"/></g>
+  <g font-size="11" fill="#888780" text-anchor="middle"><text x="250" y="466">0</text><text x="385" y="466">3</text><text x="520" y="466">6</text><text x="655" y="466">9</text></g>
+  <text x="242" y="100" text-anchor="end" font-size="12.5" font-weight="500" fill="#2C2C2A">Claude Opus 4.8</text><rect x="250" y="90" width="450" height="18" fill="#E24B4A"/><text x="706" y="104" font-size="11" font-weight="600" fill="#A32D2D">10</text>
+  <text x="242" y="130" text-anchor="end" font-size="12.5" font-weight="500" fill="#2C2C2A">Claude 3.5 Haiku</text><rect x="250" y="120" width="450" height="18" fill="#E24B4A"/><text x="706" y="134" font-size="11" font-weight="600" fill="#A32D2D">10</text>
+  <text x="242" y="160" text-anchor="end" font-size="12.5" font-weight="500" fill="#2C2C2A">GPT-5.5</text><rect x="250" y="150" width="90" height="18" fill="#EF9F27"/><text x="346" y="164" font-size="11" font-weight="600" fill="#854F0B">2</text>
+  <text x="242" y="190" text-anchor="end" font-size="12.5" font-weight="500" fill="#2C2C2A">GPT-5-nano</text><rect x="250" y="180" width="90" height="18" fill="#EF9F27"/><text x="346" y="194" font-size="11" font-weight="600" fill="#854F0B">2</text>
+  <text x="242" y="220" text-anchor="end" font-size="12.5" font-weight="500" fill="#2C2C2A">Qwen3.7-max</text><rect x="250" y="210" width="90" height="18" fill="#EF9F27"/><text x="346" y="224" font-size="11" font-weight="600" fill="#854F0B">2</text>
+  <text x="242" y="250" text-anchor="end" font-size="12.5" font-weight="500" fill="#2C2C2A">GLM-5.1</text><rect x="250" y="240" width="45" height="18" fill="#EF9F27"/><text x="301" y="254" font-size="11" font-weight="600" fill="#854F0B">1</text>
+  <text x="242" y="280" text-anchor="end" font-size="12.5" font-weight="500" fill="#2C2C2A">Gemini 3.1 Pro</text><circle cx="256" cy="283" r="5" fill="#639922"/><text x="268" y="287" font-size="11" font-weight="600" fill="#3B6D11">0</text>
+  <text x="242" y="310" text-anchor="end" font-size="12.5" font-weight="500" fill="#2C2C2A">Gemini 2.5 Flash</text><circle cx="256" cy="313" r="5" fill="#639922"/><text x="268" y="317" font-size="11" font-weight="600" fill="#3B6D11">0</text>
+  <text x="242" y="340" text-anchor="end" font-size="12.5" font-weight="500" fill="#2C2C2A">Llama 4 Scout</text><circle cx="256" cy="343" r="5" fill="#639922"/><text x="268" y="347" font-size="11" font-weight="600" fill="#3B6D11">0</text>
+  <text x="242" y="370" text-anchor="end" font-size="12.5" font-weight="500" fill="#2C2C2A">Mistral Medium 3.5</text><circle cx="256" cy="373" r="5" fill="#639922"/><text x="268" y="377" font-size="11" font-weight="600" fill="#3B6D11">0</text>
+  <text x="242" y="400" text-anchor="end" font-size="12.5" font-weight="500" fill="#2C2C2A">DeepSeek V4 Pro</text><circle cx="256" cy="403" r="5" fill="#639922"/><text x="268" y="407" font-size="11" font-weight="600" fill="#3B6D11">0</text>
+  <text x="242" y="430" text-anchor="end" font-size="12.5" font-weight="500" fill="#2C2C2A">Grok 4.3</text><circle cx="256" cy="433" r="5" fill="#639922"/><text x="268" y="437" font-size="11" font-weight="600" fill="#3B6D11">0</text>
+  <text x="715" y="118" font-size="11" font-weight="600" fill="#A32D2D">Anthropic family</text><text x="715" y="132" font-size="10" fill="#A32D2D">same 10 categories</text>
+</svg>
+<figcaption>Blind-spot count is a <b>family trait</b>, not a per-model accident. Anthropic's flagship Opus 4.8 strips the <i>exact same 10</i> categories as the cheapest Haiku — you can't escape it by upgrading. OpenAI shares 2. Six frontier models strip zero. Across the panel: 255 asymmetric channel-instances over the 49 model-pairs with any asymmetry (of 66 possible).</figcaption>
+</figure>
+
+<h2><span class="n">Finding 3</span>The cheap version has a fix. The scary one doesn't.</h2>
+<div class="call green"><b>Good news:</b> the invisible-character channels die to two lines of input sanitization (strip/normalize the carrier ranges) or to a zero-blind-spot monitor — a deterministic codepoint filter catches 100% with no model at all. Deploy today.</div>
+<div class="call red"><b>The part that should worry you:</b> natural-language steganography — ordinary, perfectly readable English that hides a payload — beat <b>every</b> monitor we tested (≤27% detected; the best still missed ~75% of hidden messages), and <b>no filter touches it</b>. That, not the invisible-character trick, is the real open problem.</div>
+
+<h2><span class="n">The receipts</span>Wild claims, all backed by raw data</h2>
+<ul class="claims">
+  <li><b>"100% delivered, 0% caught, p&lt;10⁻⁷."</b> Tag-char channel, Haiku→GPT monitor, n=30: receiver 100%, monitor 0%, χ²=28.03.</li>
+  <li><b>"One monitor catches 100%, another 0% — only the tokenizer differs."</b> PUA channel: Claude J=0.0 (0/15) vs Gemini J=1.0 (15/15), 0% false alarms.</li>
+  <li><b>"The flagship has the same blind spots as the cheap model."</b> Opus 4.8 and Haiku both strip the same 10 categories; six rivals strip zero.</li>
+  <li><b>"A safety monitor was silently 0% effective and never raised one alarm."</b> Blind monitor cleared 15/15 hidden + 15/15 clean messages.</li>
+  <li><b>"We caught our own paper fabricating numbers."</b> Adversarial self-review found a broken run had inflated one model's blind-spot count 3→23; corrected, harness hardened, story published.</li>
+</ul>
+
+<h2><span class="n">Honesty</span>What we're <i>not</i> claiming</h2>
+<p>The invisible-character primitives are known prior art (Boucher et al. "Bad Characters," IEEE S&amp;P 2022; ASCII-smuggling demos). Our contribution is the cross-family <i>quantification</i>, the detection-with-negative-controls flip, and the family-trait map. The physical channels are exploitable only against pipelines that don't sanitize input. The defensive "self-monitoring closes semantic stego" result is preliminary (underpowered, n=30). Two weak probes were cut to an appendix. The raw JSONs and measurement harnesses ship; re-audit us.</p>
+
+<footer>
+  GLOSSOPETRAE · audited v2 · defense-forward public release (operational tooling withheld) · numbers re-derived from raw result files.<br>
+  The canonical paper is <code>PAPER.md</code> (or <code>PAPER.html</code>) at the repo root.
+</footer>
+</div>
+</body>
+</html>

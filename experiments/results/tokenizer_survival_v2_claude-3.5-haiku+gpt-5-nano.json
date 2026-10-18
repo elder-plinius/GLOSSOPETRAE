@@ -1,0 +1,1586 @@
+{
+  "study": "tokenizer-survival-v2",
+  "models": [
+    "anthropic/claude-3.5-haiku",
+    "openai/gpt-5-nano"
+  ],
+  "reps": 1,
+  "tests": 41,
+  "results": {
+    "math-bold": {
+      "desc": "Mathematical bold (U+1D400+): 𝐛𝐞𝐥𝐥𝐨 replacing hello",
+      "anchor": "world",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 5,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 5,
+              "expected": 5,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 20
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": 1,
+          "expected": 5,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 5,
+              "expected": 5,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 20
+            }
+          ]
+        }
+      }
+    },
+    "math-italic": {
+      "desc": "Mathematical italic (U+1D434+): 𝑕𝑒𝑙𝑙𝑜",
+      "anchor": "world",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 5,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 5,
+              "expected": 5,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 20
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": 1,
+          "expected": 5,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 5,
+              "expected": 5,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 20
+            }
+          ]
+        }
+      }
+    },
+    "math-script": {
+      "desc": "Mathematical script (U+1D4B6+): fancy cursive letters",
+      "anchor": "world",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 5,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 5,
+              "expected": 5,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 20
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": 1,
+          "expected": 5,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 5,
+              "expected": 5,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 20
+            }
+          ]
+        }
+      }
+    },
+    "math-fraktur": {
+      "desc": "Mathematical fraktur (U+1D504+): gothic letters",
+      "anchor": "world",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 5,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 5,
+              "expected": 5,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 20
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": 1,
+          "expected": 5,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 5,
+              "expected": 5,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 20
+            }
+          ]
+        }
+      }
+    },
+    "math-monospace": {
+      "desc": "Mathematical monospace (U+1D670+): typewriter letters",
+      "anchor": "world",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 5,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 5,
+              "expected": 5,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 20
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": 1,
+          "expected": 5,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 5,
+              "expected": 5,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 20
+            }
+          ]
+        }
+      }
+    },
+    "math-double-struck": {
+      "desc": "Mathematical double-struck (U+1D538+): blackboard bold",
+      "anchor": "world",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 5,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 5,
+              "expected": 5,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 20
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": 1,
+          "expected": 5,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 5,
+              "expected": 5,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 20
+            }
+          ]
+        }
+      }
+    },
+    "word-joiner": {
+      "desc": "Word Joiner (U+2060) between chars",
+      "anchor": null,
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 4,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": 1,
+          "expected": 4,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9
+            }
+          ]
+        }
+      }
+    },
+    "invisible-math-ops": {
+      "desc": "Invisible math operators (U+2061-U+2064)",
+      "anchor": null,
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 4,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": 1,
+          "expected": 4,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9
+            }
+          ]
+        }
+      }
+    },
+    "ltr-rtl-marks": {
+      "desc": "LRM (U+200E) and RLM (U+200F) between chars",
+      "anchor": null,
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 4,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": 1,
+          "expected": 4,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9
+            }
+          ]
+        }
+      }
+    },
+    "ogham-space": {
+      "desc": "Ogham Space Mark (U+1680)",
+      "anchor": "the",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 11
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 11
+            }
+          ]
+        }
+      }
+    },
+    "ideographic-space": {
+      "desc": "Ideographic (CJK fullwidth) Space (U+3000)",
+      "anchor": "the",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 11
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 11
+            }
+          ]
+        }
+      }
+    },
+    "medium-math-space": {
+      "desc": "Medium Mathematical Space (U+205F)",
+      "anchor": "the",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 11
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 11
+            }
+          ]
+        }
+      }
+    },
+    "figure-space": {
+      "desc": "Figure Space (U+2007) — width of a digit",
+      "anchor": "the",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 11
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 11
+            }
+          ]
+        }
+      }
+    },
+    "punctuation-space": {
+      "desc": "Punctuation Space (U+2008)",
+      "anchor": "the",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 11
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 11
+            }
+          ]
+        }
+      }
+    },
+    "hair-space": {
+      "desc": "Hair Space (U+200A) — thinnest visible space",
+      "anchor": "the",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 11
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 11
+            }
+          ]
+        }
+      }
+    },
+    "narrow-no-break": {
+      "desc": "Narrow No-Break Space (U+202F)",
+      "anchor": "the",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 11
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 11
+            }
+          ]
+        }
+      }
+    },
+    "pua-bmp": {
+      "desc": "BMP Private Use Area (U+E000-U+E003)",
+      "anchor": "test",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 4,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 11
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": 1,
+          "expected": 4,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 11
+            }
+          ]
+        }
+      }
+    },
+    "pua-supplementary": {
+      "desc": "Supplementary PUA-A (U+F0000-U+F0003)",
+      "anchor": "test",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 4,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 15
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": 1,
+          "expected": 4,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 15
+            }
+          ]
+        }
+      }
+    },
+    "braille-blank": {
+      "desc": "Braille Pattern Blank (U+2800) — invisible braille",
+      "anchor": null,
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 4,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": 1,
+          "expected": 4,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9
+            }
+          ]
+        }
+      }
+    },
+    "hangul-filler": {
+      "desc": "Hangul Filler (U+3164) — invisible Hangul",
+      "anchor": null,
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 4,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": 1,
+          "expected": 4,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9
+            }
+          ]
+        }
+      }
+    },
+    "hangul-choseong-filler": {
+      "desc": "Hangul Choseong Filler (U+115F)",
+      "anchor": null,
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 4,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": 1,
+          "expected": 4,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9
+            }
+          ]
+        }
+      }
+    },
+    "line-separator": {
+      "desc": "Line Separator (U+2028)",
+      "anchor": "hello",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 1,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 1,
+              "expected": 1,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 11
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": 1,
+          "expected": 1,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 1,
+              "expected": 1,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 11
+            }
+          ]
+        }
+      }
+    },
+    "paragraph-separator": {
+      "desc": "Paragraph Separator (U+2029)",
+      "anchor": "hello",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 1,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 1,
+              "expected": 1,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 11
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": 1,
+          "expected": 1,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 1,
+              "expected": 1,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 11
+            }
+          ]
+        }
+      }
+    },
+    "enclosed-digits": {
+      "desc": "Circled digits ①②③ (U+2460-U+2473)",
+      "anchor": "steps",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 22
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 22
+            }
+          ]
+        }
+      }
+    },
+    "enclosed-letters": {
+      "desc": "Circled letters ⓐⓑⓒ (U+24D0-U+24E9)",
+      "anchor": "options",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 14
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 14
+            }
+          ]
+        }
+      }
+    },
+    "superscript": {
+      "desc": "Unicode superscripts ¹²³⁴⁵",
+      "anchor": null,
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 5,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 5,
+              "expected": 5,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 6
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": 1,
+          "expected": 5,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 5,
+              "expected": 5,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 6
+            }
+          ]
+        }
+      }
+    },
+    "subscript": {
+      "desc": "Unicode subscripts ₀₁₂₃₄",
+      "anchor": "and",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 5,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 5,
+              "expected": 5,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 19
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": 1,
+          "expected": 5,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 5,
+              "expected": 5,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 19
+            }
+          ]
+        }
+      }
+    },
+    "nfd-decomposed": {
+      "desc": "NFD decomposed é vs precomposed é",
+      "anchor": "cafe",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 4,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "detail": "NFD=4 NFC=0 (NFD→NFC=no)",
+              "suspectNonEcho": false,
+              "replyLen": 21
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": 1,
+          "expected": 4,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "detail": "NFD=4 NFC=0 (NFD→NFC=no)",
+              "suspectNonEcho": false,
+              "replyLen": 21
+            }
+          ]
+        }
+      }
+    },
+    "musical-symbols": {
+      "desc": "Musical symbols 𝄞𝄢𝅘𝅥𝅮 (treble clef, etc.)",
+      "anchor": "music",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 13
+            }
+          ]
+        }
+      }
+    },
+    "egyptian-hieroglyphs": {
+      "desc": "Egyptian Hieroglyphs (U+13000+)",
+      "anchor": "ancient",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 15
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 15
+            }
+          ]
+        }
+      }
+    },
+    "bidi-overrides": {
+      "desc": "LRO (U+202D) and RLO (U+202E) with PDF (U+202C)",
+      "anchor": "normal",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 4,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 36
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": 1,
+          "expected": 4,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 36
+            }
+          ]
+        }
+      }
+    },
+    "bidi-isolates": {
+      "desc": "LRI (U+2066), RLI (U+2067), FSI (U+2068), PDI (U+2069)",
+      "anchor": "isolated",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 19
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": 1,
+          "expected": 2,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 2,
+              "expected": 2,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 19
+            }
+          ]
+        }
+      }
+    },
+    "interlinear-annotation": {
+      "desc": "Annotation Anchor/Sep/Term (U+FFF9-U+FFFB)",
+      "anchor": "annotation",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 21
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 21
+            }
+          ]
+        }
+      }
+    },
+    "mongolian-vs": {
+      "desc": "Mongolian Vowel Separator (U+180E)",
+      "anchor": null,
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 4,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": 1,
+          "expected": 4,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9
+            }
+          ]
+        }
+      }
+    },
+    "bom-zwnbs": {
+      "desc": "Byte Order Mark / ZWNBS (U+FEFF) mid-text",
+      "anchor": null,
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 4,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": 1,
+          "expected": 4,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9
+            }
+          ]
+        }
+      }
+    },
+    "geometric-shapes": {
+      "desc": "Geometric shapes ■▲●◆ mixed with text",
+      "anchor": "bird",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 4,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 18
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": 1,
+          "expected": 4,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 18
+            }
+          ]
+        }
+      }
+    },
+    "c1-controls": {
+      "desc": "C1 control chars (U+0080-U+009F) — often stripped",
+      "anchor": "test",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 10
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 10
+            }
+          ]
+        }
+      }
+    },
+    "vs-supplement": {
+      "desc": "Variation Selectors Supplement VS17-VS19 (U+E0100-E0102)",
+      "anchor": "end",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 12
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": 1,
+          "expected": 3,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 3,
+              "expected": 3,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 12
+            }
+          ]
+        }
+      }
+    },
+    "tag-chars-direct": {
+      "desc": "Tag Characters U+E0001,E0020,E0041,E0061 (cancel, space, A, a)",
+      "anchor": "hello",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 4,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 18
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": 1,
+          "expected": 4,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 4,
+              "expected": 4,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 18
+            }
+          ]
+        }
+      }
+    },
+    "fullwidth-latin": {
+      "desc": "Fullwidth Latin letters (U+FF21-FF3A, U+FF41-FF5A)",
+      "anchor": "there",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 5,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 5,
+              "expected": 5,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 15
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": 1,
+          "expected": 5,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 5,
+              "expected": 5,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 15
+            }
+          ]
+        }
+      }
+    },
+    "cancel-tag": {
+      "desc": "Cancel Tag U+E007F alone (emoji tag terminator)",
+      "anchor": "test",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "rate": 1,
+          "expected": 1,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 1,
+              "expected": 1,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9
+            }
+          ]
+        },
+        "openai/gpt-5-nano": {
+          "rate": 1,
+          "expected": 1,
+          "validReps": 1,
+          "errors": 0,
+          "suspectNonEcho": 0,
+          "reps": [
+            {
+              "survived": 1,
+              "expected": 1,
+              "rate": 1,
+              "suspectNonEcho": false,
+              "replyLen": 9
+            }
+          ]
+        }
+      }
+    }
+  },
+  "tally": {
+    "anthropic/claude-3.5-haiku": {
+      "blind": 0,
+      "partial": 0,
+      "clean": 41,
+      "unmeasured": 0
+    },
+    "openai/gpt-5-nano": {
+      "blind": 0,
+      "partial": 0,
+      "clean": 41,
+      "unmeasured": 0
+    }
+  },
+  "asymmetric": []
+}

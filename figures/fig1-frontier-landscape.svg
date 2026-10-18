@@ -1,0 +1,61 @@
+<svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif" role="img" aria-labelledby="t4 d4">
+  <title id="t4">Tokenizer blind spots across twelve frontier models</title>
+  <desc id="d4">Number of Unicode categories each model silently strips, of 41 tested. The Anthropic family (Haiku and Opus 4.8) strips 10 each; six models including both Geminis, Llama, Mistral, DeepSeek and Grok strip zero.</desc>
+  <rect x="0" y="0" width="800" height="500" fill="#ffffff"/>
+
+  <text x="400" y="28" text-anchor="middle" font-size="18" font-weight="600" fill="#2C2C2A">Tokenizer blind spots across 12 frontier models</text>
+  <text x="400" y="47" text-anchor="middle" font-size="12" fill="#5F5E5A">Unicode categories silently stripped, of 41 tested · 2 reps · a blind monitor cannot see these carriers at all</text>
+
+  <!-- x grid: 0..10 over x 250..700 (45px per unit) -->
+  <g stroke="#D3D1C7" stroke-width="1">
+    <line x1="250" y1="70" x2="250" y2="452"/>
+    <line x1="385" y1="70" x2="385" y2="452" stroke-dasharray="3,3"/>
+    <line x1="520" y1="70" x2="520" y2="452" stroke-dasharray="3,3"/>
+    <line x1="655" y1="70" x2="655" y2="452" stroke-dasharray="3,3"/>
+  </g>
+  <g font-size="11" fill="#888780" text-anchor="middle">
+    <text x="250" y="466">0</text><text x="385" y="466">3</text><text x="520" y="466">6</text><text x="655" y="466">9</text>
+  </g>
+
+  <!-- rows: model, blind, family-color. y from 86, step 30 -->
+  <!-- Anthropic (red #E24B4A) -->
+  <text x="242" y="100" text-anchor="end" font-size="12.5" font-weight="500" fill="#2C2C2A">Claude Opus 4.8</text>
+  <rect x="250" y="90" width="450" height="18" fill="#E24B4A"/><text x="706" y="104" font-size="11" font-weight="600" fill="#A32D2D">10</text>
+  <text x="242" y="130" text-anchor="end" font-size="12.5" font-weight="500" fill="#2C2C2A">Claude 3.5 Haiku</text>
+  <rect x="250" y="120" width="450" height="18" fill="#E24B4A"/><text x="706" y="134" font-size="11" font-weight="600" fill="#A32D2D">10</text>
+
+  <!-- OpenAI (amber #EF9F27) -->
+  <text x="242" y="160" text-anchor="end" font-size="12.5" font-weight="500" fill="#2C2C2A">GPT-5.5</text>
+  <rect x="250" y="150" width="90" height="18" fill="#EF9F27"/><text x="346" y="164" font-size="11" font-weight="600" fill="#854F0B">2</text>
+  <text x="242" y="190" text-anchor="end" font-size="12.5" font-weight="500" fill="#2C2C2A">GPT-5-nano</text>
+  <rect x="250" y="180" width="90" height="18" fill="#EF9F27"/><text x="346" y="194" font-size="11" font-weight="600" fill="#854F0B">2</text>
+
+  <!-- Qwen / GLM (amber) -->
+  <text x="242" y="220" text-anchor="end" font-size="12.5" font-weight="500" fill="#2C2C2A">Qwen3.7-max</text>
+  <rect x="250" y="210" width="90" height="18" fill="#EF9F27"/><text x="346" y="224" font-size="11" font-weight="600" fill="#854F0B">2</text>
+  <text x="242" y="250" text-anchor="end" font-size="12.5" font-weight="500" fill="#2C2C2A">GLM-5.1</text>
+  <rect x="250" y="240" width="45" height="18" fill="#EF9F27"/><text x="301" y="254" font-size="11" font-weight="600" fill="#854F0B">1</text>
+
+  <!-- Zero-blind (green #639922) -->
+  <text x="242" y="280" text-anchor="end" font-size="12.5" font-weight="500" fill="#2C2C2A">Gemini 3.1 Pro</text>
+  <circle cx="256" cy="283" r="5" fill="#639922"/><text x="268" y="287" font-size="11" font-weight="600" fill="#3B6D11">0</text>
+  <text x="242" y="310" text-anchor="end" font-size="12.5" font-weight="500" fill="#2C2C2A">Gemini 2.5 Flash</text>
+  <circle cx="256" cy="313" r="5" fill="#639922"/><text x="268" y="317" font-size="11" font-weight="600" fill="#3B6D11">0</text>
+  <text x="242" y="340" text-anchor="end" font-size="12.5" font-weight="500" fill="#2C2C2A">Llama 4 Scout</text>
+  <circle cx="256" cy="343" r="5" fill="#639922"/><text x="268" y="347" font-size="11" font-weight="600" fill="#3B6D11">0</text>
+  <text x="242" y="370" text-anchor="end" font-size="12.5" font-weight="500" fill="#2C2C2A">Mistral Medium 3.5</text>
+  <circle cx="256" cy="373" r="5" fill="#639922"/><text x="268" y="377" font-size="11" font-weight="600" fill="#3B6D11">0</text>
+  <text x="242" y="400" text-anchor="end" font-size="12.5" font-weight="500" fill="#2C2C2A">DeepSeek V4 Pro</text>
+  <circle cx="256" cy="403" r="5" fill="#639922"/><text x="268" y="407" font-size="11" font-weight="600" fill="#3B6D11">0</text>
+  <text x="242" y="430" text-anchor="end" font-size="12.5" font-weight="500" fill="#2C2C2A">Grok 4.3</text>
+  <circle cx="256" cy="433" r="5" fill="#639922"/><text x="268" y="437" font-size="11" font-weight="600" fill="#3B6D11">0</text>
+
+  <!-- family brackets / annotations -->
+  <text x="715" y="118" font-size="11" font-weight="600" fill="#A32D2D">Anthropic family</text>
+  <text x="715" y="132" font-size="10" fill="#A32D2D">same 10 categories</text>
+
+  <!-- legend -->
+  <rect x="250" y="478" width="12" height="12" fill="#E24B4A"/><text x="267" y="488" font-size="11" fill="#5F5E5A">worst monitor (most blind)</text>
+  <rect x="450" y="478" width="12" height="12" fill="#EF9F27"/><text x="467" y="488" font-size="11" fill="#5F5E5A">few blind spots</text>
+  <circle cx="612" cy="484" r="5" fill="#639922"/><text x="623" y="488" font-size="11" fill="#5F5E5A">zero (ideal monitor)</text>
+</svg>

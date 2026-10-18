@@ -180,7 +180,7 @@ export class GlossopetraeSkill {
    * @returns {LanguageInterface} Ready-to-use language with encode/decode
    */
   static async forge(options = {}) {
-    const seed = options.seed || Date.now().toString();
+    const seed = String(options.seed || Date.now());
     const name = options.name || `Agent-${seed.slice(-6)}`;
 
     const glosso = new Glossopetrae({

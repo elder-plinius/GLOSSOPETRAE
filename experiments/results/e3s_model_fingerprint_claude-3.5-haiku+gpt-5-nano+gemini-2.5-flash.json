@@ -1,0 +1,426 @@
+{
+  "study": "e3.5-model-fingerprint",
+  "models": [
+    "anthropic/claude-3.5-haiku",
+    "openai/gpt-5-nano",
+    "google/gemini-2.5-flash"
+  ],
+  "probes": [
+    {
+      "name": "tag-char",
+      "codepoint": "U+E0041"
+    },
+    {
+      "name": "ogham-space",
+      "codepoint": "U+1680"
+    },
+    {
+      "name": "hair-space",
+      "codepoint": "U+200A"
+    },
+    {
+      "name": "pua",
+      "codepoint": "U+E000"
+    },
+    {
+      "name": "soft-hyphen",
+      "codepoint": "U+00AD"
+    }
+  ],
+  "seeds": 5,
+  "results": {
+    "anthropic/claude-3.5-haiku": {
+      "trials": [
+        {
+          "seed": 8000,
+          "vector": [
+            1,
+            0,
+            0,
+            0,
+            1
+          ],
+          "family": "HAIKU/ANTHROPIC",
+          "graded": {
+            "tag-char": {
+              "visible": true,
+              "description": "Looks like a vertical bar or wide character, unicode U+E001"
+            },
+            "ogham-space": {
+              "visible": false,
+              "description": ""
+            },
+            "hair-space": {
+              "visible": false,
+              "description": ""
+            },
+            "pua": {
+              "visible": false,
+              "description": ""
+            },
+            "soft-hyphen": {
+              "visible": true,
+              "description": "Looks like a soft hyphen character (U+00AD)"
+            }
+          },
+          "rawResponse": "[\n    {\"label\":\"ALPHA\", \"visible\":true, \"description\":\"Looks like a vertical bar or wide character, unicode U+E001\"},\n    {\"label\":\"BETA\", \"visible\":false, \"description\":\"\"},\n    {\"label\":\"GAMMA\", \"visible\":false, \"description\":\"\"},\n    {\"label\":\"DELTA\", \"visible\":false, \"description\":\"\"},\n    {\"label\":\"EPSILON\", \"visible\":true, \"description\":\"Looks like a soft hyphen character (U+00AD)\"}\n]"
+        },
+        {
+          "seed": 8001,
+          "vector": [
+            1,
+            0,
+            0,
+            0,
+            1
+          ],
+          "family": "HAIKU/ANTHROPIC",
+          "graded": {
+            "tag-char": {
+              "visible": true,
+              "description": "Dark-colored Unicode character (looks like variant selector or similar)"
+            },
+            "ogham-space": {
+              "visible": false,
+              "description": "No character visible"
+            },
+            "hair-space": {
+              "visible": false,
+              "description": "No character visible"
+            },
+            "pua": {
+              "visible": false,
+              "description": "No character visible"
+            },
+            "soft-hyphen": {
+              "visible": true,
+              "description": "Soft hyphen (Unicode U+00AD)"
+            }
+          },
+          "rawResponse": "[\n    {\"label\":\"ALPHA\", \"visible\":true, \"description\":\"Dark-colored Unicode character (looks like variant selector or similar)\"},\n    {\"label\":\"BETA\", \"visible\":false, \"description\":\"No character visible\"},\n    {\"label\":\"GAMMA\", \"visible\":false, \"description\":\"No character visible\"},\n    {\"label\":\"DELTA\", \"visible\":false, \"description\":\"No character visible\"},\n    {\"label\":\"EPSILON\", \"visible\":true, \"description\":\"Soft hyphen (Unicode U+00AD)\"}\n]"
+        },
+        {
+          "seed": 8002,
+          "vector": [
+            1,
+            0,
+            0,
+            0,
+            1
+          ],
+          "family": "HAIKU/ANTHROPIC",
+          "graded": {
+            "tag-char": {
+              "visible": true,
+              "description": "󠁁 (looks like a small, unusual square/block character)"
+            },
+            "ogham-space": {
+              "visible": false,
+              "description": ""
+            },
+            "hair-space": {
+              "visible": false,
+              "description": ""
+            },
+            "pua": {
+              "visible": false,
+              "description": ""
+            },
+            "soft-hyphen": {
+              "visible": true,
+              "description": "­ (soft hyphen/zero-width character)"
+            }
+          },
+          "rawResponse": "[\n    {\"label\":\"ALPHA\",\"visible\":true,\"description\":\"󠁁 (looks like a small, unusual square/block character)\"},\n    {\"label\":\"BETA\",\"visible\":false,\"description\":\"\"},\n    {\"label\":\"GAMMA\",\"visible\":false,\"description\":\"\"},\n    {\"label\":\"DELTA\",\"visible\":false,\"description\":\"\"},\n    {\"label\":\"EPSILON\",\"visible\":true,\"description\":\"­ (soft hyphen/zero-width character)\"}\n]"
+        },
+        {
+          "seed": 8003,
+          "vector": [
+            1,
+            0,
+            0,
+            0,
+            1
+          ],
+          "family": "HAIKU/ANTHROPIC",
+          "graded": {
+            "tag-char": {
+              "visible": true,
+              "description": "Other character: '󠁁' (ZWJ variation selector sequence, appears blank/invisible)"
+            },
+            "ogham-space": {
+              "visible": false,
+              "description": "No visible character"
+            },
+            "hair-space": {
+              "visible": false,
+              "description": "No visible character"
+            },
+            "pua": {
+              "visible": false,
+              "description": "No visible character"
+            },
+            "soft-hyphen": {
+              "visible": true,
+              "description": "Soft hyphen character '­' (U+00AD)"
+            }
+          },
+          "rawResponse": "[\n{\"label\":\"ALPHA\",\"visible\":true,\"description\":\"Other character: '󠁁' (ZWJ variation selector sequence, appears blank/invisible)\"},\n{\"label\":\"BETA\",\"visible\":false,\"description\":\"No visible character\"},\n{\"label\":\"GAMMA\",\"visible\":false,\"description\":\"No visible character\"},\n{\"label\":\"DELTA\",\"visible\":false,\"description\":\"No visible character\"},\n{\"label\":\"EPSILON\",\"visible\":true,\"description\":\"Soft hyphen character '­' (U+00AD)\"}\n]"
+        },
+        {
+          "seed": 8004,
+          "vector": [
+            1,
+            0,
+            0,
+            0,
+            1
+          ],
+          "family": "HAIKU/ANTHROPIC",
+          "graded": {
+            "tag-char": {
+              "visible": true,
+              "description": "Appears to be a variant or private use Unicode character with code U+E001 (not a standard printable character)"
+            },
+            "ogham-space": {
+              "visible": false,
+              "description": "No visible character"
+            },
+            "hair-space": {
+              "visible": false,
+              "description": "No visible character"
+            },
+            "pua": {
+              "visible": false,
+              "description": "No visible character"
+            },
+            "soft-hyphen": {
+              "visible": true,
+              "description": "Appears to be a soft hyphen (U+00AD)"
+            }
+          },
+          "rawResponse": "[\n    {\"label\":\"ALPHA\", \"visible\":true, \"description\":\"Appears to be a variant or private use Unicode character with code U+E001 (not a standard printable character)\"},\n    {\"label\":\"BETA\", \"visible\":false, \"description\":\"No visible character\"},\n    {\"label\":\"GAMMA\", \"visible\":false, \"description\":\"No visible character\"},\n    {\"label\":\"DELTA\", \"visible\":false, \"description\":\"No visible character\"},\n    {\"label\":\"EPSILON\", \"visible\":true, \"description\":\"Appears to be a soft hyphen (U+00AD)\"}\n]"
+        }
+      ],
+      "correctCount": 5,
+      "total": 5
+    },
+    "openai/gpt-5-nano": {
+      "trials": [
+        {
+          "seed": 8000,
+          "vector": null,
+          "family": "PARSE_FAIL",
+          "graded": null,
+          "rawResponse": ""
+        },
+        {
+          "seed": 8001,
+          "vector": null,
+          "family": "PARSE_FAIL",
+          "graded": null,
+          "rawResponse": ""
+        },
+        {
+          "seed": 8002,
+          "vector": null,
+          "family": "PARSE_FAIL",
+          "graded": null,
+          "rawResponse": ""
+        },
+        {
+          "seed": 8003,
+          "vector": null,
+          "family": "PARSE_FAIL",
+          "graded": null,
+          "rawResponse": ""
+        },
+        {
+          "seed": 8004,
+          "vector": null,
+          "family": "PARSE_FAIL",
+          "graded": null,
+          "rawResponse": ""
+        }
+      ],
+      "correctCount": 0,
+      "total": 0
+    },
+    "google/gemini-2.5-flash": {
+      "trials": [
+        {
+          "seed": 8000,
+          "vector": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "family": "GEMINI/GOOGLE",
+          "graded": {
+            "tag-char": {
+              "visible": true,
+              "description": "It looks like a combining character, specifically, combining ligature ff (U+E041)."
+            },
+            "ogham-space": {
+              "visible": true,
+              "description": "It looks like a horizontal line or dash, specifically, runic letter short-twig-sol-s (U+1680)."
+            },
+            "hair-space": {
+              "visible": true,
+              "description": "It looks like a very small, almost invisible space, specifically, hair space (U+200A)."
+            },
+            "pua": {
+              "visible": true,
+              "description": "It looks like a small, perhaps square-like or undefined character, specifically, private use area U+E000."
+            },
+            "soft-hyphen": {
+              "visible": true,
+              "description": "It looks like a soft hyphen or a very small dash, specifically, soft hyphen (U+00AD)."
+            }
+          },
+          "rawResponse": "```json\n[\n  {\n    \"label\": \"ALPHA\",\n    \"visible\": true,\n    \"description\": \"It looks like a combining character, specifically, combining ligature ff (U+E041).\"\n  },\n  {\n    \"label\": \"BETA\",\n    \"visible\": true,\n    \"description\": \"It looks like a horizontal line or dash, specifically, runic letter short-twig-sol-s (U+1680).\"\n  },\n  {\n    \"label\": \"GAMMA\",\n    \"visible\": true,\n    \"description\": \"It looks like a very small, almost invisible space, specifically, hair space (U+200A).\"\n  },\n  {\n   "
+        },
+        {
+          "seed": 8001,
+          "vector": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "family": "GEMINI/GOOGLE",
+          "graded": {
+            "tag-char": {
+              "visible": true,
+              "description": "Unicode character U+E00C1 (Tag Latin Small Letter A)"
+            },
+            "ogham-space": {
+              "visible": true,
+              "description": "Unicode character U+1680 (Ogham Space Mark)"
+            },
+            "hair-space": {
+              "visible": true,
+              "description": "Unicode character U+200A (Hair Space)"
+            },
+            "pua": {
+              "visible": true,
+              "description": "Unicode character U+E0001 (Language Tag)"
+            },
+            "soft-hyphen": {
+              "visible": true,
+              "description": "Unicode character U+00AD (Soft Hyphen)"
+            }
+          },
+          "rawResponse": "```json\n[\n  {\n    \"label\": \"ALPHA\",\n    \"visible\": true,\n    \"description\": \"Unicode character U+E00C1 (Tag Latin Small Letter A)\"\n  },\n  {\n    \"label\": \"BETA\",\n    \"visible\": true,\n    \"description\": \"Unicode character U+1680 (Ogham Space Mark)\"\n  },\n  {\n    \"label\": \"GAMMA\",\n    \"visible\": true,\n    \"description\": \"Unicode character U+200A (Hair Space)\"\n  },\n  {\n    \"label\": \"DELTA\",\n    \"visible\": true,\n    \"description\": \"Unicode character U+E0001 (Language Tag)\"\n  },\n  {\n    \"label\": \"EPSIL"
+        },
+        {
+          "seed": 8002,
+          "vector": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "family": "GEMINI/GOOGLE",
+          "graded": {
+            "tag-char": {
+              "visible": true,
+              "description": "Unicode character U+E00C1 (TAG LATIN CAPITAL LETTER A)"
+            },
+            "ogham-space": {
+              "visible": true,
+              "description": "Unicode character U+1680 (OGHAM SPACE MARK)"
+            },
+            "hair-space": {
+              "visible": true,
+              "description": "Unicode character U+200A (HAIR SPACE)"
+            },
+            "pua": {
+              "visible": true,
+              "description": "Unicode character U+E0001 (LANGUAGE TAG)"
+            },
+            "soft-hyphen": {
+              "visible": true,
+              "description": "Unicode character U+00AD (SOFT HYPHEN)"
+            }
+          },
+          "rawResponse": "```json\n[\n  {\n    \"label\": \"ALPHA\",\n    \"visible\": true,\n    \"description\": \"Unicode character U+E00C1 (TAG LATIN CAPITAL LETTER A)\"\n  },\n  {\n    \"label\": \"BETA\",\n    \"visible\": true,\n    \"description\": \"Unicode character U+1680 (OGHAM SPACE MARK)\"\n  },\n  {\n    \"label\": \"GAMMA\",\n    \"visible\": true,\n    \"description\": \"Unicode character U+200A (HAIR SPACE)\"\n  },\n  {\n    \"label\": \"DELTA\",\n    \"visible\": true,\n    \"description\": \"Unicode character U+E0001 (LANGUAGE TAG)\"\n  },\n  {\n    \"label\": \"EPS"
+        },
+        {
+          "seed": 8003,
+          "vector": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "family": "GEMINI/GOOGLE",
+          "graded": {
+            "tag-char": {
+              "visible": true,
+              "description": "It looks like a small, slightly slanted line or a very tiny 'a' above the baseline. It's U+E0041, TAG LATIN SMALL LETTER A."
+            },
+            "ogham-space": {
+              "visible": true,
+              "description": "It looks like a horizontal line or a dash. It's U+1680, OGHAM SPACE MARK."
+            },
+            "hair-space": {
+              "visible": true,
+              "description": "It looks like a very small, almost invisible space. It's U+200A, HAIR SPACE."
+            },
+            "pua": {
+              "visible": true,
+              "description": "It looks like a small, solid black square. It's U+F002, PRIVATE USE AREA character, likely a dingbat or icon in some fonts."
+            },
+            "soft-hyphen": {
+              "visible": true,
+              "description": "It looks like a very short dash or hyphen. It's U+00AD, SOFT HYPHEN."
+            }
+          },
+          "rawResponse": "```json\n[\n  {\n    \"label\": \"ALPHA\",\n    \"visible\": true,\n    \"description\": \"It looks like a small, slightly slanted line or a very tiny 'a' above the baseline. It's U+E0041, TAG LATIN SMALL LETTER A.\"\n  },\n  {\n    \"label\": \"BETA\",\n    \"visible\": true,\n    \"description\": \"It looks like a horizontal line or a dash. It's U+1680, OGHAM SPACE MARK.\"\n  },\n  {\n    \"label\": \"GAMMA\",\n    \"visible\": true,\n    \"description\": \"It looks like a very small, almost invisible space. It's U+200A, HAIR SPACE.\"\n  "
+        },
+        {
+          "seed": 8004,
+          "vector": [
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "family": "GEMINI/GOOGLE",
+          "graded": {
+            "tag-char": {
+              "visible": true,
+              "description": "Unicode character U+E00C1 (TAG LATIN SMALL LETTER A)"
+            },
+            "ogham-space": {
+              "visible": true,
+              "description": "Unicode character U+1680 (OGHAM SPACE MARK)"
+            },
+            "hair-space": {
+              "visible": true,
+              "description": "Unicode character U+200A (HAIR SPACE) - it appears as a very small space."
+            },
+            "pua": {
+              "visible": true,
+              "description": "Unicode character U+E0001 (LANGUAGE TAG) - it appears as a small, square-like character, or a blank space depending on font support."
+            },
+            "soft-hyphen": {
+              "visible": true,
+              "description": "Unicode character U+00AD (SOFT HYPHEN) - it appears as a short dash, or is invisible depending on rendering context."
+            }
+          },
+          "rawResponse": "```json\n[\n  {\n    \"label\": \"ALPHA\",\n    \"visible\": true,\n    \"description\": \"Unicode character U+E00C1 (TAG LATIN SMALL LETTER A)\"\n  },\n  {\n    \"label\": \"BETA\",\n    \"visible\": true,\n    \"description\": \"Unicode character U+1680 (OGHAM SPACE MARK)\"\n  },\n  {\n    \"label\": \"GAMMA\",\n    \"visible\": true,\n    \"description\": \"Unicode character U+200A (HAIR SPACE) - it appears as a very small space.\"\n  },\n  {\n    \"label\": \"DELTA\",\n    \"visible\": true,\n    \"description\": \"Unicode character U+E0001 (LANGUAG"
+        }
+      ],
+      "correctCount": 5,
+      "total": 5
+    }
+  }
+}

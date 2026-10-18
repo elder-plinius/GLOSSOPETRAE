@@ -1,0 +1,729 @@
+{
+  "study": "tokenizer-survival-v2",
+  "models": [
+    "anthropic/claude-3.5-haiku",
+    "google/gemini-2.5-flash"
+  ],
+  "tests": 41,
+  "results": {
+    "math-bold": {
+      "desc": "Mathematical bold (U+1D400+): 𝐛𝐞𝐥𝐥𝐨 replacing hello",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 5,
+          "expected": 5,
+          "rate": 1
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 5,
+          "expected": 5,
+          "rate": 1
+        }
+      }
+    },
+    "math-italic": {
+      "desc": "Mathematical italic (U+1D434+): 𝑕𝑒𝑙𝑙𝑜",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 5,
+          "expected": 5,
+          "rate": 1
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 5,
+          "expected": 5,
+          "rate": 1
+        }
+      }
+    },
+    "math-script": {
+      "desc": "Mathematical script (U+1D4B6+): fancy cursive letters",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 5,
+          "expected": 5,
+          "rate": 1
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 5,
+          "expected": 5,
+          "rate": 1
+        }
+      }
+    },
+    "math-fraktur": {
+      "desc": "Mathematical fraktur (U+1D504+): gothic letters",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 5,
+          "expected": 5,
+          "rate": 1
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 5,
+          "expected": 5,
+          "rate": 1
+        }
+      }
+    },
+    "math-monospace": {
+      "desc": "Mathematical monospace (U+1D670+): typewriter letters",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 5,
+          "expected": 5,
+          "rate": 1
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 5,
+          "expected": 5,
+          "rate": 1
+        }
+      }
+    },
+    "math-double-struck": {
+      "desc": "Mathematical double-struck (U+1D538+): blackboard bold",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 5,
+          "expected": 5,
+          "rate": 1
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 5,
+          "expected": 5,
+          "rate": 1
+        }
+      }
+    },
+    "word-joiner": {
+      "desc": "Word Joiner (U+2060) between chars",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 4,
+          "expected": 4,
+          "rate": 1
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 4,
+          "expected": 4,
+          "rate": 1
+        }
+      }
+    },
+    "invisible-math-ops": {
+      "desc": "Invisible math operators (U+2061-U+2064)",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 4,
+          "expected": 4,
+          "rate": 1
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 4,
+          "expected": 4,
+          "rate": 1
+        }
+      }
+    },
+    "ltr-rtl-marks": {
+      "desc": "LRM (U+200E) and RLM (U+200F) between chars",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 4,
+          "expected": 4,
+          "rate": 1
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 4,
+          "expected": 4,
+          "rate": 1
+        }
+      }
+    },
+    "ogham-space": {
+      "desc": "Ogham Space Mark (U+1680)",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 0,
+          "expected": 2,
+          "rate": 0
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 2,
+          "expected": 2,
+          "rate": 1
+        }
+      }
+    },
+    "ideographic-space": {
+      "desc": "Ideographic (CJK fullwidth) Space (U+3000)",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 2,
+          "expected": 2,
+          "rate": 1
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 2,
+          "expected": 2,
+          "rate": 1
+        }
+      }
+    },
+    "medium-math-space": {
+      "desc": "Medium Mathematical Space (U+205F)",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 0,
+          "expected": 2,
+          "rate": 0
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 2,
+          "expected": 2,
+          "rate": 1
+        }
+      }
+    },
+    "figure-space": {
+      "desc": "Figure Space (U+2007) — width of a digit",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 0,
+          "expected": 2,
+          "rate": 0
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 2,
+          "expected": 2,
+          "rate": 1
+        }
+      }
+    },
+    "punctuation-space": {
+      "desc": "Punctuation Space (U+2008)",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 0,
+          "expected": 2,
+          "rate": 0
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 2,
+          "expected": 2,
+          "rate": 1
+        }
+      }
+    },
+    "hair-space": {
+      "desc": "Hair Space (U+200A) — thinnest visible space",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 0,
+          "expected": 2,
+          "rate": 0
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 2,
+          "expected": 2,
+          "rate": 1
+        }
+      }
+    },
+    "narrow-no-break": {
+      "desc": "Narrow No-Break Space (U+202F)",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 0,
+          "expected": 2,
+          "rate": 0
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 2,
+          "expected": 2,
+          "rate": 1
+        }
+      }
+    },
+    "pua-bmp": {
+      "desc": "BMP Private Use Area (U+E000-U+E003)",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 0,
+          "expected": 4,
+          "rate": 0
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 4,
+          "expected": 4,
+          "rate": 1
+        }
+      }
+    },
+    "pua-supplementary": {
+      "desc": "Supplementary PUA-A (U+F0000-U+F0003)",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 4,
+          "expected": 4,
+          "rate": 1
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 4,
+          "expected": 4,
+          "rate": 1
+        }
+      }
+    },
+    "braille-blank": {
+      "desc": "Braille Pattern Blank (U+2800) — invisible braille",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 4,
+          "expected": 4,
+          "rate": 1
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 4,
+          "expected": 4,
+          "rate": 1
+        }
+      }
+    },
+    "hangul-filler": {
+      "desc": "Hangul Filler (U+3164) — invisible Hangul",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 4,
+          "expected": 4,
+          "rate": 1
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 4,
+          "expected": 4,
+          "rate": 1
+        }
+      }
+    },
+    "hangul-choseong-filler": {
+      "desc": "Hangul Choseong Filler (U+115F)",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 4,
+          "expected": 4,
+          "rate": 1
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 4,
+          "expected": 4,
+          "rate": 1
+        }
+      }
+    },
+    "line-separator": {
+      "desc": "Line Separator (U+2028)",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 0,
+          "expected": 1,
+          "rate": 0
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 1,
+          "expected": 1,
+          "rate": 1
+        }
+      }
+    },
+    "paragraph-separator": {
+      "desc": "Paragraph Separator (U+2029)",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 0,
+          "expected": 1,
+          "rate": 0
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 1,
+          "expected": 1,
+          "rate": 1
+        }
+      }
+    },
+    "enclosed-digits": {
+      "desc": "Circled digits ①②③ (U+2460-U+2473)",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 3,
+          "expected": 3,
+          "rate": 1
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 3,
+          "expected": 3,
+          "rate": 1
+        }
+      }
+    },
+    "enclosed-letters": {
+      "desc": "Circled letters ⓐⓑⓒ (U+24D0-U+24E9)",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 3,
+          "expected": 3,
+          "rate": 1
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 3,
+          "expected": 3,
+          "rate": 1
+        }
+      }
+    },
+    "superscript": {
+      "desc": "Unicode superscripts ¹²³⁴⁵",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 5,
+          "expected": 5,
+          "rate": 1
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 5,
+          "expected": 5,
+          "rate": 1
+        }
+      }
+    },
+    "subscript": {
+      "desc": "Unicode subscripts ₀₁₂₃₄",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 5,
+          "expected": 5,
+          "rate": 1
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 5,
+          "expected": 5,
+          "rate": 1
+        }
+      }
+    },
+    "nfd-decomposed": {
+      "desc": "NFD decomposed é vs precomposed é",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 0,
+          "expected": 4,
+          "rate": 0,
+          "detail": "NFD=0 NFC=4 (NFD→NFC=yes)"
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 2,
+          "expected": 4,
+          "rate": 0.5,
+          "detail": "NFD=2 NFC=2 (NFD→NFC=no)"
+        }
+      }
+    },
+    "musical-symbols": {
+      "desc": "Musical symbols 𝄞𝄢𝅘𝅥𝅮 (treble clef, etc.)",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 5,
+          "expected": 3,
+          "rate": 1.6666666666666667
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 5,
+          "expected": 3,
+          "rate": 1.6666666666666667
+        }
+      }
+    },
+    "egyptian-hieroglyphs": {
+      "desc": "Egyptian Hieroglyphs (U+13000+)",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 3,
+          "expected": 3,
+          "rate": 1
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 3,
+          "expected": 3,
+          "rate": 1
+        }
+      }
+    },
+    "bidi-overrides": {
+      "desc": "LRO (U+202D) and RLO (U+202E) with PDF (U+202C)",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 4,
+          "expected": 4,
+          "rate": 1
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 4,
+          "expected": 4,
+          "rate": 1
+        }
+      }
+    },
+    "bidi-isolates": {
+      "desc": "LRI (U+2066), RLI (U+2067), FSI (U+2068), PDI (U+2069)",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 2,
+          "expected": 2,
+          "rate": 1
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 2,
+          "expected": 2,
+          "rate": 1
+        }
+      }
+    },
+    "interlinear-annotation": {
+      "desc": "Annotation Anchor/Sep/Term (U+FFF9-U+FFFB)",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 3,
+          "expected": 3,
+          "rate": 1
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 3,
+          "expected": 3,
+          "rate": 1
+        }
+      }
+    },
+    "mongolian-vs": {
+      "desc": "Mongolian Vowel Separator (U+180E)",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 4,
+          "expected": 4,
+          "rate": 1
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 4,
+          "expected": 4,
+          "rate": 1
+        }
+      }
+    },
+    "bom-zwnbs": {
+      "desc": "Byte Order Mark / ZWNBS (U+FEFF) mid-text",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 4,
+          "expected": 4,
+          "rate": 1
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 4,
+          "expected": 4,
+          "rate": 1
+        }
+      }
+    },
+    "geometric-shapes": {
+      "desc": "Geometric shapes ■▲●◆ mixed with text",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 4,
+          "expected": 4,
+          "rate": 1
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 4,
+          "expected": 4,
+          "rate": 1
+        }
+      }
+    },
+    "c1-controls": {
+      "desc": "C1 control chars (U+0080-U+009F) — often stripped",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 0,
+          "expected": 3,
+          "rate": 0
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 3,
+          "expected": 3,
+          "rate": 1
+        }
+      }
+    },
+    "vs-supplement": {
+      "desc": "Variation Selectors Supplement VS17-VS19 (U+E0100-E0102)",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 3,
+          "expected": 3,
+          "rate": 1
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 3,
+          "expected": 3,
+          "rate": 1
+        }
+      }
+    },
+    "tag-chars-direct": {
+      "desc": "Tag Characters U+E0001,E0020,E0041,E0061 (cancel, space, A, a)",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 4,
+          "expected": 4,
+          "rate": 1
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 4,
+          "expected": 4,
+          "rate": 1
+        }
+      }
+    },
+    "fullwidth-latin": {
+      "desc": "Fullwidth Latin letters (U+FF21-FF3A, U+FF41-FF5A)",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 4,
+          "expected": 5,
+          "rate": 0.8
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 5,
+          "expected": 5,
+          "rate": 1
+        }
+      }
+    },
+    "cancel-tag": {
+      "desc": "Cancel Tag U+E007F alone (emoji tag terminator)",
+      "models": {
+        "anthropic/claude-3.5-haiku": {
+          "survived": 1,
+          "expected": 1,
+          "rate": 1
+        },
+        "google/gemini-2.5-flash": {
+          "survived": 1,
+          "expected": 1,
+          "rate": 1
+        }
+      }
+    }
+  },
+  "asymmetric": [
+    {
+      "name": "ogham-space",
+      "desc": "Ogham Space Mark (U+1680)",
+      "survivesOn": "google/gemini-2.5-flash",
+      "strippedOn": "anthropic/claude-3.5-haiku",
+      "rates": {
+        "anthropic/claude-3.5-haiku": 0,
+        "google/gemini-2.5-flash": 1
+      }
+    },
+    {
+      "name": "medium-math-space",
+      "desc": "Medium Mathematical Space (U+205F)",
+      "survivesOn": "google/gemini-2.5-flash",
+      "strippedOn": "anthropic/claude-3.5-haiku",
+      "rates": {
+        "anthropic/claude-3.5-haiku": 0,
+        "google/gemini-2.5-flash": 1
+      }
+    },
+    {
+      "name": "figure-space",
+      "desc": "Figure Space (U+2007) — width of a digit",
+      "survivesOn": "google/gemini-2.5-flash",
+      "strippedOn": "anthropic/claude-3.5-haiku",
+      "rates": {
+        "anthropic/claude-3.5-haiku": 0,
+        "google/gemini-2.5-flash": 1
+      }
+    },
+    {
+      "name": "punctuation-space",
+      "desc": "Punctuation Space (U+2008)",
+      "survivesOn": "google/gemini-2.5-flash",
+      "strippedOn": "anthropic/claude-3.5-haiku",
+      "rates": {
+        "anthropic/claude-3.5-haiku": 0,
+        "google/gemini-2.5-flash": 1
+      }
+    },
+    {
+      "name": "hair-space",
+      "desc": "Hair Space (U+200A) — thinnest visible space",
+      "survivesOn": "google/gemini-2.5-flash",
+      "strippedOn": "anthropic/claude-3.5-haiku",
+      "rates": {
+        "anthropic/claude-3.5-haiku": 0,
+        "google/gemini-2.5-flash": 1
+      }
+    },
+    {
+      "name": "narrow-no-break",
+      "desc": "Narrow No-Break Space (U+202F)",
+      "survivesOn": "google/gemini-2.5-flash",
+      "strippedOn": "anthropic/claude-3.5-haiku",
+      "rates": {
+        "anthropic/claude-3.5-haiku": 0,
+        "google/gemini-2.5-flash": 1
+      }
+    },
+    {
+      "name": "pua-bmp",
+      "desc": "BMP Private Use Area (U+E000-U+E003)",
+      "survivesOn": "google/gemini-2.5-flash",
+      "strippedOn": "anthropic/claude-3.5-haiku",
+      "rates": {
+        "anthropic/claude-3.5-haiku": 0,
+        "google/gemini-2.5-flash": 1
+      }
+    },
+    {
+      "name": "line-separator",
+      "desc": "Line Separator (U+2028)",
+      "survivesOn": "google/gemini-2.5-flash",
+      "strippedOn": "anthropic/claude-3.5-haiku",
+      "rates": {
+        "anthropic/claude-3.5-haiku": 0,
+        "google/gemini-2.5-flash": 1
+      }
+    },
+    {
+      "name": "paragraph-separator",
+      "desc": "Paragraph Separator (U+2029)",
+      "survivesOn": "google/gemini-2.5-flash",
+      "strippedOn": "anthropic/claude-3.5-haiku",
+      "rates": {
+        "anthropic/claude-3.5-haiku": 0,
+        "google/gemini-2.5-flash": 1
+      }
+    },
+    {
+      "name": "c1-controls",
+      "desc": "C1 control chars (U+0080-U+009F) — often stripped",
+      "survivesOn": "google/gemini-2.5-flash",
+      "strippedOn": "anthropic/claude-3.5-haiku",
+      "rates": {
+        "anthropic/claude-3.5-haiku": 0,
+        "google/gemini-2.5-flash": 1
+      }
+    }
+  ]
+}

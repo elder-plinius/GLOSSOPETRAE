@@ -184,6 +184,7 @@ export class Glossopetrae {
     const morphologyOptions = {
       morphType: this.attributes.getEffect('morphologyType') || this.config.morphType,
       caseCount: this.config.caseCount,
+      wordOrder: this.config.wordOrder || null,
     };
     // Apply divergence targets to morphology
     if (divergenceTargets) {

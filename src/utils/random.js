@@ -6,10 +6,17 @@
 export class SeededRandom {
   constructor(seed = Date.now()) {
     if (typeof seed === 'string') {
-      const n = Number(seed);
-      this.seed = Number.isFinite(n) ? n : hashString(seed);
+      const trimmed = seed.trim();
+      const n = trimmed === '' ? NaN : Number(trimmed);
+      this.seed = (Number.isFinite(n) && Math.abs(n) <= Number.MAX_SAFE_INTEGER)
+        ? n
+        : hashString(seed);
+    } else if (typeof seed === 'number') {
+      this.seed = (Number.isFinite(seed) && Math.abs(seed) <= Number.MAX_SAFE_INTEGER)
+        ? seed
+        : hashString(String(seed));
     } else {
-      this.seed = seed;
+      this.seed = hashString(String(seed));
     }
     this.state = this.seed;
   }
@@ -84,4 +91,25 @@ export function hashString(str) {
     hash = hash & hash;
   }
   return Math.abs(hash);
+}
+
+/**
+ * Normalize any seed (number, numeric string, arbitrary string, or edge value)
+ * to a deterministic uint32. Preserves exact `seed >>> 0` behavior for all
+ * finite safe numbers so existing numeric seeds remain 100% deterministic.
+ */
+export function seedToUint32(seed) {
+  if (typeof seed === 'number') {
+    return (Number.isFinite(seed) && Math.abs(seed) <= Number.MAX_SAFE_INTEGER)
+      ? (seed >>> 0)
+      : (hashString(String(seed)) >>> 0);
+  }
+  if (typeof seed === 'string') {
+    const trimmed = seed.trim();
+    const n = trimmed === '' ? NaN : Number(trimmed);
+    return (Number.isFinite(n) && Math.abs(n) <= Number.MAX_SAFE_INTEGER)
+      ? (n >>> 0)
+      : (hashString(seed) >>> 0);
+  }
+  return hashString(String(seed ?? 0)) >>> 0;
 }

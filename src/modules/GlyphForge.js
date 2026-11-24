@@ -23,7 +23,7 @@
  * glyphs. Zero dependencies, no DOM — all SVG is returned as strings.
  */
 
-import { SeededRandom, hashString } from '../utils/random.js';
+import { SeededRandom, hashString, seedToUint32 } from '../utils/random.js';
 
 // ---------------------------------------------------------------------------
 // Design-space constants (all glyphs live in a 100x100 viewBox)
@@ -243,7 +243,7 @@ export class GlyphForge {
   renderGlyphSVG(key, opts = {}) {
     const g = this.glyphs.get(key);
     if (!g) throw new Error(`GlyphForge: unknown glyph key "${key}"`);
-    const size = opts.size ?? 48;
+    const size = Math.max(1, Number.isFinite(opts.size) ? opts.size : 48);
     const body = this._glyphMarkup(g, 0, 0, opts, false);
     return this._svgOpen(100, 100, size, size, opts) + body + '</svg>';
   }
@@ -254,7 +254,7 @@ export class GlyphForge {
    * @param {object} opts - {size=48, color='currentColor', strokeWidth=1, direction}
    */
   renderWord(romanWord, opts = {}) {
-    const size = opts.size ?? 48;
+    const size = Math.max(1, Number.isFinite(opts.size) ? opts.size : 48);
     const dir = opts.direction || (this.script.direction && this.script.direction.code) || 'ltr';
     const units = this._wordToUnits(romanWord);
     const vertical = dir === 'ttb' || dir === 'ttb-rtl';
@@ -285,7 +285,7 @@ export class GlyphForge {
    * @param {object} opts - {size=48, color, strokeWidth, maxWidth=640, maxHeight, direction}
    */
   renderText(romanText, opts = {}) {
-    const size = opts.size ?? 48;
+    const size = Math.max(1, Number.isFinite(opts.size) ? opts.size : 48);
     const dir = opts.direction || (this.script.direction && this.script.direction.code) || 'ltr';
     const g = this.genome;
     const unitScale = size / 100;
@@ -369,7 +369,8 @@ export class GlyphForge {
   // -------------------------------------------------------------------------
 
   _rngFor(label) {
-    return new SeededRandom((Math.imul(this.seed, 31) + hashString(String(label))) >>> 0);
+    const numSeed = typeof this.seed === 'number' ? this.seed : seedToUint32(this.seed);
+    return new SeededRandom((Math.imul(numSeed, 31) + hashString(String(label))) >>> 0);
   }
 
   _buildGenome() {
@@ -1499,18 +1500,29 @@ export class GlyphForge {
   // SVG serialization
   // -------------------------------------------------------------------------
 
+  _escAttr(val) {
+    return String(val ?? '')
+      .replace(/&/g, '&amp;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+  }
+
   _svgOpen(unitsW, unitsH, pxW, pxH, opts = {}) {
     const g = this.genome;
-    const color = opts.color ?? 'currentColor';
-    const sw = rnd2(g.strokeWidth * (opts.strokeWidth ?? 1));
+    const color = this._escAttr(opts.color ?? 'currentColor');
+    const swMult = Number.isFinite(opts.strokeWidth) && opts.strokeWidth > 0 ? opts.strokeWidth : 1;
+    const sw = rnd2(g.strokeWidth * swMult);
     return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${rnd2(unitsW)} ${rnd2(unitsH)}" ` +
       `width="${pxW}" height="${pxH}" fill="none" stroke="${color}" stroke-width="${sw}" ` +
       `stroke-linecap="${g.linecap}" stroke-linejoin="${g.linejoin}">`;
   }
 
   _glyphMarkup(glyph, tx, ty, opts = {}, mirror = false) {
-    const color = opts.color ?? 'currentColor';
-    const sw = this.genome.strokeWidth * (opts.strokeWidth ?? 1);
+    const color = this._escAttr(opts.color ?? 'currentColor');
+    const swMult = Number.isFinite(opts.strokeWidth) && opts.strokeWidth > 0 ? opts.strokeWidth : 1;
+    const sw = this.genome.strokeWidth * swMult;
     let paths = '';
     for (const s of glyph.strokes) {
       if (s.fill) {

@@ -328,7 +328,7 @@ export class EvolutionEngine {
       env.wordHash = hashString(slot.proto);
       const before = slot.phones;
       const after = rule.transform(before.slice(), env);
-      if (after && after.length > 0 && after.join(' ') !== before.join(' ')) {
+      if (after && after.length > 0 && after.join('\0') !== before.join('\0')) {
         if (isLemma) {
           touched++;
           if (examples.length < 4) {

@@ -248,8 +248,8 @@ export class AudioForge {
     ).filter((w) => w.length > 0);
 
     const mode = opts.mode === 'question' ? 'question' : 'statement';
-    const pauseSec = opts.pause ?? 0.11;
-    const baseF0 = opts.f0 ?? 112;
+    const pauseSec = Math.max(0, Number.isFinite(opts.pause) ? opts.pause : 0.11);
+    const baseF0 = Number.isFinite(opts.f0) ? opts.f0 : 112;
     const pieces = [];
     const wordMeta = [];
     let totalSamples = 0;
@@ -799,11 +799,13 @@ export class AudioForge {
       return { samples: new Float32Array(Math.round(0.05 * sr)), phoneTimes: [] };
     }
 
-    const langSeed = typeof this.language.seed === 'number' ? this.language.seed : 0;
+    const langSeed = typeof this.language.seed === 'number'
+      ? this.language.seed
+      : (typeof this.language.seed === 'string' ? hashString(this.language.seed) : 0);
     const wordHash = hashString(this._normalizeRoman(word) + '#' + langSeed);
     const rng = new SeededRandom(wordHash);
-    const rate = opts.rate ?? 1;
-    const baseF0 = (opts.f0 ?? 112);
+    const rate = Math.max(0.1, Number.isFinite(opts.rate) ? opts.rate : 1);
+    const baseF0 = Number.isFinite(opts.f0) ? opts.f0 : 112;
 
     // --- Prosody assignment ---
     const syllables = this._syllabify(phones);

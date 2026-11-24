@@ -664,34 +664,48 @@ export class QualityEngine {
     return JSON.stringify(jsonld, null, 2);
   }
 
+  _escXml(val) {
+    return String(val ?? '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&apos;');
+  }
+
+  _escCsv(val) {
+    return `"${String(val ?? '').replace(/"/g, '""')}"`;
+  }
+
   _exportConlangML() {
     const entries = this.lexicon?.getEntries?.() || [];
+    const x = (v) => this._escXml(v);
 
     let xml = `<?xml version="1.0" encoding="UTF-8"?>
 <conlang xmlns="http://conlangml.org/schema/1.0"
-         name="${this.language.name}"
-         seed="${this.language.seed}">
+         name="${x(this.language.name)}"
+         seed="${x(this.language.seed)}">
 
   <phonology>
     <consonants>
-${this.phonology.consonants.map(c => `      <phoneme ipa="${c.ipa}" roman="${c.roman}" manner="${c.manner}" place="${c.place}" voiced="${c.voiced}"/>`).join('\n')}
+${this.phonology.consonants.map(c => `      <phoneme ipa="${x(c.ipa)}" roman="${x(c.roman)}" manner="${x(c.manner)}" place="${x(c.place)}" voiced="${x(c.voiced)}"/>`).join('\n')}
     </consonants>
     <vowels>
-${this.phonology.vowels.map(v => `      <phoneme ipa="${v.ipa}" roman="${v.roman}" height="${v.height}" backness="${v.backness}"/>`).join('\n')}
+${this.phonology.vowels.map(v => `      <phoneme ipa="${x(v.ipa)}" roman="${x(v.roman)}" height="${x(v.height)}" backness="${x(v.backness)}"/>`).join('\n')}
     </vowels>
   </phonology>
 
-  <morphology type="${this.morphology.type}" wordOrder="${this.morphology.wordOrder.basic}">
+  <morphology type="${x(this.morphology.type)}" wordOrder="${x(this.morphology.wordOrder.basic)}">
     <cases>
-${this.morphology.nominal.caseSystem.cases.map(c => `      <case name="${c.name}" abbr="${c.abbr}" suffix="${c.suffix || '∅'}"/>`).join('\n')}
+${this.morphology.nominal.caseSystem.cases.map(c => `      <case name="${x(c.name)}" abbr="${x(c.abbr)}" suffix="${x(c.suffix || '∅')}"/>`).join('\n')}
     </cases>
     <tenses>
-${this.morphology.verbal.tenses.tenses.map(t => `      <tense name="${t.name}" abbr="${t.abbr}" suffix="${t.suffix || '∅'}"/>`).join('\n')}
+${this.morphology.verbal.tenses.tenses.map(t => `      <tense name="${x(t.name)}" abbr="${x(t.abbr)}" suffix="${x(t.suffix || '∅')}"/>`).join('\n')}
     </tenses>
   </morphology>
 
   <lexicon count="${entries.length}">
-${entries.slice(0, 200).map(e => `    <entry lemma="${e.lemma}" gloss="${e.gloss}" pos="${e.class}" field="${e.field || 'general'}"/>`).join('\n')}
+${entries.slice(0, 200).map(e => `    <entry lemma="${x(e.lemma)}" gloss="${x(e.gloss)}" pos="${x(e.class)}" field="${x(e.field || 'general')}"/>`).join('\n')}
   </lexicon>
 
 </conlang>`;
@@ -707,7 +721,13 @@ ${entries.slice(0, 200).map(e => `    <entry lemma="${e.lemma}" gloss="${e.gloss
       const paradigm = entry.paradigm?.forms
         ? Object.entries(entry.paradigm.forms).map(([k, v]) => `${k}:${v}`).join(';')
         : '';
-      lines.push(`"${entry.lemma}","${entry.gloss}","${entry.class}","${entry.field || ''}","${paradigm}"`);
+      lines.push([
+        this._escCsv(entry.lemma),
+        this._escCsv(entry.gloss),
+        this._escCsv(entry.class),
+        this._escCsv(entry.field || ''),
+        this._escCsv(paradigm),
+      ].join(','));
     }
 
     return lines.join('\n');

@@ -89,7 +89,7 @@ export function mutualInfo(sent, decoded) {
   if (sent.length !== decoded.length || sent.length === 0) return 0;
   const n = sent.length;
 
-  // Joint and marginal frequency tables
+  // Joint and marginal frequency tables (nested Maps avoid delimiter collisions)
   const pX = new Map();
   const pY = new Map();
   const pXY = new Map();
@@ -97,21 +97,21 @@ export function mutualInfo(sent, decoded) {
   for (let i = 0; i < n; i++) {
     const x = sent[i];
     const y = decoded[i];
-    const xy = `${x}|||${y}`;
     pX.set(x, (pX.get(x) || 0) + 1);
     pY.set(y, (pY.get(y) || 0) + 1);
-    pXY.set(xy, (pXY.get(xy) || 0) + 1);
+    let row = pXY.get(x);
+    if (!row) { row = new Map(); pXY.set(x, row); }
+    row.set(y, (row.get(y) || 0) + 1);
   }
 
   let mi = 0;
-  for (const [xy, cXY] of pXY) {
-    const [x, y] = xy.split('|||');
-    const cX = pX.get(x);
-    const cY = pY.get(y);
-    const pxy = cXY / n;
-    const px = cX / n;
-    const py = cY / n;
-    mi += pxy * Math.log2(pxy / (px * py));
+  for (const [x, row] of pXY) {
+    const px = pX.get(x) / n;
+    for (const [y, cXY] of row) {
+      const py = pY.get(y) / n;
+      const pxy = cXY / n;
+      mi += pxy * Math.log2(pxy / (px * py));
+    }
   }
 
   return Math.max(0, mi);
@@ -163,8 +163,8 @@ export function mcnemar(trials) {
   const bc = b + c;
   if (bc === 0) return { chi2: 0, pValue: 1, significant: false, n: trials.length };
 
-  // McNemar's chi-squared with continuity correction
-  const chi2 = ((Math.abs(b - c) - 1) ** 2) / bc;
+  // McNemar's chi-squared with continuity correction (clamped at 0 when |b-c| <= 1)
+  const chi2 = (Math.max(0, Math.abs(b - c) - 1) ** 2) / bc;
   // Approximate p-value from chi-squared(1) using survival function
   const pValue = chi2Survival(chi2);
   return { chi2, pValue, significant: pValue < 0.05, n: trials.length };

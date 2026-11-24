@@ -187,14 +187,14 @@ function attack(opaquePrograms) {
       if (oc === cc) {
         // check first index of o < first index of c
         const io = gtoks.indexOf(o), ic = gtoks.indexOf(c);
-        if (io >= 0 && ic >= 0 && io < ic) bump(pairScore, o + ' ' + c, oc);
+        if (io >= 0 && ic >= 0 && io < ic) bump(pairScore, o + '\0' + c, oc);
       }
     }
   }
   const bestPair = [...pairScore.entries()].sort((a, b) => b[1] - a[1])[0];
   let openGlyph, closeGlyph;
   if (bestPair) {
-    [openGlyph, closeGlyph] = bestPair[0].split(' ');
+    [openGlyph, closeGlyph] = bestPair[0].split('\0');
   }
 
   // --- Heuristic C: keyword that STARTS the most lines after indentation is a

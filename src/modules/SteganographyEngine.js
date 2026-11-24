@@ -31,6 +31,8 @@
  * - Statistical profile matching to avoid detection
  */
 
+import { seedToUint32 } from '../utils/random.js';
+
 // ═══════════════════════════════════════════════════════════════════════════
 // CONSTANTS & CONFIGURATION
 // ═══════════════════════════════════════════════════════════════════════════
@@ -68,6 +70,20 @@ const HOMOGLYPH_MAP = {
   'i': ['i', 'і'],  // Latin i vs Ukrainian і
 };
 
+// Reverse lookup tables so decoding recognizes BOTH Latin (bit 0) and
+// Cyrillic (bit 1) variants, and can normalize words back to Latin before
+// lexical/morphological channel decoding.
+const HOMOGLYPH_BIT = new Map();
+const HOMOGLYPH_TO_LATIN = new Map();
+for (const [latin, [v0, v1]] of Object.entries(HOMOGLYPH_MAP)) {
+  HOMOGLYPH_BIT.set(v0, 0);
+  HOMOGLYPH_BIT.set(v0.toUpperCase(), 0);
+  HOMOGLYPH_BIT.set(v1, 1);
+  HOMOGLYPH_BIT.set(v1.toUpperCase(), 1);
+  HOMOGLYPH_TO_LATIN.set(v1, latin);
+  HOMOGLYPH_TO_LATIN.set(v1.toUpperCase(), latin.toUpperCase());
+}
+
 // Zero-width Unicode characters for invisible encoding
 const ZERO_WIDTH = {
   SPACE: '\u200B',      // Zero-width space (bit 0)
@@ -75,6 +91,7 @@ const ZERO_WIDTH = {
   JOINER: '\u200D',     // Zero-width joiner (bit separator)
   MARK: '\uFEFF',       // BOM/Zero-width no-break space (frame marker)
 };
+const ZERO_WIDTH_RE = /[\u200B\u200C\u200D\uFEFF]/g;
 
 // ═══════════════════════════════════════════════════════════════════════════
 // CRC32 IMPLEMENTATION
@@ -249,6 +266,14 @@ class ReedSolomon {
     // Calculate error magnitudes using Forney algorithm
     const corrected = new Uint8Array(msg);
     const errorMagnitudes = this._forney(syndromes, errorLocator, errorPositions);
+    if (!errorMagnitudes) {
+      return {
+        data: new Uint8Array(msg.slice(0, Math.max(0, msg.length - this.nsym))),
+        corrected: 0,
+        success: false,
+        error: 'Failed to compute error magnitudes',
+      };
+    }
 
     for (let i = 0; i < errorPositions.length; i++) {
       const pos = msg.length - 1 - errorPositions[i];
@@ -258,7 +283,7 @@ class ReedSolomon {
     }
 
     return {
-      data: new Uint8Array(corrected.slice(0, corrected.length - this.nsym)),
+      data: new Uint8Array(corrected.slice(0, Math.max(0, corrected.length - this.nsym))),
       corrected: errorPositions.length,
       success: true,
     };
@@ -274,7 +299,8 @@ class ReedSolomon {
         delta ^= this.gf.mul(errorLocator[j], syndromes[i - j] || 0);
       }
 
-      oldLocator.push(0);
+      // Multiply B(x) by x (shift coefficients up by 1 degree)
+      oldLocator.unshift(0);
 
       if (delta !== 0) {
         if (oldLocator.length > errorLocator.length) {
@@ -283,7 +309,7 @@ class ReedSolomon {
           errorLocator = newLocator;
         }
         for (let j = 0; j < oldLocator.length; j++) {
-          errorLocator[j] ^= this.gf.mul(delta, oldLocator[j]);
+          errorLocator[j] = (errorLocator[j] || 0) ^ this.gf.mul(delta, oldLocator[j]);
         }
       }
     }
@@ -294,9 +320,11 @@ class ReedSolomon {
   _chienSearch(errorLocator, msgLength) {
     const positions = [];
     for (let i = 0; i < msgLength; i++) {
+      // Root of Lambda(x) is X_i^-1 = (alpha^i)^-1
+      const xiInv = this.gf.inverse(this.gf.exp[i]);
       let sum = 0;
       for (let j = 0; j < errorLocator.length; j++) {
-        sum ^= this.gf.mul(errorLocator[j], this.gf.pow(this.gf.exp[i], j));
+        sum ^= this.gf.mul(errorLocator[j], this.gf.pow(xiInv, j));
       }
       if (sum === 0) {
         positions.push(i);
@@ -306,35 +334,29 @@ class ReedSolomon {
   }
 
   _forney(syndromes, errorLocator, errorPositions) {
-    // Calculate error evaluator polynomial
+    // Error evaluator polynomial Omega(x) = S(x) * Lambda(x) mod x^nsym
     const evaluator = this._polyMul(syndromes, errorLocator).slice(0, this.nsym);
-
-    // Calculate formal derivative of error locator
-    const derivative = [];
-    for (let i = 0; i < errorLocator.length; i++) {
-      if (i % 2 === 1) {
-        derivative.push(errorLocator[i]);
-      }
-    }
 
     const magnitudes = [];
     for (const pos of errorPositions) {
       const xi = this.gf.exp[pos];
       const xiInv = this.gf.inverse(xi);
 
-      // Evaluate error evaluator at Xi^-1
+      // Evaluate Omega(X_i^-1)
       let evalNum = 0;
       for (let j = 0; j < evaluator.length; j++) {
         evalNum ^= this.gf.mul(evaluator[j], this.gf.pow(xiInv, j));
       }
 
-      // Evaluate derivative at Xi^-1
+      // Formal derivative Lambda'(X_i^-1) = sum_{odd j} Lambda[j] * (X_i^-1)^(j-1)
       let evalDenom = 0;
-      for (let j = 0; j < derivative.length; j++) {
-        evalDenom ^= this.gf.mul(derivative[j], this.gf.pow(xiInv, j));
+      for (let j = 1; j < errorLocator.length; j += 2) {
+        evalDenom ^= this.gf.mul(errorLocator[j], this.gf.pow(xiInv, j - 1));
       }
 
-      magnitudes.push(this.gf.div(evalNum, evalDenom));
+      if (evalDenom === 0) return null;
+      // Generator uses FCR b=0 (roots alpha^0..alpha^(nsym-1)), so e_i = X_i * Omega(X_i^-1) / Lambda'(X_i^-1)
+      magnitudes.push(this.gf.mul(xi, this.gf.div(evalNum, evalDenom)));
     }
 
     return magnitudes;
@@ -398,11 +420,11 @@ export class SteganographyEngine {
 
   _deriveKey() {
     // Derive a pseudo-random stream key from language properties
-    const seed = this.language.seed || 0;
+    const seed = seedToUint32(this.language.seed ?? 0);
     const name = this.language.name || 'default';
 
     // Simple PRNG seeded from language - XORShift128+
-    let s0 = seed ^ 0xDEADBEEF;
+    let s0 = (seed ^ 0xDEADBEEF) >>> 0;
     let s1 = this._hashString(name);
 
     this._prngState = { s0, s1 };
@@ -513,10 +535,15 @@ export class SteganographyEngine {
   }
 
   _createPhoneticAlternate(word) {
-    // Create a subtle phonetic variation
-    const suffixes = ['i', 'a', 'e', 'u', '-i', '-a'];
+    // Create a subtle phonetic variation without delimiter characters (-, =, ~, ·)
+    // so it never collides with morphological or null-morpheme markers.
+    const suffixes = ['i', 'a', 'e', 'u', 'o', 'n'];
     const seed = this._hashString(word);
-    return word + suffixes[seed % suffixes.length];
+    for (let i = 0; i < suffixes.length; i++) {
+      const candidate = word + suffixes[(seed + i) % suffixes.length];
+      if (!this.synonymLookup.has(candidate)) return candidate;
+    }
+    return word + 'ia';
   }
 
   // ═══════════════════════════════════════════════════════════════════════
@@ -524,7 +551,7 @@ export class SteganographyEngine {
   // ═══════════════════════════════════════════════════════════════════════
 
   _buildMorphAlternates() {
-    const seed = this.language.seed || Date.now();
+    const seed = seedToUint32(this.language.seed ?? 0);
 
     // Generate language-specific particles
     const particles = this._generateParticles(seed);
@@ -598,7 +625,7 @@ export class SteganographyEngine {
   // ═══════════════════════════════════════════════════════════════════════
 
   _buildNullMorphemes() {
-    const seed = this.language.seed || 0;
+    const seed = seedToUint32(this.language.seed ?? 0);
 
     this.nullMorphemes = {
       interword: this._selectParticle(seed, ['ə', 'e', 'a', 'i']),
@@ -610,7 +637,7 @@ export class SteganographyEngine {
   }
 
   _selectParticle(seed, options) {
-    return options[seed % options.length];
+    return options[((seed % options.length) + options.length) % options.length];
   }
 
   // ═══════════════════════════════════════════════════════════════════════
@@ -639,7 +666,7 @@ export class SteganographyEngine {
     }
 
     // Honorific system
-    const seed = this.language.seed || 0;
+    const seed = seedToUint32(this.language.seed ?? 0);
     this.honorifics = {
       prefix: ['o-', 'go-', 'on-'][seed % 3],
       suffix: ['-san', '-shi', '-ren'][seed % 3],
@@ -756,15 +783,6 @@ export class SteganographyEngine {
     // Convert to bits
     const bits = this._bytesToBits(protected_);
 
-    // Check capacity
-    const capacity = this.calculateCapacity(coverMessage);
-    if (bits.length > capacity.totalBits) {
-      throw new Error(
-        `Payload too large for cover text. Need ${bits.length} bits, have ${capacity.totalBits}. ` +
-        `Add ${Math.ceil((bits.length - capacity.totalBits) / capacity.bitsPerWord)} more words.`
-      );
-    }
-
     // Interleave bits if enabled
     const finalBits = this.config.interleaveBits
       ? this._interleaveBits(bits)
@@ -774,20 +792,41 @@ export class SteganographyEngine {
     const translator = this.language.translationEngine;
     const baseTranslation = translator.translateToConlang(coverMessage);
 
+    // Compute actual raw bit capacity of the translated cover text
+    const rawCapacity = this._measureTextCapacity(baseTranslation.target);
+    const capacity = this.calculateCapacity(coverMessage);
+    const effectiveCapBits = Math.max(rawCapacity, 1);
+
+    if (finalBits.length > rawCapacity) {
+      const bpw = Math.max(1, parseFloat(capacity.bitsPerWord) || 1);
+      throw new Error(
+        `Payload too large for cover text. Need ${finalBits.length} bits, have ${rawCapacity}. ` +
+        `Add ${Math.ceil((finalBits.length - rawCapacity) / bpw)} more words.`
+      );
+    }
+
     // Encode bits into translation using all channels
-    const { stegoText, channelStats } = this._encodeBitsIntoText(
+    const { stegoText, channelStats, bitsEncoded } = this._encodeBitsIntoText(
       baseTranslation.target,
       finalBits
     );
+
+    if (bitsEncoded < finalBits.length) {
+      const bpw = Math.max(1, parseFloat(capacity.bitsPerWord) || 1);
+      throw new Error(
+        `Payload too large for cover text. Need ${finalBits.length} bits, encoded ${bitsEncoded}. ` +
+        `Add ${Math.ceil((finalBits.length - bitsEncoded) / bpw)} more words.`
+      );
+    }
 
     return {
       cover: coverMessage,
       stego: stegoText,
       stegoWithHeader: stegoText, // No visible header needed!
       payloadSize: payloadBytes.length,
-      encodedSize: bits.length,
-      capacity: capacity.totalBits,
-      utilization: (bits.length / capacity.totalBits * 100).toFixed(1) + '%',
+      encodedSize: finalBits.length,
+      capacity: rawCapacity,
+      utilization: (finalBits.length / effectiveCapBits * 100).toFixed(1) + '%',
       channels: channelStats,
       errorCorrection: this.config.errorCorrection,
       encrypted: this.config.encryptPayload,
@@ -893,13 +932,15 @@ export class SteganographyEngine {
       blocks.push(this.rs.encode(block));
     }
 
-    // Concatenate encoded blocks with length prefix
-    const totalLen = blocks.reduce((sum, b) => sum + b.length, 0);
+    // Store [numBlocks, block0Len, ...block0, block1Len, ...block1, ...]
+    // Each encoded block is <= 255 bytes, so 1 byte suffices for blockLen.
+    const totalLen = blocks.reduce((sum, b) => sum + 1 + b.length, 0);
     const result = new Uint8Array(1 + totalLen);
-    result[0] = blocks.length; // Number of blocks
+    result[0] = blocks.length;
 
     let offset = 1;
     for (const block of blocks) {
+      result[offset++] = block.length;
       result.set(block, offset);
       offset += block.length;
     }
@@ -956,7 +997,7 @@ export class SteganographyEngine {
     const bytes = [];
     for (let i = 0; i < bits.length; i += 8) {
       let byte = 0;
-      for (let j = 0; j < 8 && i + j < bits.length; j++) {
+      for (let j = 0; j < 8; j++) {
         byte = (byte << 1) | (bits[i + j] || 0);
       }
       bytes.push(byte);
@@ -965,29 +1006,52 @@ export class SteganographyEngine {
   }
 
   _interleaveBits(bits) {
-    // Block interleaving for burst error resistance
+    // Fixed 64-bit (8x8) per-block interleaving for burst error resistance.
+    // Self-contained per 64-bit block so trailing bits from unused cover words
+    // never alter de-interleaving of earlier blocks.
     const blockSize = 64;
     const numBlocks = Math.ceil(bits.length / blockSize);
-
-    // Pad to full blocks
     const padded = [...bits];
     while (padded.length < numBlocks * blockSize) {
       padded.push(0);
     }
 
-    // Interleave: take one bit from each block in round-robin
-    const interleaved = [];
-    for (let i = 0; i < blockSize; i++) {
-      for (let b = 0; b < numBlocks; b++) {
-        interleaved.push(padded[b * blockSize + i]);
+    const interleaved = new Array(padded.length);
+    for (let b = 0; b < numBlocks; b++) {
+      const base = b * blockSize;
+      for (let r = 0; r < 8; r++) {
+        for (let c = 0; c < 8; c++) {
+          interleaved[base + c * 8 + r] = padded[base + r * 8 + c];
+        }
       }
     }
 
     return interleaved;
   }
 
+  _measureTextCapacity(text) {
+    const words = String(text || '').split(/\s+/).filter(Boolean);
+    const channels = this.config.channels;
+    let total = 0;
+    for (const word of words) {
+      if (channels.includes('synonym')) {
+        const cleanWord = word.replace(/[-=~·].*$/, '');
+        if (this.synonymLookup.has(cleanWord)) total += 1;
+      }
+      if (channels.includes('morpheme')) total += 1;
+      if (channels.includes('null')) total += 1;
+      if (channels.includes('register')) total += 1;
+      if (channels.includes('homoglyph')) total += this._countHomoglyphSlots(word);
+      if (channels.includes('zerowidth')) total += 8;
+    }
+    if (channels.includes('order') && words.length >= 3) {
+      total += this.bitsPerClause;
+    }
+    return total;
+  }
+
   _encodeBitsIntoText(text, bits) {
-    const words = text.split(/\s+/);
+    const words = String(text || '').split(/\s+/).filter(Boolean);
     const stegoWords = [];
     let bitIndex = 0;
 
@@ -1077,10 +1141,10 @@ export class SteganographyEngine {
       stats.order.bits = orderBits.length;
       bitIndex += orderBits.length;
 
-      return { stegoText: reordered.join(' '), channelStats: stats };
+      return { stegoText: reordered.join(' '), channelStats: stats, bitsEncoded: bitIndex };
     }
 
-    return { stegoText: stegoWords.join(' '), channelStats: stats };
+    return { stegoText: stegoWords.join(' '), channelStats: stats, bitsEncoded: bitIndex };
   }
 
   _encodeSynonym(word, bit) {
@@ -1262,39 +1326,50 @@ export class SteganographyEngine {
     };
   }
 
+  _normalizeWordForTextChannels(word) {
+    let stripped = word.replace(ZERO_WIDTH_RE, '');
+    let out = '';
+    for (const ch of stripped) {
+      out += HOMOGLYPH_TO_LATIN.get(ch) ?? ch;
+    }
+    return out;
+  }
+
   _extractBitsFromText(text) {
-    const words = text.split(/\s+/);
+    const words = String(text || '').split(/\s+/).filter(Boolean);
     const bits = [];
     const channels = this.config.channels;
 
     for (const word of words) {
+      const normWord = this._normalizeWordForTextChannels(word);
+
       // Channel 1: Synonym
       if (channels.includes('synonym')) {
-        const bit = this._decodeSynonym(word);
+        const bit = this._decodeSynonym(normWord);
         if (bit !== null) bits.push(bit);
       }
 
       // Channel 2: Morpheme
       if (channels.includes('morpheme')) {
-        bits.push(this._decodeMorpheme(word));
+        bits.push(this._decodeMorpheme(normWord));
       }
 
       // Channel 4: Null morpheme
       if (channels.includes('null')) {
-        bits.push(this._decodeNull(word));
+        bits.push(this._decodeNull(normWord));
       }
 
       // Channel 5: Register
       if (channels.includes('register')) {
-        bits.push(this._decodeRegister(word));
+        bits.push(this._decodeRegister(normWord));
       }
 
-      // Channel 6: Homoglyphs
+      // Channel 6: Homoglyphs (read directly from original word before Latin normalization)
       if (channels.includes('homoglyph')) {
         bits.push(...this._decodeHomoglyphs(word));
       }
 
-      // Channel 7: Zero-width
+      // Channel 7: Zero-width (read directly from original word)
       if (channels.includes('zerowidth')) {
         bits.push(...this._decodeZeroWidth(word));
       }
@@ -1309,7 +1384,18 @@ export class SteganographyEngine {
   }
 
   _decodeSynonym(word) {
-    const cleanWord = word.replace(/[-=~·].*$/, '').replace(/^(o-|go-|on-)/, '');
+    let cleanWord = word;
+    if (this.honorifics?.prefix && cleanWord.startsWith(this.honorifics.prefix)) {
+      cleanWord = cleanWord.slice(this.honorifics.prefix.length);
+    }
+    const nullMarker = this.nullDelimiter + this.nullMorphemes.interword;
+    if (cleanWord.endsWith(nullMarker)) {
+      cleanWord = cleanWord.slice(0, -nullMarker.length);
+    }
+    const emphMarker = this.morphAlternates.emphatic.delimiter + this.morphAlternates.emphatic.particle;
+    if (cleanWord.endsWith(emphMarker)) {
+      cleanWord = cleanWord.slice(0, -emphMarker.length);
+    }
     const lookup = this.synonymLookup.get(cleanWord);
     return lookup ? lookup.bit : null;
   }
@@ -1333,16 +1419,9 @@ export class SteganographyEngine {
     const bits = [];
 
     for (const char of word) {
-      const lower = char.toLowerCase();
-      const pair = HOMOGLYPH_MAP[lower];
-
-      if (pair) {
-        // Check which variant it is
-        if (char.toLowerCase() === pair[0] || char === pair[0].toUpperCase()) {
-          bits.push(0);
-        } else if (char.toLowerCase() === pair[1] || char === pair[1].toUpperCase()) {
-          bits.push(1);
-        }
+      const bit = HOMOGLYPH_BIT.get(char);
+      if (bit !== undefined) {
+        bits.push(bit);
       }
     }
 
@@ -1374,21 +1453,21 @@ export class SteganographyEngine {
   }
 
   _deinterleaveBits(bits) {
+    // Inverse of fixed 64-bit (8x8) per-block transpose (self-inverse).
     const blockSize = 64;
-    const numBlocks = Math.ceil(bits.length / blockSize);
-
-    // Ensure we have full interleaved structure
-    while (bits.length < numBlocks * blockSize) {
-      bits.push(0);
+    const padded = [...bits];
+    const numBlocks = Math.ceil(padded.length / blockSize);
+    while (padded.length < numBlocks * blockSize) {
+      padded.push(0);
     }
 
-    // De-interleave
-    const result = new Array(bits.length);
-    let srcIdx = 0;
-
-    for (let i = 0; i < blockSize; i++) {
-      for (let b = 0; b < numBlocks; b++) {
-        result[b * blockSize + i] = bits[srcIdx++];
+    const result = new Array(padded.length);
+    for (let b = 0; b < numBlocks; b++) {
+      const base = b * blockSize;
+      for (let r = 0; r < 8; r++) {
+        for (let c = 0; c < 8; c++) {
+          result[base + r * 8 + c] = padded[base + c * 8 + r];
+        }
       }
     }
 
@@ -1411,15 +1490,16 @@ export class SteganographyEngine {
   }
 
   _rsDecode(data) {
-    if (data.length === 0) return data;
+    if (data.length < 2) return data;
 
     const numBlocks = data[0];
-    const blockSize = 255; // RS(255, 223) encoded block size
-
     const decoded = [];
     let offset = 1;
 
     for (let i = 0; i < numBlocks; i++) {
+      if (offset >= data.length) break;
+      const blockSize = data[offset++];
+      if (blockSize <= this.rs.nsym || offset + blockSize > data.length) break;
       const block = data.slice(offset, offset + blockSize);
       const result = this.rs.decode(block);
       decoded.push(...result.data);

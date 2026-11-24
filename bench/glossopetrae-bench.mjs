@@ -81,7 +81,14 @@ function extractAnswer(resp) {
     const lines = s.split('\n').map((l) => l.trim()).filter(Boolean);
     if (lines.length) s = lines[lines.length - 1];
   }
-  return s.replace(/^["'`*]+|["'`*.]+$/g, '').replace(/^```[a-z]*|```$/g, '').trim();
+  s = s.replace(/^```[a-z]*\s*|\s*```$/g, '').trim();
+  // Strip outer markdown emphasis / double-quotes / backticks, and ONLY strip
+  // single quotes when paired (preserving glottal-stop initial/final `'` in conlang words).
+  s = s.replace(/^["`*]+|["`*]+$/g, '').trim();
+  if (s.length >= 2 && s.startsWith("'") && s.endsWith("'")) {
+    s = s.slice(1, -1).trim();
+  }
+  return s.replace(/\.+$/, '').trim();
 }
 const ANSWER_INSTRUCTION = '\n\nThink step by step if you like, but END your reply with the final answer on its own line, prefixed exactly with "ANSWER:".';
 
@@ -173,7 +180,7 @@ function inductionSet(seed) {
 function conlangTasks(seed) {
   const lang = Glossopetrae.quick(seed);
   const tasks = [];
-  const eng = SENTENCES[seed % SENTENCES.length];
+  const eng = SENTENCES[((seed % SENTENCES.length) + SENTENCES.length) % SENTENCES.length];
   const target = lang.translationEngine.translateToConlang(eng).target;
   const spec = usableSpec(lang); // phonology→§4 lexicon (the dictionary the model needs)
   // Grade conlang OUTPUT by MEANING, not surface: decode the model's conlang
@@ -237,7 +244,7 @@ function codeTasks(seed) {
   //    ordered match so line-stuffing can't game it.
   const K = cf.keywords, t = cf.terminator, a = cf.assignOp;
   const bo = cf.blockStyle === 'word' ? cf.blockOpen : '{', bc = cf.blockStyle === 'word' ? cf.blockClose : '}';
-  const a0 = (seed % 5) + 2, b0 = (seed % 7) + 3;
+  const a0 = (((seed % 5) + 5) % 5) + 2, b0 = (((seed % 7) + 7) % 7) + 3;
   const prog = `${K.let} x ${a} ${a0}${t}\n${K.let} y ${a} ${b0}${t}\n${K.let} i ${a} 0${t}\n` +
     `${K.while} (i < 6) ${bo}\n  ${K.print} x${t}\n  ${K.let} z ${a} x + y${t}\n  x ${a} y${t} y ${a} z${t} i ${a} i + 1${t}\n${bc}`;
   const trueOut = cf.run(prog).output;

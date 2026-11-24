@@ -22,7 +22,7 @@
  * Identifiers, numbers, and string literals pass through unchanged.
  */
 
-import { SeededRandom } from '../utils/random.js';
+import { SeededRandom, seedToUint32 } from '../utils/random.js';
 
 // Distinct, visually-alien single-codepoint symbols (none overlap ASCII source).
 const GLYPH_POOL = [
@@ -49,7 +49,7 @@ export class CodeSkin {
   }
 
   _build() {
-    const rng = new SeededRandom(((this.seed >>> 0) * 2246822519 + this.level * 374761393 + 7) >>> 0);
+    const rng = new SeededRandom((seedToUint32(this.seed) * 2246822519 + this.level * 374761393 + 7) >>> 0);
     const glyphs = rng.shuffle([...GLYPH_POOL]);
     let g = 0;
     const nextGlyph = () => glyphs[g++ % glyphs.length];
@@ -95,15 +95,45 @@ export class CodeSkin {
 
   /** Reverse: opaque surface → canonical program the interpreter can run. */
   unskin(skinnedSrc) {
-    // skinned is space-delimited; reverse-map each piece, pass through literals.
-    return String(skinnedSrc).split(/\s+/).filter(Boolean)
-      .map((p) => this.rev.get(p) ?? p).join(' ');
+    // Preserve double-quoted string literals intact (even if they contain
+    // spaces or skinned glyphs) while reverse-mapping all space-delimited tokens.
+    const src = String(skinnedSrc);
+    const out = [];
+    let i = 0;
+    while (i < src.length) {
+      if (/\s/.test(src[i])) { i++; continue; }
+      if (src[i] === '"') {
+        let j = i + 1;
+        while (j < src.length && src[j] !== '"') {
+          if (src[j] === '\\' && j + 1 < src.length) j += 2;
+          else j++;
+        }
+        if (j < src.length) j++; // include closing quote
+        out.push(src.slice(i, j));
+        i = j;
+        continue;
+      }
+      let j = i;
+      while (j < src.length && !/\s/.test(src[j])) j++;
+      const piece = src.slice(i, j);
+      out.push(this.rev.get(piece) ?? piece);
+      i = j;
+    }
+    return out.join(' ');
   }
 
   run(skinnedSrc, opts) { return this.cf.run(this.unskin(skinnedSrc), opts); }
 
   _skinTok(tok) {
-    if (tok.t === 'str') return `"${tok.v}"`;
+    if (tok.t === 'str') {
+      const escaped = String(tok.v)
+        .replace(/\\/g, '\\\\')
+        .replace(/"/g, '\\"')
+        .replace(/\n/g, '\\n')
+        .replace(/\r/g, '\\r')
+        .replace(/\t/g, '\\t');
+      return `"${escaped}"`;
+    }
     if (tok.t === 'num') return String(tok.v);
     if (tok.t === 'id') return tok.v;
     return this.fwd.get(tok.v) ?? tok.v; // kw / op

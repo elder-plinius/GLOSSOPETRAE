@@ -20,7 +20,7 @@
  */
 
 import { Glossopetrae } from '../Glossopetrae.js';
-import { SeededRandom } from '../utils/random.js';
+import { SeededRandom, seedToUint32 } from '../utils/random.js';
 
 // Programming concepts that get a generated keyword. Where a natural-language
 // gloss is an apt metaphor we bias toward it (print≈"speak", return≈"give",
@@ -57,7 +57,7 @@ export class CodeForge {
       this.seed = seedOrLanguage;
       this.language = Glossopetrae.quick(seedOrLanguage);
     }
-    this.rng = new SeededRandom((this.seed >>> 0) * 2654435761 + 12345);
+    this.rng = new SeededRandom(seedToUint32(this.seed) * 2654435761 + 12345);
     this._design();
   }
 
@@ -149,14 +149,36 @@ export class CodeForge {
       if (c === '#') { while (i < src.length && src[i] !== '\n') i++; continue; }
       // String literal
       if (c === '"') {
+        const startLine = line;
         let j = i + 1, s = '';
-        while (j < src.length && src[j] !== '"') { s += src[j] === '\\' ? src[++j] : src[j]; j++; }
-        toks.push({ t: 'str', v: s, line }); i = j + 1; continue;
+        while (j < src.length && src[j] !== '"') {
+          if (src[j] === '\\') {
+            j++;
+            if (j >= src.length) throw new CodeError(`Unterminated string literal at line ${startLine}`);
+            const esc = src[j];
+            if (esc === 'n') s += '\n';
+            else if (esc === 't') s += '\t';
+            else if (esc === 'r') s += '\r';
+            else s += esc;
+          } else {
+            if (src[j] === '\n') line++;
+            s += src[j];
+          }
+          j++;
+        }
+        if (j >= src.length) throw new CodeError(`Unterminated string literal at line ${startLine}`);
+        toks.push({ t: 'str', v: s, line: startLine }); i = j + 1; continue;
       }
       // Number
       if (/[0-9]/.test(c)) {
-        let j = i; while (j < src.length && /[0-9.]/.test(src[j])) j++;
-        toks.push({ t: 'num', v: parseFloat(src.slice(i, j)), line }); i = j; continue;
+        let j = i, dots = 0;
+        while (j < src.length && /[0-9.]/.test(src[j])) {
+          if (src[j] === '.') dots++;
+          j++;
+        }
+        const raw = src.slice(i, j);
+        if (dots > 1) throw new CodeError(`Invalid number literal ${JSON.stringify(raw)} at line ${line}`);
+        toks.push({ t: 'num', v: parseFloat(raw), line }); i = j; continue;
       }
       // Identifier / keyword
       if (/[a-zA-Z_]/.test(c)) {
@@ -223,7 +245,12 @@ export class CodeForge {
         expect(() => isOp(')'), ')');
         return { type: 'func', name, params, body: block() };
       }
-      if (isKw('return')) { next(); const value = isOp(this.terminator) ? null : expression(); eatTerm(); return { type: 'return', value }; }
+      if (isKw('return')) {
+        next();
+        const value = (isOp(this.terminator) || isBlockClose() || peek().t === 'eof') ? null : expression();
+        eatTerm();
+        return { type: 'return', value };
+      }
       if (isKw('print')) { next(); const value = expression(); eatTerm(); return { type: 'print', value }; }
       // assignment or expression statement
       const expr = expression();

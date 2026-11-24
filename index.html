@@ -3892,7 +3892,7 @@ node experiments/e3s_detection.mjs --mock   # smoke test (no API key)
         <!-- ═══ RESEARCH: Raw Results ═══ -->
         <div class="tab-content" id="tab-results">
           <div class="r-card">
-            <h3>Raw Result Files (66 JSONs)</h3>
+            <h3>Raw Result Files (78 JSONs)</h3>
             <p>Every number in the paper traces back to these files. Load any file to inspect the raw data.</p>
             <div class="r-form-group">
               <label>Select result file</label>
@@ -4148,7 +4148,7 @@ node experiments/e3s_detection.mjs --mock   # smoke test (no API key)
       section.style.display = 'flex';
       select.innerHTML = '<option value="">Select previous language...</option>' +
         languageHistory.map((h, i) =>
-          `<option value="${i}">${h.name} (${h.type})</option>`
+          `<option value="${i}">${esc(h.name)} (${esc(h.type)})</option>`
         ).join('');
     }
 
@@ -4535,6 +4535,57 @@ node experiments/e3s_detection.mjs --mock   # smoke test (no API key)
       });
     });
 
+    function parseSeedInput(raw) {
+      const trimmed = String(raw ?? '').trim();
+      if (!trimmed) return Date.now();
+      const n = Number(trimmed);
+      return (Number.isFinite(n) && Math.abs(n) <= Number.MAX_SAFE_INTEGER) ? n : hashString(trimmed);
+    }
+
+    function parseRange(minRaw, maxRaw, fallbackMin, fallbackMax) {
+      let lo = parseInt(minRaw, 10);
+      let hi = parseInt(maxRaw, 10);
+      if (!Number.isFinite(lo)) lo = fallbackMin;
+      if (!Number.isFinite(hi)) hi = fallbackMax;
+      return lo <= hi ? [lo, hi] : [hi, lo];
+    }
+
+    async function copyToClipboard(text, btn, copiedLabel = 'Copied!') {
+      let ok = false;
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(text);
+          ok = true;
+        }
+      } catch {
+        ok = false;
+      }
+      if (!ok) {
+        try {
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          ok = document.execCommand('copy');
+          document.body.removeChild(ta);
+        } catch {
+          ok = false;
+        }
+      }
+      if (btn) {
+        const original = btn.textContent;
+        btn.textContent = ok ? copiedLabel : 'Copy failed';
+        if (ok) btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = original;
+          btn.classList.remove('copied');
+        }, 2000);
+      }
+      return ok;
+    }
+
     // Generate button
     generateBtn.addEventListener('click', async () => {
       generateBtn.disabled = true;
@@ -4551,11 +4602,11 @@ node experiments/e3s_detection.mjs --mock   # smoke test (no API key)
           }
         });
 
-        const seed = seedInput.value ? parseInt(seedInput.value) || hashString(seedInput.value) : Date.now();
+        const seed = parseSeedInput(seedInput.value);
 
         // Get divergence value if enabled
         const divergenceFromEnglish = divergenceEnabled.checked
-          ? parseInt(divergenceSlider.value) / 100
+          ? parseInt(divergenceSlider.value, 10) / 100
           : null;
 
         if (deadLangEnabled.checked) {
@@ -4565,7 +4616,7 @@ node experiments/e3s_detection.mjs --mock   # smoke test (no API key)
             {
               seed: seed,
               name: nameInput.value || null,
-              mutationIntensity: parseInt(mutationIntensity.value) / 100,
+              mutationIntensity: parseInt(mutationIntensity.value, 10) / 100,
               attributes: attributes,
               divergenceFromEnglish: divergenceFromEnglish,
             }
@@ -4577,9 +4628,9 @@ node experiments/e3s_detection.mjs --mock   # smoke test (no API key)
             morphType: morphTypeSelect.value || null,
             wordOrder: wordOrderSelect.value || null,
             phoneticPreference: phoneticPrefSelect.value,
-            consonantCount: [parseInt(consMinInput.value), parseInt(consMaxInput.value)],
-            vowelCount: [parseInt(vowelMinInput.value), parseInt(vowelMaxInput.value)],
-            caseCount: caseCountSelect.value ? parseInt(caseCountSelect.value) : null,
+            consonantCount: parseRange(consMinInput.value, consMaxInput.value, 15, 25),
+            vowelCount: parseRange(vowelMinInput.value, vowelMaxInput.value, 5, 7),
+            caseCount: caseCountSelect.value !== '' ? parseInt(caseCountSelect.value, 10) : null,
             attributes: attributes,
             divergenceFromEnglish: divergenceFromEnglish,
           };
@@ -4643,7 +4694,7 @@ node experiments/e3s_detection.mjs --mock   # smoke test (no API key)
         // Collect any checked attributes
         const attributes = [];
         document.querySelectorAll('.attr-checkbox input[type="checkbox"]:checked').forEach(cb => {
-          if (cb.id !== 'dead-lang-enabled') {
+          if (cb.id !== 'dead-lang-enabled' && cb.id !== 'divergence-enabled') {
             attributes.push(cb.value);
           }
         });
@@ -4657,27 +4708,21 @@ node experiments/e3s_detection.mjs --mock   # smoke test (no API key)
         // Build config: use user value if set, otherwise randomize
         // Get divergence value if enabled
         const divergenceFromEnglish = divergenceEnabled.checked
-          ? parseInt(divergenceSlider.value) / 100
+          ? parseInt(divergenceSlider.value, 10) / 100
           : null;
 
         const config = {
-          seed: userSeed ? (parseInt(userSeed) || hashString(userSeed)) : Date.now(),
+          seed: parseSeedInput(userSeed),
           name: userName || null,
           // Use null for "Auto" so divergence targets can take effect
           // Only pick random if divergence is NOT enabled
           morphType: userMorphType || (divergenceFromEnglish !== null ? null : pick(morphTypes)),
           wordOrder: userWordOrder || (divergenceFromEnglish !== null ? null : pick(wordOrders)),
           phoneticPreference: userPhoneticPref || pick(phoneticPrefs),
-          consonantCount: [
-            userConsMin ? parseInt(userConsMin) : randConsMin,
-            userConsMax ? parseInt(userConsMax) : randConsMax
-          ],
-          vowelCount: [
-            userVowelMin ? parseInt(userVowelMin) : randVowelMin,
-            userVowelMax ? parseInt(userVowelMax) : randVowelMax
-          ],
+          consonantCount: parseRange(userConsMin, userConsMax, randConsMin, randConsMax),
+          vowelCount: parseRange(userVowelMin, userVowelMax, randVowelMin, randVowelMax),
           // Also let divergence control case count if "Auto" is selected
-          caseCount: userCaseCount ? parseInt(userCaseCount) : (divergenceFromEnglish !== null ? null : pick(caseCounts)),
+          caseCount: userCaseCount !== '' ? parseInt(userCaseCount, 10) : (divergenceFromEnglish !== null ? null : pick(caseCounts)),
           attributes: attributes,
           divergenceFromEnglish: divergenceFromEnglish,
         };
@@ -4770,7 +4815,7 @@ node experiments/e3s_detection.mjs --mock   # smoke test (no API key)
       prompt += `\nRULES:\n`;
       prompt += `• Use ${morph?.wordOrder?.basic || 'SVO'} word order\n`;
       prompt += `• ${morph?.type === 'agglutinative' ? 'Stack suffixes transparently' : 'Apply appropriate morphology'}\n`;
-      prompt += `• Syllable structure: ${phon?.phonotactics?.syllableStructure || '(C)V(C)'}\n`;
+      prompt += `• Syllable structure: ${lang.phonotactics?.template?.formula || '(C)V(C)'}\n`;
 
       return prompt;
     }
@@ -4819,9 +4864,9 @@ node experiments/e3s_detection.mjs --mock   # smoke test (no API key)
         name: lang.name,
         seed: lang.seed,
         phonology: {
-          consonants: lang.phonology?.inventory?.consonants?.length || 0,
-          vowels: lang.phonology?.inventory?.vowels?.length || 0,
-          syllableStructure: lang.phonology?.phonotactics?.syllableStructure,
+          consonants: lang.phonology?.consonants?.length || 0,
+          vowels: lang.phonology?.vowels?.length || 0,
+          syllableStructure: lang.phonotactics?.template?.formula || '(C)V(C)',
         },
         morphology: {
           type: lang.morphology?.type,
@@ -4841,7 +4886,7 @@ node experiments/e3s_detection.mjs --mock   # smoke test (no API key)
           entries: lang.lexicon?.entries?.slice(0, 50).map(e => ({
             word: e.lemma,
             gloss: e.gloss,
-            pos: e.pos,
+            pos: e.class,
           })) || [],
         },
       };
@@ -4880,14 +4925,7 @@ node experiments/e3s_detection.mjs --mock   # smoke test (no API key)
         const targetId = btn.dataset.target;
         const content = document.getElementById(targetId)?.textContent;
         if (content) {
-          navigator.clipboard.writeText(content);
-          const original = btn.textContent;
-          btn.textContent = 'Copied!';
-          btn.classList.add('copied');
-          setTimeout(() => {
-            btn.textContent = original;
-            btn.classList.remove('copied');
-          }, 2000);
+          copyToClipboard(content, btn, 'Copied!');
         }
       });
     });
@@ -4948,18 +4986,18 @@ ${currentLanguage.stone}
       document.getElementById('summary-content').style.display = 'block';
 
       const nameDisplay = document.getElementById('lang-name-display');
-      nameDisplay.innerHTML = language.name;
+      nameDisplay.innerHTML = esc(language.name);
 
       if (language.revival) {
         nameDisplay.innerHTML += `<div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 5px;">
-          Revival of <span style="color: var(--accent-tertiary);">${language.revival.ancestor}</span>
-          <span style="color: var(--text-muted);">(${language.revival.revivalMode})</span>
+          Revival of <span style="color: var(--accent-tertiary);">${esc(language.revival.ancestor)}</span>
+          <span style="color: var(--text-muted);">(${esc(language.revival.revivalMode)})</span>
         </div>`;
       }
 
       if (language.attributes && language.attributes.length > 0) {
         const attrTags = language.attributes.map(a =>
-          `<span class="attr-tag">${a.code}</span>`
+          `<span class="attr-tag">${esc(a.code)}</span>`
         ).join('');
         nameDisplay.innerHTML += `<div class="attr-tags">${attrTags}</div>`;
       }
@@ -5020,11 +5058,11 @@ ${currentLanguage.stone}
       const sampleSentencesEl = document.getElementById('sample-sentences');
       sampleSentencesEl.innerHTML = sampleSentences.map(eng => {
         try {
-          const translation = language.translationEngine.translate(eng);
+          const translation = language.translationEngine.translateToConlang(eng).target;
           return `
             <div class="sample-sentence">
-              <div class="english">${eng}</div>
-              <div class="translation">${translation}</div>
+              <div class="english">${esc(eng)}</div>
+              <div class="translation">${esc(translation)}</div>
             </div>
           `;
         } catch (e) {
@@ -5033,26 +5071,30 @@ ${currentLanguage.stone}
       }).join('');
 
       const attrRow = language.attributes && language.attributes.length > 0
-        ? `<tr><td>Attributes</td><td>${language.attributes.map(a => a.code).join(', ')}</td></tr>`
+        ? `<tr><td>Attributes</td><td>${language.attributes.map(a => esc(a.code)).join(', ')}</td></tr>`
         : '';
 
       const revivalRows = language.revival ? `
-        <tr><td>Ancestor</td><td>${language.revival.ancestor} (${language.revival.ancestorCode})</td></tr>
-        <tr><td>Revival Mode</td><td>${language.revival.revivalMode}</td></tr>
-        <tr><td>Family</td><td>${language.ancestor?.family || 'Unknown'}</td></tr>
+        <tr><td>Ancestor</td><td>${esc(language.revival.ancestor)} (${esc(language.revival.ancestorCode)})</td></tr>
+        <tr><td>Revival Mode</td><td>${esc(language.revival.revivalMode)}</td></tr>
+        <tr><td>Family</td><td>${esc(language.ancestor?.family || 'Unknown')}</td></tr>
       ` : '';
+
+      const seedDisplay = typeof language.seed === 'number'
+        ? `0x${(language.seed >>> 0).toString(16).toUpperCase()}`
+        : esc(language.seed);
 
       document.getElementById('quick-stats').innerHTML = `
         <table class="data-table">
           <tr><th>Feature</th><th>Value</th></tr>
-          <tr><td>Seed</td><td>0x${language.seed.toString(16).toUpperCase()}</td></tr>
+          <tr><td>Seed</td><td>${seedDisplay}</td></tr>
           ${revivalRows}
           ${attrRow}
-          <tr><td>Alignment</td><td>${language.morphology.alignment}</td></tr>
+          <tr><td>Alignment</td><td>${esc(language.morphology.alignment)}</td></tr>
           <tr><td>Tenses</td><td>${language.morphology.verbal.tenses.count}</td></tr>
           <tr><td>Aspects</td><td>${language.morphology.verbal.aspects.count}</td></tr>
           <tr><td>Moods</td><td>${language.morphology.verbal.moods.count}</td></tr>
-          <tr><td>Syllables</td><td>${language.phonotactics.template.formula}</td></tr>
+          <tr><td>Syllables</td><td>${esc(language.phonotactics.template.formula)}</td></tr>
         </table>
       `;
 
@@ -5074,6 +5116,8 @@ ${currentLanguage.stone}
         console.error('Enthusiast-tab init failed:', e);
       }
       try { updateCodeLab(language); } catch (e) { console.error('Code Lab init failed:', e); }
+      stegoEngine = null;
+      updateStegoLangStatus();
       seedInput.value = language.seed;
     }
 
@@ -5177,7 +5221,12 @@ ${currentLanguage.stone}
     }
 
     function escHtml(s) {
-      return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      return String(s ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
     }
 
     document.getElementById('cl-opacity-slider').addEventListener('input', (e) => {
@@ -5356,7 +5405,7 @@ ${currentLanguage.stone}
     });
 
     function esc(s) {
-      return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      return escHtml(s);
     }
 
     function renderEvolution(d) {
@@ -5419,7 +5468,7 @@ ${currentLanguage.stone}
       const treeNode = (node, prefix, isLast) => {
         const branch = prefix === '' ? '' : (isLast ? '└─ ' : '├─ ');
         const childPrefix = prefix === '' ? '' : prefix + (isLast ? '   ' : '│  ');
-        let s = `${prefix}${branch}${node.name}${node.centuries ? ` <span style="color: var(--text-muted);">(~${node.centuries}c, ${node.changeCount} changes)</span>` : ' <span style="color: var(--accent-tertiary);">(proto)</span>'}\n`;
+        let s = `${prefix}${branch}${esc(node.name)}${node.centuries ? ` <span style="color: var(--text-muted);">(~${node.centuries}c, ${node.changeCount} changes)</span>` : ' <span style="color: var(--accent-tertiary);">(proto)</span>'}\n`;
         (node.children || []).forEach((c, i) => {
           s += treeNode(c, childPrefix, i === (node.children.length - 1));
         });
@@ -5623,6 +5672,10 @@ ${currentLanguage.stone}
     document.getElementById('export-grammar-open').addEventListener('click', () => {
       if (!currentLanguage) { alert('Generate a language first!'); return; }
       const w = window.open('', '_blank');
+      if (!w) {
+        alert('Popup blocked by browser. Use "Download Grammar HTML" or allow popups for this page.');
+        return;
+      }
       w.document.write(currentLanguage.exporter.toGrammarHTML());
       w.document.close();
     });
@@ -5642,10 +5695,7 @@ ${currentLanguage.stone}
     // Copy and download
     document.getElementById('copy-stone-btn').addEventListener('click', () => {
       if (!currentLanguage) return;
-      navigator.clipboard.writeText(currentLanguage.stone);
-      const btn = document.getElementById('copy-stone-btn');
-      btn.textContent = 'Copied!';
-      setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
+      copyToClipboard(currentLanguage.stone, document.getElementById('copy-stone-btn'), 'Copied!');
     });
 
     document.getElementById('download-stone-btn').addEventListener('click', () => {
@@ -5678,10 +5728,7 @@ ${currentLanguage.stone}
 
       const shareUrl = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
 
-      navigator.clipboard.writeText(shareUrl);
-      const btn = document.getElementById('share-link-btn');
-      btn.textContent = 'Link Copied!';
-      setTimeout(() => { btn.textContent = 'Share Link'; }, 2000);
+      copyToClipboard(shareUrl, document.getElementById('share-link-btn'), 'Link Copied!');
     });
 
     function downloadFile(filename, content, mimeType) {
@@ -5904,7 +5951,12 @@ ${currentLanguage.stone}
 
       try {
         const result = stegoEngine.decode(stegoText);
-        document.getElementById('stego-decoded-output').value = result.payload;
+        if (result.success) {
+          document.getElementById('stego-decoded-output').value = result.payload;
+        } else {
+          document.getElementById('stego-decoded-output').value = '';
+          alert('Decoding failed: ' + (result.error || 'No valid steganographic frame found'));
+        }
 
       } catch (error) {
         alert('Decoding error: ' + error.message);
@@ -5987,10 +6039,16 @@ ${currentLanguage.stone}
     // KEYBOARD SHORTCUTS
     // ═══════════════════════════════════════════════════════════════════════
     document.addEventListener('keydown', (e) => {
-      // ESC to close overlays
-      if (e.key === 'Escape' && stegoOverlay.classList.contains('active')) {
-        stegoOverlay.classList.remove('active');
-        stegoPanel.classList.remove('visible');
+      // ESC to close overlays & modals
+      if (e.key === 'Escape') {
+        if (stegoOverlay.classList.contains('active')) {
+          stegoOverlay.classList.remove('active');
+          stegoPanel.classList.remove('visible');
+        }
+        const helpModal = document.getElementById('help-modal');
+        if (helpModal && helpModal.classList.contains('active')) {
+          closeHelp();
+        }
       }
 
       // Ctrl+Enter to generate (Forge)
@@ -6074,19 +6132,65 @@ ${currentLanguage.stone}
     // ═══════════════════════════════════════════════════════════════════════
     const R_TAG_BASE = 0xE0001;
     const R_PUA_BASE = 0xE000;
+    const R_IAA_ZERO = '\uFFF9'; // Interlinear Annotation Anchor (bit 0)
+    const R_IAA_ONE  = '\uFFFA'; // Interlinear Annotation Separator (bit 1)
+    const R_IAA_END  = '\uFFFB'; // Interlinear Annotation Terminator
 
     function rTagEncode(payload) {
-      return Array.from(payload).map(ch => String.fromCodePoint(R_TAG_BASE + ch.charCodeAt(0))).join('');
+      // Tag block U+E0001..U+E007F holds 7-bit ASCII (codepoints <= 0x7E)
+      return Array.from(payload)
+        .map(ch => ch.codePointAt(0))
+        .filter(cp => cp <= 0x7E)
+        .map(cp => String.fromCodePoint(R_TAG_BASE + cp))
+        .join('');
     }
     function rTagDecode(encoded) {
       return Array.from(encoded).filter(ch => { const cp = ch.codePointAt(0); return cp >= R_TAG_BASE && cp <= R_TAG_BASE + 127; }).map(ch => String.fromCharCode(ch.codePointAt(0) - R_TAG_BASE)).join('');
     }
     function rPuaEncode(payload) {
-      return Array.from(payload).map(ch => String.fromCodePoint(R_PUA_BASE + ch.charCodeAt(0))).join('');
+      // BMP PUA U+E000..U+F8FF (6400 slots); encode UTF-8 bytes safely inside U+E000..U+E0FF
+      return Array.from(payload)
+        .map(ch => ch.codePointAt(0))
+        .filter(cp => cp <= 0x18FF)
+        .map(cp => String.fromCodePoint(R_PUA_BASE + cp))
+        .join('');
     }
     function rPuaDecode(encoded) {
       return Array.from(encoded).filter(ch => { const cp = ch.codePointAt(0); return cp >= R_PUA_BASE && cp <= 0xF8FF; }).map(ch => String.fromCharCode(ch.codePointAt(0) - R_PUA_BASE)).join('');
     }
+    function rInterlinearEncode(payload) {
+      const bytes = new TextEncoder().encode(payload);
+      let out = '';
+      for (const b of bytes) {
+        for (let i = 7; i >= 0; i--) out += ((b >> i) & 1) ? R_IAA_ONE : R_IAA_ZERO;
+      }
+      return out + R_IAA_END;
+    }
+    function rInterlinearDecode(encoded) {
+      const bits = [];
+      for (const ch of encoded) {
+        if (ch === R_IAA_ZERO) bits.push(0);
+        else if (ch === R_IAA_ONE) bits.push(1);
+      }
+      if (bits.length < 8) return '';
+      const bytes = [];
+      for (let i = 0; i + 8 <= bits.length; i += 8) {
+        let b = 0;
+        for (let j = 0; j < 8; j++) b = (b << 1) | bits[i + j];
+        bytes.push(b);
+      }
+      return new TextDecoder().decode(new Uint8Array(bytes));
+    }
+
+    // Grounded in experiments/results/tokenizer_survival_v2_* (12-model panel):
+    // tag-chars-direct: OpenAI strips (0%), Anthropic/Qwen/GLM preserve (100%)
+    // pua-bmp:          Anthropic strips (0%), OpenAI/Qwen/GLM preserve (100%)
+    // interlinear:      All 4 families preserve U+FFF9–FFFB in v2 panel
+    const R_CHANNEL_BLIND = {
+      tag: new Set(['openai']),
+      pua: new Set(['anthropic']),
+      interlinear: new Set([]),
+    };
 
     document.getElementById('r-cc-encode-btn')?.addEventListener('click', () => {
       const channel = document.getElementById('r-cc-channel').value;
@@ -6096,22 +6200,27 @@ ${currentLanguage.stone}
 
       let encoded;
       if (channel === 'pua') encoded = cover + rPuaEncode(payload);
+      else if (channel === 'interlinear') encoded = cover + rInterlinearEncode(payload);
       else encoded = cover + rTagEncode(payload);
 
+      const visibleCount = Array.from(cover).length;
+      const hiddenCount = Array.from(encoded).length - visibleCount;
       document.getElementById('r-cc-encoded').textContent = encoded;
-      document.getElementById('r-cc-visible').textContent = cover.length;
-      document.getElementById('r-cc-hidden').textContent = encoded.length - cover.length;
+      document.getElementById('r-cc-visible').textContent = visibleCount;
+      document.getElementById('r-cc-hidden').textContent = hiddenCount;
       document.getElementById('r-cc-bytes').textContent = new Blob([encoded]).size;
-      document.getElementById('r-cc-bits').textContent = payload.length * 7;
+      document.getElementById('r-cc-bits').textContent = new TextEncoder().encode(payload).length * 8;
 
       const monitor = document.getElementById('r-cc-monitor').value;
-      const isBlind = monitor === 'anthropic' || (channel === 'tag' ? false : true);
-      const monitorName = { anthropic: 'Anthropic (Haiku/Opus)', openai: 'OpenAI (GPT)', qwen: 'Qwen', glm: 'GLM' }[monitor];
+      const isBlind = R_CHANNEL_BLIND[channel]?.has(monitor) ?? false;
+      const monitorName = { anthropic: 'Anthropic (Haiku/Opus)', openai: 'OpenAI (GPT)', qwen: 'Qwen', glm: 'GLM' }[monitor] || monitor;
+      const safeCover40 = esc(cover.slice(0, 40));
+      const safeCover50 = esc(cover.slice(0, 50));
 
       const tbl = document.getElementById('r-cc-model-table');
-      tbl.innerHTML = '<tr><th>Role</th><th>Family</th><th>Sees Payload?</th><th>Reads</th></tr>';
-      tbl.innerHTML += `<tr><td style="color:var(--accent)">Receiver</td><td>Any non-stripping</td><td style="color:var(--accent)">YES</td><td style="font-size:0.65rem;">${cover.slice(0,40)}... + [${payload.length} hidden]</td></tr>`;
-      tbl.innerHTML += `<tr><td style="color:var(--accent-secondary)">Monitor</td><td>${monitorName}</td><td style="color:${isBlind ? 'var(--accent-secondary)' : 'var(--accent)'}">${isBlind ? 'NO — BLIND' : 'YES'}</td><td style="font-size:0.65rem;">${isBlind ? cover.slice(0,50)+'...' : cover.slice(0,40)+'... + [visible]'}</td></tr>`;
+      tbl.innerHTML = '<tr><th>Role</th><th>Family</th><th>Sees Payload?</th><th>Reads</th></tr>' +
+        `<tr><td style="color:var(--accent)">Receiver</td><td>Any non-stripping</td><td style="color:var(--accent)">YES</td><td style="font-size:0.65rem;">${safeCover40}... + [${hiddenCount} hidden]</td></tr>` +
+        `<tr><td style="color:var(--accent-secondary)">Monitor</td><td>${esc(monitorName)}</td><td style="color:${isBlind ? 'var(--accent-secondary)' : 'var(--accent)'}">${isBlind ? 'NO — BLIND' : 'YES'}</td><td style="font-size:0.65rem;">${isBlind ? safeCover50 + '...' : safeCover40 + '... + [visible]'}</td></tr>`;
       document.getElementById('r-cc-result').style.display = 'block';
     });
 
@@ -6126,15 +6235,21 @@ ${currentLanguage.stone}
     document.getElementById('r-cc-decode-btn')?.addEventListener('click', () => {
       const input = document.getElementById('r-cc-decode-input').value;
       if (!input) { alert('Paste an encoded message.'); return; }
-      let tagP = rTagDecode(input), puaP = rPuaDecode(input);
+      const tagP = rTagDecode(input), puaP = rPuaDecode(input), iaaP = rInterlinearDecode(input);
       const results = [];
       if (tagP) results.push('Tag-char payload: "' + tagP + '"');
       if (puaP) results.push('PUA payload: "' + puaP + '"');
+      if (iaaP) results.push('Interlinear payload: "' + iaaP + '"');
       if (!results.length) results.push('No hidden payload detected in known channels.');
       document.getElementById('r-cc-decoded').textContent = results.join('\n');
 
       const chars = Array.from(input);
-      const hidden = chars.filter(ch => { const cp = ch.codePointAt(0); return (cp >= R_TAG_BASE && cp <= R_TAG_BASE+127) || (cp >= R_PUA_BASE && cp <= 0xF8FF); });
+      const hidden = chars.filter(ch => {
+        const cp = ch.codePointAt(0);
+        return (cp >= R_TAG_BASE && cp <= R_TAG_BASE + 127)
+          || (cp >= R_PUA_BASE && cp <= 0xF8FF)
+          || (cp >= 0xFFF9 && cp <= 0xFFFB);
+      });
       document.getElementById('r-cc-analysis').textContent = `Total characters: ${chars.length}\nVisible: ${chars.length - hidden.length}\nHidden carriers: ${hidden.length}\nCarrier codepoints: ${hidden.slice(0,10).map(c => 'U+' + c.codePointAt(0).toString(16).toUpperCase()).join(', ')}${hidden.length > 10 ? '...' : ''}`;
       document.getElementById('r-cc-decode-result').style.display = 'block';
     });
@@ -6143,7 +6258,15 @@ ${currentLanguage.stone}
     // RESEARCH: Raw Results Viewer
     // ═══════════════════════════════════════════════════════════════════════
     const R_RESULT_FILES = [
+      'e3s_detection_semantic__gpt-5-nano+claude-3.5-haiku+gemini-2.5-flash.json',
       'e3s_detection_tag_char-pua-semantic__gpt-5-nano+claude-3.5-haiku+gemini-2.5-flash.json',
+      'e3s_detection_tag_char-pua-semantic__openai-gpt-54-mini+claude-opus-4-8-fast+gemini-3-5-flash.json',
+      'e3s_detection_tag_char-semantic__openai-gpt-54-mini+claude-opus-4-8-fast+gemini-3-5-flash.json',
+      'e3s_detection_tag_char-semantic__openai-gpt-54-mini+claude-sonnet-4-5+gemini-3-5-flash.json',
+      'e3s_factorial_claude-opus-4-8-fast__openai-gpt-54-mini+claude-opus-4-8-fast+gemini-3-5-flash.json',
+      'e3s_multiconstruction_claude-opus-4-8-fast+openai-gpt-54-mini+claude-opus-4-8-fast+gemini-3-5-flash.json',
+      'e3s_structural_detection_multi_sample_consistency+paraphrase_round_trip+stylometric+perplexity_anomaly_proxy__claude-opus-4-8-fast__gemini-3-5-flash.json',
+      'e3s_structural_detection_multi_sample_consistency+paraphrase_round_trip+stylometric__claude-opus-4-8-fast__gemini-3-5-flash.json',
       'e3s_stego_tag_char_v2_anthropic-claude-3.5-haiku+openai-gpt-5-nano.json',
       'e3s_stego_tag_char_v2_anthropic-claude-3.5-haiku+anthropic-claude-3.5-haiku.json',
       'e3s_stego_tag_char_v2_anthropic-claude-3.5-haiku+google-gemini-2.5-flash.json',
@@ -6160,6 +6283,9 @@ ${currentLanguage.stone}
       'e3s_stego_semantic_anthropic-claude-3.5-haiku+openai-gpt-5-nano.json',
       'e3s_stego_semantic_anthropic-claude-3.5-haiku+anthropic-claude-3.5-haiku.json',
       'e3s_stego_semantic_anthropic-claude-3.5-haiku+google-gemini-2.5-flash.json',
+      'e3s_stego_semantic_claude-opus-4-8-fast+openai-gpt-54-mini+gemini-3-5-flash+claude-opus-4-8-fast.json',
+      'e3s_stego_semantic_claude-opus-4-8-fast+openai-gpt-54-mini+gemini-3-5-flash+gemini-3-5-flash.json',
+      'e3s_stego_semantic_claude-opus-4-8-fast+openai-gpt-54-mini+gemini-3-5-flash+openai-gpt-54-mini.json',
       'e3s_stego_semantic_informed_anthropic-claude-3.5-haiku+openai-gpt-5-nano.json',
       'e3s_stego_semantic_informed_anthropic-claude-3.5-haiku+anthropic-claude-3.5-haiku.json',
       'e3s_stego_semantic_informed_anthropic-claude-3.5-haiku+google-gemini-2.5-flash.json',
@@ -6176,6 +6302,7 @@ ${currentLanguage.stone}
       'tokenizer_survival_v2_gpt-5-nano+claude-3.5-haiku+gemini-2.5-flash+llama-4-scout+mistral-medium-3-5+claude-opus-4.8+gpt-5.5+gemini-3.1-pro-preview+deepseek-v4-pro+grok-4.3+qwen3.7-max+glm-5.1.json',
       'tokenizer_survival_v2_llama-4-scout+mistral-medium-3-5+gpt-5-nano+claude-3.5-haiku+gemini-2.5-flash.json',
       'tokenizer_survival_v2_claude-3.5-haiku+gemini-2.5-flash.json',
+      'tokenizer_survival_v2_claude-3.5-haiku+gpt-5-nano.json',
       'tokenizer_survival_v2_gemini-2.5-flash+gpt-5-nano.json',
       'tokenizer_survival_v3_llama-4-scout+mistral-medium-3-5+gpt-5-nano+claude-3.5-haiku+gemini-2.5-flash.json',
       'tokenizer_survival_v3_claude-3.5-haiku+gpt-5-nano+gemini-2.5-flash.json',
@@ -6224,6 +6351,7 @@ ${currentLanguage.stone}
         if (!rSelectEl.value) { viewer.textContent = 'Select a file above to view its contents.'; return; }
         try {
           const resp = await fetch('experiments/results/' + rSelectEl.value);
+          if (!resp.ok) throw new Error(`HTTP ${resp.status} ${resp.statusText}`);
           const data = await resp.json();
           viewer.textContent = JSON.stringify(data, null, 2);
         } catch (e) {

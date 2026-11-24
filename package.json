@@ -4,6 +4,6 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "test": "node test-smoke-edge-cases.mjs && node test-bench-integrity.mjs && node test-enthusiast.mjs"
+    "test": "node test-smoke-edge-cases.mjs && node test-bench-integrity.mjs && node test-enthusiast.mjs && node test-hardening.mjs"
   }
 }
